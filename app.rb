@@ -55,6 +55,11 @@ get '/logout' do
   redirect '/'
 end
 
+get '/practice' do
+  redirect '/' unless session[:isAnUserPresent]
+  erb :practice
+end
+
 post '/login' do
   if !session[:isAnUserPresent]
     username_or_email = params[:username_or_email]
@@ -114,4 +119,81 @@ end
 post '/logout' do
   session[:isAnUserPresent] = false
   redirect '/'
+end
+
+post '/practice' do
+  logger.info 'Received request to generate quiz'
+  logger.info "Params: #{params.inspect}"
+
+  file = fetch_file(params)
+  return file unless file.is_a?(Tempfile)
+
+  full_text = extract_text_from_pdf(file)
+  return json_error('Failed to extract text from PDF', 500) if full_text.empty?
+
+  @questions = generate_questions(full_text)
+  return json_error('Failed to generate quiz', 503) unless @questions
+
+  session[:questions] = @questions # Guardamos las preguntas en la sesión
+  session[:current_question_index] = 0 # Iniciamos en la primera pregunta
+
+  @current_question = @questions[session[:current_question_index]] # Mostramos la primera pregunta
+  erb :question
+end
+
+post '/next_question' do
+  @questions = session[:questions] # Recuperamos las preguntas de la sesión
+  current_question_index = session[:current_question_index] # Recuperamos el índice
+
+  if @questions.nil? || current_question_index.nil?
+    @error = 'No se encontraron preguntas o índice. Por favor, sube un PDF para generar el quiz.'
+    redirect '/practice'
+  end
+
+  selected_answer = params[:selected_option]
+  correct_answer = @questions[current_question_index]['answer'] if @questions[current_question_index]
+
+  if selected_answer == correct_answer
+    @message = '¡Correcto!'
+  else
+    @message = "Incorrecto. La respuesta correcta era: #{correct_answer}"
+  end
+
+  session[:current_question_index] += 1 # Avanza al siguiente índice
+
+  if session[:current_question_index] < @questions.size
+    @current_question = @questions[session[:current_question_index]]
+    erb :question
+  else
+    @message = 'Has completado todas las preguntas.'
+    erb :quiz_complete
+  end
+end
+
+def generate_questions(full_text)
+  prompt = <<-PROMPT
+    Generate 10 insightful questions based on the following text. For each question, provide 4 multiple-choice options and indicate the correct answer.
+    Please format each question as a JSON object within a list, with 'question', 'options' (a list of choices), and 'answer' (the correct choice) keys.
+    Provide the response in Spanish.
+  PROMPT
+
+  response = client.chat(
+    parameters: {
+      model: 'gpt-4o-mini',
+      messages: [
+        { role: 'system', content: prompt },
+        { role: 'user', content: full_text }
+      ],
+      max_tokens: 3000,
+      temperature: 0.5
+    }
+  )
+
+  # Ver que devolvio GPT por consola
+  puts response.inspect
+
+  parse_response(response)
+rescue JSON::ParserError => e
+  logger.error "Failed to parse JSON response: #{e.message}"
+  nil
 end
