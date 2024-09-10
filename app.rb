@@ -115,3 +115,10 @@ post '/logout' do
   session[:isAnUserPresent] = false
   redirect '/'
 end
+
+
+# Initializes the OpenAI client
+def client
+    options = { access_token: ENV['TOKEN_OPENAI'], log_errors: true }
+    @client ||= OpenAI::Client.new(**options)
+  end
