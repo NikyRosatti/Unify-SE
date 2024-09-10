@@ -215,29 +215,28 @@ rescue JSON::ParserError => e
   nil
 end
 
-
 # Parses the response from the AI and extracts the questions
 def parse_response(response)
-    content = response.dig('choices', 0, 'message', 'content')
-    content.gsub!(/^```json\n/, '').gsub!(/\n```$/, '')
-    puts "Raw response: #{content}" 
-    JSON.parse(content)
-  rescue StandardError => e
-    logger.error "Failed to parse AI response: #{e.message}"
-    nil
-  end
-  
-  # Extracts text from the provided PDF file
-  def extract_text_from_pdf(file)
-    pdf = PDF::Reader.new(file)
-    pdf.pages.map(&:text).join
-  rescue StandardError => e
-    logger.error "Direct PDF text extraction failed: #{e.message}"
-    ''
-  end
-  
-  # Helper method for JSON error responses
-  def json_error(message, status_code)
-    status status_code
-    json error: message
-  end
+  content = response.dig('choices', 0, 'message', 'content')
+  content.gsub!(/^```json\n/, '').gsub!(/\n```$/, '')
+  puts "Raw response: #{content}" 
+  JSON.parse(content)
+rescue StandardError => e
+  logger.error "Failed to parse AI response: #{e.message}"
+  nil
+end
+
+# Extracts text from the provided PDF file
+def extract_text_from_pdf(file)
+  pdf = PDF::Reader.new(file)
+  pdf.pages.map(&:text).join
+rescue StandardError => e
+  logger.error "Direct PDF text extraction failed: #{e.message}"
+  ''
+end
+
+# Helper method for JSON error responses
+def json_error(message, status_code)
+  status status_code
+  json error: message
+end
