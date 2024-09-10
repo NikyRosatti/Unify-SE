@@ -170,6 +170,12 @@ post '/next_question' do
   end
 end
 
+# Initializes the OpenAI client
+def client
+  options = { access_token: ENV['TOKEN_OPENAI'], log_errors: true }
+  @client ||= OpenAI::Client.new(**options)
+end
+
 def generate_questions(full_text)
   prompt = <<-PROMPT
     Generate 10 insightful questions based on the following text. For each question, provide 4 multiple-choice options and indicate the correct answer.
