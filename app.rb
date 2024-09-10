@@ -17,3 +17,9 @@ require './config/environment'
 set :allow_origin, 'http://127.0.0.1:3000'
 set :port, 3000
 enable :sessions
+
+
+
+get '/' do
+    erb :index
+end
