@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jaro:opsz@6..72&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/boxicons@2.0.7/css/boxicons.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/login.css">
+    <title> Unify, Login </title>
+  </head>
+  <body>
+    <div class="card">
+      <div class="logo">
+        <img src="media/logo.png">
+      </div>
+      <div class="titulo">
+        <h1><strong>Login into an account</strong></h1>
+        <% if @isAnUserPresent %>
+          <h2><strong>You are already logged-in</strong></h2>
+          <a href="/" style='color:#ffffff'>Home</a>
+          <form action="/logout" method="post" class="logout-form">
+            <button type="submit">Logout</button>
+          </form>
+        <% else %>
+          <h2><strong>Enter your username or email and password</strong></h2>
+          <form action="/login" method="post" class="login-form">
+            <div style="margin-bottom: 20px;">
+              <label for="username_or_email">Username or Email:</label>
+              <input type="text" id="username_or_email" name="username_or_email" required>
+            </div>
+            <div style="margin-bottom: 20px;">
+              <label for="password">Password:</label>
+              <input type="password" id="password" name="password" required>
+            </div>
+            <% if @error %>
+              <p style="color: red;"><%= @error %></p>
+            <% end %>
+            <button type="submit">Log-in</button>
+          </form>
+          <div class="register-link">
+            <p>Don't have an account?</p>
+            <a href="/register" style='color:#ffffff'>Register</a>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    <div class="loader">
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </body>
+</html>
