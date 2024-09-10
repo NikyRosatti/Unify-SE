@@ -176,6 +176,17 @@ def client
   @client ||= OpenAI::Client.new(**options)
 end
 
+# Fetches the file from a file upload
+def fetch_file(params)
+  if params[:file] && params[:file][:tempfile]
+    logger.info 'Successfully received file from tempfile'
+    params[:file][:tempfile]
+  else
+    logger.error 'No file provided'
+    json_error('No file provided', 400)
+  end
+end
+
 def generate_questions(full_text)
   prompt = <<-PROMPT
     Generate 10 insightful questions based on the following text. For each question, provide 4 multiple-choice options and indicate the correct answer.
