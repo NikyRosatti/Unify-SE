@@ -32,7 +32,7 @@ body {
     background-position: center;
 }
 
-.titulo h3 {
+.titulo h2 {
     font-size: 20px;
     background-position: center;
     padding: 15px 30px;
@@ -41,7 +41,7 @@ body {
 .card {
     position: relative;
     width: 550px;
-    height: 400px;
+    height: 550px;
     backdrop-filter: blur(10px);
     background: rgba(255, 255, 255, 0.3);
     box-shadow: 0 25px 45px rgba(0, 0, 0, 0.2);
@@ -55,33 +55,68 @@ body {
     text-align: center;
 }
 
-#buttonGoogle {
-    background-color: #000;
-    color: white;
-    border: none;
-    padding: 15px 30px;
-    font-size: 1.1rem;
+.login-form {
+    width: 100%;
+}
+  
+.login-form div {
+    margin-bottom: 20px;
+    text-align: left;
+}
+  
+  .login-form label {
+    font-size: 15px;
+    margin-bottom: 5px;
+    display: block;
+  }
+  
+  .login-form input {
+    width: 100%;
+    padding: 10px;
+    border: 3px solid #5fe8ef;
+    box-shadow: 0 0 5px #2ba5d1;
+    border-radius: 5px;
+    background: transparent;
+    color: black;
+    font-size: 16px;
+  }
+  
+  .login-form input:focus {
+    outline: none;
+    box-shadow: 0 0 10px #ffffff80;
+    background: transparent;
+  }
+  
+  button[type="submit"]::before {
+    content: "";
+    position: absolute;
+  }
+  
+  button[type="submit"] {
+    width: 100%;
+    padding: 12px;
+    background: rgba(129, 191, 236, 0.8); /* Color de fondo con transparencia */
+    color: rgb(0, 0, 0);
+    -webkit-text-stroke: 0.5px rgb(0, 0, 0);
     cursor: pointer;
-    border-radius: 20px;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-    margin-bottom: 30px; /* margen inferior*/
-}
-#buttonGoogle:hover {
-    background-color: #a51616;
-}
-
-.buttonGoogle i{
-    margin-right: 10px;
-}
-
-.titulo h4 {
-    font-size: smaller;
-    font-family: Arial, Helvetica, sans-serif;
-    background-position: center;
-    padding: 0; /* espacio dentro del elemento(relleno)*/
-    margin: 10px;
-    text-decoration: underline; /* Subrayado */
-}
+    font-size: 17px;
+    transition: transform 0.3s ease;
+  }
+  
+  button[type="submit"]:hover {
+    transform: scale(1.05);
+  }
+  
+  .register-link {
+    margin-top: 20px;
+    font-size: 16px;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  }
+  
+  .register-link a {
+    color: #ffffff;
+    font-weight: bold;
+  }
 
 .loader {
     height: 100%;
