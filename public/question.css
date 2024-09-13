@@ -1,0 +1,184 @@
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f8f9fa;
+}
+
+.container {
+    width: 100%;
+    max-width: 1000px; /* Aumenta el ancho máximo para que se adapte mejor a pantallas grandes */
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px; /* Añade un poco de relleno alrededor del contenedor */
+}
+
+h1 {
+    margin-bottom: 30px;
+    font-size: 2rem;
+    font-family: "Handjet", sans-serif;
+    color: #000000;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+.option-buttons {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 columnas de igual ancho */
+    gap: 30px; /* Espacio entre las opciones, puedes ajustar este valor según lo que necesites */
+    width: 100%; /* Ocupa todo el ancho disponible */
+    margin-bottom: 50px; /* Espacio entre opciones y el botón siguiente */
+    padding: 0 10px; /* Añade un pequeño padding para evitar que los botones lleguen al borde del contenedor */
+}
+
+.btn-radio {
+    display: none;
+}
+
+.btn-option {
+    width: 100%; /* Ocupa todo el ancho de la columna */
+    min-width: 400px; /* Aumenta el valor mínimo para hacer los botones más grandes */
+    max-width: 400px; /* Ajusta el tamaño máximo si es necesario */
+    background-color: #09a1ee;
+    padding: 20px 0px; /* Aumenta el padding para hacer los botones más largos y anchos */
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    cursor: pointer;
+    border-radius: 10px;
+    border: 2px dashed #09a1ee;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    transition: .4s;
+    display: flex; /* Usamos flexbox para centrar el contenido */
+    justify-content: center; /* Centra el contenido horizontalmente */
+    align-items: center; /* Centra el contenido verticalmente */
+    text-align: center; /* Asegura que el texto esté centrado dentro del botón */
+}
+
+.btn-option:hover {
+    transition: .4s;
+    border: 2px dashed #33bafd;
+    background-color: #fff;
+    color: #86d5ff;
+}
+
+.btn-option:active {
+    background-color: #86d5ff;
+}
+
+.btn-radio:checked + .btn-option {
+    border: 2px dashed #33bafd;
+    background-color: #fff;
+    color: #86d5ff;
+}
+
+.submit {
+    border: none;
+    background: none;
+    cursor: pointer;
+    margin-top: 20px; /* Añade espacio superior */
+    margin-left: auto; /* Empuja el botón al lado derecho */
+    display: flex; /* Necesario para alinear el botón */
+    align-items: center;
+}
+
+
+.submit span {
+    padding-bottom: 7px;
+    letter-spacing: 4px;
+    font-size: 14px;
+    font-family: "Handjet", sans-serif;
+    padding-right: 15px;
+    text-transform: uppercase;
+    text-align: right; /* Alinea el texto dentro del span a la derecha */
+}
+
+.submit svg {
+    transform: translateX(-8px);
+    transition: all 0.3s ease;
+}
+
+.submit:hover svg {
+    transform: translateX(0);
+}
+
+.submit:active svg {
+    transform: scale(0.9);
+}
+
+.hover-underline-animation {
+    position: relative;
+    color: black;
+    padding-bottom: 20px;
+}
+
+.hover-underline-animation:after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    transform: scaleX(0);
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: #000000;
+    transform-origin: bottom right;
+    transition: transform 0.25s ease-out;
+}
+
+.submit:hover .hover-underline-animation:after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+}
+
+p {
+    margin-top: 20px;
+}
+
+/* Mensaje correcto */
+.correct {
+    color: green;
+    font-weight: bold;
+}
+
+/* Mensaje incorrecto */
+.incorrect {
+    color: red;
+    font-weight: bold;
+}
+
+/* Barra de progreso */
+.progress-bar-container {
+    width: 100%; /* Ocupa todo el ancho disponible */
+    max-width: 1000px; /* Alineación con el ancho máximo del contenedor */
+    display: flex;
+    flex-direction: column; /* Añadido para incluir el texto de progreso debajo */
+    justify-content: center;
+    margin-top: 10px; /* Ajusta el espacio arriba de la barra de progreso */
+    margin-bottom: 60px; /* Espacio entre la barra de progreso y la pregunta */
+}
+
+.progress-bar {
+    width: 100%; /* Ocupa todo el ancho disponible */
+    height: 20px;
+    background-color: #e9ecef;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.progress-bar-inner {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(to right, #5defff, #4eb0e9, #09a1ee, #3c8bd9, #0080cc, #0066a5, #045788); /* Degradado de avance */
+    transition: width 0.5s ease-in-out;
+    border-radius: inherit;
+}
