@@ -23,9 +23,11 @@ ActiveRecord::Schema[7.2].define(version: 2024_08_27_152756) do
   create_table "documents", force: :cascade do |t|
     t.string "filename"
     t.binary "filecontent"
+    t.string "file_hash"
     t.date "uploaddate"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["file_hash"], name: "index_documents_on_file_hash", unique: true
   end
 
   create_table "options", force: :cascade do |t|
