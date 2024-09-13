@@ -11,6 +11,7 @@ require "dotenv/load"
 require "pdf-reader"
 require "json"
 require "openai"
+require "digest"
 
 require "./config/environment"
 
@@ -87,8 +88,8 @@ end
 post "/register" do
   username = params[:username]
   name = params[:name]
-  lastname = params[:lastname] || "Apellido No registrado"
-  cellphone = params[:cellphone] || "Celular No registrado"
+  lastname = if params[:lastname].strip.empty? then "ApellidoNoRegistrado" else params[:lastname] end
+  cellphone = if params[:cellphone].strip.empty? then "CelularNoRegistrado" else params[:cellphone] end
   email = params[:email]
   password = params[:password]
 
@@ -127,6 +128,11 @@ post "/practice" do
 
   file = fetch_file(params)
   return file unless file.is_a?(Tempfile)
+
+  # response_save_pdf[0] == Status Code HTTP recibido del metodo save_pdf
+  # response_save_pdf[1] == Mensaje JSON segun Status Code Error
+  response_save_pdf = save_pdf(params)
+  return json_error(response_save_pdf[1], response_save_pdf[0]) unless response_save_pdf[0] == 201
 
   full_text = extract_text_from_pdf(file)
   return json_error("Failed to extract text from PDF", 500) if full_text.empty?
@@ -200,6 +206,45 @@ def fetch_file(params)
   end
 end
 
+def save_pdf(params)
+  if params[:file] && params[:file][:tempfile]
+    logger.info "Saving file"
+    file = params[:file][:tempfile]
+    filename = params[:file][:filename]
+    filecontent = file.read
+    # Genera el hash segun el contenido del archivo
+    # Al hashear el contenido, buscar si existe es mas eficiente que revisar directamente el contenido
+    file_hash = Digest::SHA256.hexdigest(filecontent)
+
+    # Si ya hay un file_hash en la base de datos, es porque el archivo pasado ya existe en la base de datos,
+    # Por lo tanto no lo guarda
+    if Document.find_by(file_hash: file_hash)
+      logger.info "File already present in database"
+      return [201, "El PDF a guardar ya existe en la base de datos"]
+    else
+      # Guarda el archivo PDF en la base de datos
+      document = Document.create(
+        filename: filename,
+        filecontent: filecontent,
+        file_hash: file_hash,
+        uploaddate: Date.today,
+      )
+      # Si se pudo guardar correctamente
+      if document.persisted?
+        logger.info "File saved succefully"
+        return [201, "PDF guardado correctamente"]
+      else
+        # No se pudo guardar correctamente
+        logger.info "File not persisted in database"
+        return [500, "Error al guardar el archivo PDF en la base de datos"]
+      end
+    end
+  else
+    logger.info "File not provided"
+    return [400, "No se proporcionó un archivo"]
+  end
+end
+
 def generate_questions(full_text)
   prompt = <<-PROMPT
     Generate 10 insightful questions based on the following text. For each question, provide 4 multiple-choice options and indicate the correct answer.
@@ -220,7 +265,7 @@ def generate_questions(full_text)
   )
 
   # Ver que devolvio GPT por consola
-  puts response.inspect
+  # puts response.inspect
 
   parse_response(response)
 rescue JSON::ParserError => e
@@ -233,6 +278,7 @@ def parse_response(response)
   content = response.dig("choices", 0, "message", "content")
   content.gsub!(/^```json\n/, "").gsub!(/\n```$/, "")
   puts "Raw response: #{content}"
+  puts "End Raw response"
   JSON.parse(content)
 rescue StandardError => e
   logger.error "Failed to parse AI response: #{e.message}"
