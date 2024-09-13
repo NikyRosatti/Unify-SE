@@ -198,7 +198,7 @@ nav a:hover {
 .content {
 	position: absolute;
 	transform: translate(-50%, -50%);
-	top: 40%;
+	top: 55%;
 	left: 70%;
 	height: 160px;
 	overflow:hidden;
