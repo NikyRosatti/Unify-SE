@@ -136,10 +136,12 @@ post '/practice' do
 
   session[:questions] = @questions # Guardamos las preguntas en la sesión
   session[:current_question_index] = 0 # Iniciamos en la primera pregunta
+  session[:answered_questions] = [] # Inicializamos el array para las respuestas
 
   @current_question = @questions[session[:current_question_index]] # Mostramos la primera pregunta
   erb :question
 end
+
 
 post '/next_question' do
   @questions = session[:questions] # Recuperamos las preguntas de la sesión
@@ -155,20 +157,33 @@ post '/next_question' do
 
   if selected_answer == correct_answer
     @message = '¡Correcto!'
+    @message_class = 'correct'
   else
     @message = "Incorrecto. La respuesta correcta era: #{correct_answer}"
+    @message_class = 'incorrect'
   end
 
+  # Guardamos la respuesta seleccionada en answered_questions
+  session[:answered_questions] << selected_answer
+
   session[:current_question_index] += 1 # Avanza al siguiente índice
+  @progress = (session[:current_question_index].to_f / @questions.size * 100).to_i # Calculamos el porcentaje
 
   if session[:current_question_index] < @questions.size
     @current_question = @questions[session[:current_question_index]]
     erb :question
   else
+    # Contamos las respuestas correctas
+    @correct_answers = session[:answered_questions].each_with_index.count do |answer, index|
+      answer == @questions[index]['answer']
+    end
+    @incorrect_answers = @questions.size - @correct_answers
+
     @message = 'Has completado todas las preguntas.'
     erb :quiz_complete
   end
 end
+
 
 # Initializes the OpenAI client
 def client
