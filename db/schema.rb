@@ -40,8 +40,10 @@ ActiveRecord::Schema[7.2].define(version: 2024_08_27_152756) do
 
   create_table "questions", force: :cascade do |t|
     t.string "content"
+    t.integer "document_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["document_id"], name: "index_questions_on_document_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -58,4 +60,5 @@ ActiveRecord::Schema[7.2].define(version: 2024_08_27_152756) do
   add_foreign_key "answers", "options"
   add_foreign_key "answers", "questions"
   add_foreign_key "options", "questions"
+  add_foreign_key "questions", "documents"
 end
