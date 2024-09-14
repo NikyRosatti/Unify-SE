@@ -209,7 +209,8 @@ def fetch_file(params)
     params[:file][:tempfile]
   else
     logger.error "No file provided"
-    json_error("No file provided", 400)
+    @no_file_provided = "No file provided"
+    erb :practice
   end
 end
 
@@ -297,6 +298,7 @@ def generate_questions(full_text)
   prompt = <<-PROMPT
     Generate 10 insightful questions based on the following text. For each question, provide 4 multiple-choice options and indicate the correct answer.
     Please format each question as a JSON object within a list, with 'question', 'options' (a list of choices), and 'answer' (the correct choice) keys.
+    Ensure that no unusual Unicode symbols are used in the questions or answers. Use only common programming symbols and ASCII characters.
     Provide the response in Spanish.
   PROMPT
 
@@ -328,6 +330,7 @@ end
 # Parses the response from the AI and extracts the questions
 def parse_response(response)
   content = response.dig("choices", 0, "message", "content")
+  content = content.force_encoding("UTF-8")
   content.gsub!(/^```json\n/, "").gsub!(/\n```$/, "")
   puts "Raw response: #{content}"
   puts "End Raw response"
