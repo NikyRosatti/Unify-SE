@@ -61,6 +61,10 @@ get "/practice" do
   erb :practice
 end
 
+get "/no-key-provided" do
+  erb :no_key_provided
+end
+
 post "/login" do
   if !session[:isAnUserPresent]
     username_or_email = params[:username_or_email]
@@ -296,18 +300,22 @@ def generate_questions(full_text)
     Provide the response in Spanish.
   PROMPT
 
-  response = client.chat(
-    parameters: {
-      model: "gpt-4o-mini",
-      messages: [
-        { role: "system", content: prompt },
-        { role: "user", content: full_text },
-      ],
-      max_tokens: 3000,
-      temperature: 0.5,
-    },
-  )
-
+  begin
+    response = client.chat(
+      parameters: {
+        model: "gpt-4o-mini",
+        messages: [
+          { role: "system", content: prompt },
+          { role: "user", content: full_text },
+        ],
+        max_tokens: 3000,
+        temperature: 0.5,
+      },
+    )
+  rescue Faraday::UnauthorizedError => e
+    logger.error "Unauthorized access - API Key may be incorrect: #{e.message}"
+    redirect "/no-key-provided"
+  end
   # Ver que devolvio GPT por consola
   # puts response.inspect
 
