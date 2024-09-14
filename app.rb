@@ -129,8 +129,6 @@ post "/practice" do
   file = fetch_file(params)
   return file unless file.is_a?(Tempfile)
 
-  # response_save_pdf[0] == Status Code HTTP recibido del metodo save_pdf
-  # response_save_pdf[1] == Mensaje JSON segun Status Code Error
   response_save_pdf = save_pdf(params)
   return json_error(response_save_pdf[1], response_save_pdf[0]) unless response_save_pdf[0] == 201
 
@@ -139,6 +137,11 @@ post "/practice" do
 
   @questions = generate_questions(full_text)
   return json_error("Failed to generate quiz", 503) unless @questions
+
+  puts "<!-- Starting Saving Questions -->"
+  document = response_save_pdf[2] # Rescato el documento de la base de datos para pasarla al metodo
+  save_questions_to_db(@questions, document)
+  puts "<!-- End Saving Questions -->"
 
   session[:questions] = @questions # Guardamos las preguntas en la sesión
   session[:current_question_index] = 0 # Iniciamos en la primera pregunta
@@ -207,20 +210,28 @@ def fetch_file(params)
 end
 
 def save_pdf(params)
+  # Este metodo devuelve un arreglo con 3 cosas:
+  # save_pdf[0] == Status Code HTTP segun guardado o no
+  # save_pdf[1] == Mensaje JSON segun Status Code Error
+  # save_pdf[2] == El documento que se guarda en la base de datos o nil en caso contrario
+
   if params[:file] && params[:file][:tempfile]
     logger.info "Saving file"
     file = params[:file][:tempfile]
     filename = params[:file][:filename]
+    filename = filename.force_encoding("UTF-8") # Forzar que el nombre del archivo sea todo UTF-8 (caracteres validos)
     filecontent = file.read
+
     # Genera el hash segun el contenido del archivo
     # Al hashear el contenido, buscar si existe es mas eficiente que revisar directamente el contenido
     file_hash = Digest::SHA256.hexdigest(filecontent)
 
     # Si ya hay un file_hash en la base de datos, es porque el archivo pasado ya existe en la base de datos,
     # Por lo tanto no lo guarda
-    if Document.find_by(file_hash: file_hash)
+    existent_document = Document.find_by(file_hash: file_hash)
+    if existent_document
       logger.info "File already present in database"
-      return [201, "El PDF a guardar ya existe en la base de datos"]
+      return [201, "El PDF a guardar ya existe en la base de datos", existent_document]
     else
       # Guarda el archivo PDF en la base de datos
       document = Document.create(
@@ -232,17 +243,50 @@ def save_pdf(params)
       # Si se pudo guardar correctamente
       if document.persisted?
         logger.info "File saved succefully"
-        return [201, "PDF guardado correctamente"]
+        return [201, "PDF guardado correctamente", document]
       else
         # No se pudo guardar correctamente
         logger.info "File not persisted in database"
-        return [500, "Error al guardar el archivo PDF en la base de datos"]
+        return [500, "Error al guardar el archivo PDF en la base de datos", nil]
       end
     end
   else
     logger.info "File not provided"
-    return [400, "No se proporcionó un archivo"]
+    return [400, "No se proporcionó un archivo", nil]
   end
+end
+
+def save_questions_to_db(questions_json, document)
+  # Entra como parametro un JSON dado por GPT y el documento que se esta trabajando
+  # Para cada elemento del hash (question, options, answer)
+  questions_json.each do |question_data|
+    # Proceso los elementos "question", creandolos en la base de datos
+    # Asocia el contenido de la pregunta a content y a qué documento pertenece
+    question = Question.create(content: question_data["question"], document: document)
+    # Proceso los elementos "options"
+    puts "<!-- 2 Starting saving options -->"
+    save_options_to_db(question, question_data["options"])
+    puts "<!-- 2 Ending saving options -->"
+    # Proceso los elementos "answer"
+    puts "<!-- 3 Starting saving answer -->"
+    save_answer_to_db(question, question_data["answer"])
+    puts "<!-- 3 Ending saving answer -->"
+  end
+end
+
+def save_options_to_db(question, options)
+  options.each do |option_content|
+    # Crea la opción asociada a la pregunta
+    Option.create(content: option_content, question: question)
+  end
+end
+
+def save_answer_to_db(question, correct_answer)
+  # Busca la opción correcta en el conjunto de opciones
+  correct_option = Option.find_by(content: correct_answer, question: question)
+
+  # Crea la respuesta correcta de la pregunta según las opciones de ella
+  Answer.create(question: question, option: correct_option)
 end
 
 def generate_questions(full_text)
