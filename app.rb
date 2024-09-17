@@ -67,24 +67,33 @@ end
 
 post "/login" do
   if !session[:isAnUserPresent]
-    username_or_email = params[:username_or_email]
-    password = params[:password]
+    username_or_email = params[:username_or_email] || ""
+    password = params[:password] || ""
 
-    if username_or_email && password
+    if !username_or_email.strip.empty? && !password.strip.empty?
       @user = User.find_by(username: username_or_email, password: password) || User.find_by(email: username_or_email, password: password)
+      puts "User found: #{@user.inspect}"
+
       if @user
         session[:isAnUserPresent] = true
+        logger.info "Sesion iniciada"
         redirect "/"
       else
+        status 503
         @error = "No se encontró el usuario o el correo, o la contraseña es incorrecta!"
+        logger.error "#{@error}"
         erb :login
       end
     else
+      status 501
       @error = "Ingrese el nombre de usuario o correo electronico y la contraseña!"
+      logger.error "#{@error}"
       erb :login
     end
   else
+    status 502
     @error = "Para entrar en una cuenta primero se debe salir de la cuenta actual!"
+    logger.error "#{@error}"
     erb :login
   end
 end
