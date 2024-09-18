@@ -74,6 +74,7 @@ post "/login" do
       @user = User.find_by(username: username_or_email, password: password) || User.find_by(email: username_or_email, password: password)
       if @user
         session[:isAnUserPresent] = true
+        session[:user_id] = @user.id
         redirect "/"
       else
         @error = "No se encontró el usuario o el correo, o la contraseña es incorrecta!"
@@ -112,6 +113,7 @@ post "/register" do
       if @user.persisted?
         error_registration = ""
         session[:isAnUserPresent] = true
+        session[:user_id] = @user.id
         redirect "/"
       else
         error_registration = "user_not_persisted"
@@ -123,6 +125,7 @@ end
 
 post "/logout" do
   session[:isAnUserPresent] = false
+  session[:user_id] = nil
   redirect "/"
 end
 
