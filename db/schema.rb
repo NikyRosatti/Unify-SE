@@ -53,6 +53,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_08_27_152756) do
     t.string "cellphone"
     t.string "email"
     t.string "password"
+    t.integer "correct_answers", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
