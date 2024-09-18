@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabla</title>
+</head>
+<body>
+    <h1>Tabla de Progreso de Usuarios</h1>
+
+    <table class="progress-table">
+    <thead>
+        <tr>
+        <th>Usuario</th>
+        <th>Respuestas Correctas</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% @users.each do |user| %>
+        <tr>
+            <td><%= user.username %></td>
+            <td><%= user.correct_answers %></td>
+        </tr>
+        <% end %>
+    </tbody>
+    </table>
+
+</body>
+</html>
