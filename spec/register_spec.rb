@@ -73,26 +73,4 @@ describe "POST /register" do
       expect(last_response.body).to include("An user with that username or email already exists. Please try a different one.")
     end
   end
-
-  # Dificil de replicar este test porque involucra fallar en la persistencia de la base de datos
-  #
-  # context "cuando el usuario no se guarda correctamente" do
-  #   it "redirige a /error-register con el mensaje de error al guardar" do
-  #     allow_any_instance_of(User).to receive(:persisted?).and_return(false) # Simulamos fallo en persistencia
-
-  #     post "/register", {
-  #       username: "newuser",
-  #       name: "newname",
-  #       lastname: "newlastname",
-  #       cellphone: "1234567890",
-  #       email: "newuser@example.com",
-  #       password: "password",
-  #     }
-
-  #     expect(last_response).to be_redirect
-  #     follow_redirect!
-  #     expect(last_request.path).to eq("/error-register")
-  #     expect(last_response.body).to include("There was a problem registering your account. Please try again later.")
-  #   end
-  # end
 end
