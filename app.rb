@@ -157,6 +157,8 @@ post "/practice" do
   save_questions_to_db(@questions, document)
   puts "<!-- End Saving Questions -->"
 
+  status 251  # Llegar de manera adecuada y mostrar el cuestionario
+  logger.info "Correcta verificacion de metodos"
   session[:questions] = @questions # Guardamos las preguntas en la sesión
   session[:current_question_index] = 0 # Iniciamos en la primera pregunta
   session[:answered_questions] = [] # Inicializamos el array para las respuestas
@@ -218,6 +220,7 @@ def fetch_file(params)
     logger.info "Successfully received file from tempfile"
     params[:file][:tempfile]
   else
+    status 510
     logger.error "No file provided"
     @no_file_provided = "No file provided"
     erb :practice
