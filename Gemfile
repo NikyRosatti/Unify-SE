@@ -9,13 +9,13 @@ gem "rackup"
 gem "rake"
 gem "ruby-openai"
 gem "sinatra"
+gem "activerecord"
 gem "sinatra-activerecord"
 gem "sinatra-contrib"
 gem "sinatra-cors"
 gem "sqlite3", "~> 1.4"
-gem "database_cleaner-active_record"
 
-group :test do
+group :test, :development do
   gem "rack-test"
   gem "rspec"
   gem "simplecov"
