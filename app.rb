@@ -63,6 +63,12 @@ get "/no-key-provided" do
   erb :no_key_provided
 end
 
+# Para ayudarnos y obtener la tabla general de progreso
+get '/progress' do
+  @users = User.all.order(correct_answers: :desc)
+  erb :progress_table
+end
+
 post "/login" do
   if !session[:isAnUserPresent]
     username_or_email = params[:username_or_email] || ""
@@ -122,6 +128,7 @@ post "/register" do
         # session[:error_registration] = ""
         session[:isAnUserPresent] = true
         session.delete(:error_registration)
+        session[:user_id] = @user.id
         redirect "/"
       else
         session[:error_registration] = "user_not_persisted"
@@ -136,12 +143,6 @@ post "/logout" do
   session[:isAnUserPresent] = false
   session[:user_id] = nil
   redirect "/"
-end
-
-# Para ayudarnos y obtener la tabla general de progreso
-get "/progress" do
-  @users = User.all.order(correct_answers: :desc)
-  erb :progress_table
 end
 
 post "/practice" do

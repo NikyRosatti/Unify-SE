@@ -5,7 +5,18 @@ body {
     align-items: center;
     height: 100vh;
     margin: 0;
-    background-color: #f8f9fa;
+    background: url(media/fondoQuest.jpeg) center center / cover;
+}
+
+
+.container-gral {
+    display: flex;
+    justify-content: center; /* Centra el contenido horizontalmente */
+    align-items: center; /* Asegura que esté centrado verticalmente */
+    width: 100vw; /* Ocupa todo el ancho de la pantalla */
+    height: 100vh; /* Opcional: Ocupa toda la altura de la pantalla */
+    padding: 0; /* Elimina cualquier padding innecesario */
+    flex-direction: column;
 }
 
 .container {
@@ -15,6 +26,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     padding: 20px; /* Añade un poco de relleno alrededor del contenedor */
 }
 
@@ -144,15 +156,9 @@ p {
     margin-top: 20px;
 }
 
-/* Mensaje correcto */
-.correct {
-    color: green;
-    font-weight: bold;
-}
-
-/* Mensaje incorrecto */
-.incorrect {
-    color: red;
+/* Mensaje correcto e incorrecto */
+.correct, .incorrect {
+    color: rgb(0, 0, 0);
     font-weight: bold;
 }
 
@@ -170,7 +176,8 @@ p {
 .progress-bar {
     width: 100%; /* Ocupa todo el ancho disponible */
     height: 20px;
-    background-color: #e9ecef;
+    border: 2px solid #000000;
+    background-color: transparent;
     border-radius: 10px;
     overflow: hidden;
 }
@@ -181,4 +188,91 @@ p {
     background: linear-gradient(to right, #5defff, #4eb0e9, #09a1ee, #3c8bd9, #0080cc, #0066a5, #045788); /* Degradado de avance */
     transition: width 0.5s ease-in-out;
     border-radius: inherit;
+}
+
+.other-buttons {
+    display: flex;
+    justify-content: space-between; /* Alinea los botones a los extremos */
+    align-items: center;
+    width: 90%; /* Ajusta el ancho para no ocupar todo el ancho de la ventana */
+    max-width: 1200px; /* Establece un ancho máximo para pantallas grandes */
+    margin: 0 auto; /* Centra el contenedor horizontalmente */
+    padding: 0 20px; /* Añade un padding interno para alejar los botones de los bordes */
+    margin-top: 20px; /* Ajusta según sea necesario */
+}
+
+.go-back-Home, .regenerate-questions {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 15px;
+    font-size: 1.3rem;
+    border-radius: 10px;
+    width: 30%; /* Ancho del botón */
+    text-align: center;
+    height: 3.5em;
+    border: 3px ridge #149CEA;
+    outline: none;
+    background-color: transparent;
+    color: rgb(0, 0, 0);
+    transition: 1s;
+    font-weight: bold;
+    margin: 0 10px; /* Añade margen entre los botones para evitar que queden pegados a los bordes */
+}
+
+
+.other-buttons button {
+    width: 10em;
+    position: relative;
+    height: 3.5em;
+    border: 3px ridge #149CEA;
+    outline: none;
+    background-color: transparent;
+    color: rgb(0, 0, 0);
+    transition: 1s;
+    border-radius: 0.4em;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+.other-buttons button::after {
+    content: "";
+    position: absolute;
+    top: -10px;
+    left: 3%;
+    width: 95%;
+    height: 40%;
+    background-color: transparent;
+    transition: 0.5s;
+    transform-origin: center;
+}
+
+.other-buttons button::before {
+    content: "";
+    transform-origin: center;
+    position: absolute;
+    top: 80%;
+    left: 3%;
+    width: 95%;
+    height: 40%;
+    background-color: transparent;
+    transition: 0.5s;
+}
+
+.other-buttons button:hover::before, .other-buttons button:hover::after {
+    transform: scale(0)
+}
+
+.other-buttons button:hover {
+    box-shadow: inset 0px 0px 25px #1479EA;
+}
+
+.go-back-Home {
+    margin-right: 30px; /* Elimina márgenes adicionales */
+}
+
+.regenerate-questions {
+    margin-left: 30px; /* Elimina márgenes adicionales */
 }

@@ -10,41 +10,47 @@
     <title>Pregunta</title>
   </head>
   <body>
-    <div class="container">
-      <div class="progress-bar-container">
-        <div class="progress-bar">
-          <div class="progress-bar-inner" style="width: <%= @progress %>%"></div>
+    <div class= "container-gral"> 
+      <div class="container">
+        <div class="progress-bar-container">
+          <div class="progress-bar">
+            <div class="progress-bar-inner" style="width: <%= @progress %>%"></div>
+          </div>
         </div>
+        <h1><%= @current_question['question'] %></h1>
+        <form action="/next_question" method="post">
+          <div class="option-buttons">
+            <% @current_question['options'].each_with_index do |option, index| %>
+              <input type="radio" name="selected_option" value="<%= option %>" id="option<%= index %>" class="btn-radio">
+              <label for="option<%= index %>" class="btn-option"><%= option %></label>
+            <% end %>
+          </div>
+          <button class="submit" class="btn btn-primary">
+            <span class="hover-underline-animation"> Siguiente </span>
+            <svg
+              id="arrow-horizontal"
+              xmlns="http://www.w3.org/2000/svg"
+              width="30"
+              height="10"
+              viewBox="0 0 46 16"
+            >
+              <path
+                id="Path_10"
+                data-name="Path 10"
+                d="M8,0,6.545,1.455l5.506,5.506H-30V9.039H12.052L6.545,14.545,8,16l8-8Z"
+                transform="translate(30)"
+              ></path>
+            </svg>
+        </button>
+        </form>
+        <% if @message %>
+          <p class="<%= @message_class %>"><%= @message %></p>
+        <% end %>
       </div>
-      <h1><%= @current_question['question'] %></h1>
-      <form action="/next_question" method="post">
-        <div class="option-buttons">
-          <% @current_question['options'].each_with_index do |option, index| %>
-            <input type="radio" name="selected_option" value="<%= option %>" id="option<%= index %>" class="btn-radio">
-            <label for="option<%= index %>" class="btn-option"><%= option %></label>
-          <% end %>
-        </div>
-        <button class="submit" class="btn btn-primary">
-          <span class="hover-underline-animation"> Siguiente </span>
-          <svg
-            id="arrow-horizontal"
-            xmlns="http://www.w3.org/2000/svg"
-            width="30"
-            height="10"
-            viewBox="0 0 46 16"
-          >
-            <path
-              id="Path_10"
-              data-name="Path 10"
-              d="M8,0,6.545,1.455l5.506,5.506H-30V9.039H12.052L6.545,14.545,8,16l8-8Z"
-              transform="translate(30)"
-            ></path>
-          </svg>
-      </button>
-      </form>
-      <% if @message %>
-        <p class="<%= @message_class %>"><%= @message %></p>
-      <% end %>
+      <div class="other-buttons">
+          <button class="go-back-Home" onclick="window.location.href='/';"">Go back Home</button>
+          <button class="regenerate-questions" onclick="window.location.href='/practice';">Regenerate Questions</button>
+      </div>
     </div>
   </body>
 </html>

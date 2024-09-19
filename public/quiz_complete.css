@@ -1,0 +1,114 @@
+body {
+    background-color: #f8f9fa;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    flex-direction: column; /* Asegura que el contenido se alinee verticalmente */
+}
+
+.container {
+    text-align: center;
+    max-width: 600px;
+    margin-bottom: 20px; /* Espacio entre el contenido y los botones */
+}
+
+.chart-container {
+    position: relative;
+    height: 300px; /* Altura del gráfico */
+    width: 100%; /* Ancho del gráfico */
+    max-width: 400px; /* Tamaño máximo del gráfico */
+    margin: 0 auto; /* Centra el gráfico horizontalmente */
+    margin-bottom: 30%;
+}
+
+.grafico {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.other-buttons {
+    display: flex;
+    justify-content: center; /* Centra los botones horizontalmente */
+    width: 100%;
+    max-width: 600px; /* Ajusta el ancho máximo si es necesario */
+    margin-top: 20px; /* Espacio entre el gráfico y los botones */
+    margin-bottom: auto;
+}
+
+.go-back-Home, .regenerate-questions {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 15px;
+    font-size: 1.3rem;
+    border-radius: 10px;
+    width: 30%; /* Ancho del botón */
+    text-align: center;
+    height: 3.5em;
+    border: 3px ridge #149CEA;
+    outline: none;
+    background-color: transparent;
+    color: rgb(0, 0, 0);
+    transition: 1s;
+    font-weight: bold;
+    margin: 0 10px; /* Añade margen entre los botones para evitar que queden pegados a los bordes */
+}
+
+.other-buttons button {
+    width: 10em;
+    position: relative;
+    height: 3.5em;
+    border: 3px ridge #149CEA;
+    outline: none;
+    background-color: transparent;
+    color: rgb(0, 0, 0);
+    transition: 1s;
+    border-radius: 0.4em;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.other-buttons button::after {
+    content: "";
+    position: absolute;
+    top: -10px;
+    left: 3%;
+    width: 95%;
+    height: 40%;
+    background-color: transparent;
+    transition: 0.5s;
+    transform-origin: center;
+}
+
+.other-buttons button::before {
+    content: "";
+    transform-origin: center;
+    position: absolute;
+    top: 80%;
+    left: 3%;
+    width: 95%;
+    height: 40%;
+    background-color: transparent;
+    transition: 0.5s;
+}
+
+.other-buttons button:hover::before, .other-buttons button:hover::after {
+    transform: scale(0)
+}
+
+.other-buttons button:hover {
+    box-shadow: inset 0px 0px 25px #1479EA;
+}
+
+.go-back-Home {
+    margin-right: 30px; /* Elimina márgenes adicionales */
+}
+
+.regenerate-questions {
+    margin-left: 30px; /* Elimina márgenes adicionales */
+}
