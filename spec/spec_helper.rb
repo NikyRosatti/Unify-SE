@@ -14,22 +14,31 @@
 #
 # See https://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 
-require File.expand_path("../../app.rb", __FILE__)
-require "sinatra"
-require "sinatra/activerecord"
-require "sinatra/cors"
-require "sinatra/json"
-require "byebug"
-require "fileutils"
-require "dotenv/load"
-require "pdf-reader"
-require "json"
-require "openai"
-require "digest"
-require_relative "../app"
+require "simplecov"
 require "rspec"
 require "rack/test"
-require "database_cleaner/active_record"
+require "sinatra/activerecord"
+require_relative "../app.rb"
+SimpleCov.start
+
+ENV["RACK_ENV"] ||= "test"
+
+# require File.expand_path("../../app.rb", __FILE__)
+# require "sinatra"
+# require "sinatra/activerecord"
+# require "sinatra/cors"
+# require "sinatra/json"
+# require "byebug"
+# require "fileutils"
+# require "dotenv/load"
+# require "pdf-reader"
+# require "json"
+# require "openai"
+# require "digest"
+# require_relative "../app"
+# require "rspec"
+# require "rack/test"
+# require "database_cleaner/active_record"
 
 def app
   Sinatra::Application
@@ -41,12 +50,17 @@ RSpec.configure do |config|
   # assertions if you prefer.
   config.include Rack::Test::Methods
 
+  config.before(:suite) do
+    # ActiveRecord::Base.establish_connection(:test)
+    ActiveRecord::Migration.maintain_test_schema!
+  end
+
   config.before(:each) do
-    DatabaseCleaner.clean
+    ActiveRecord::Base.connection.begin_transaction(joinable: false)
   end
 
   config.after(:each) do
-    DatabaseCleaner.clean
+    ActiveRecord::Base.connection.rollback_transaction
   end
 
   config.expect_with :rspec do |expectations|

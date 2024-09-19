@@ -9,11 +9,10 @@ require "pdf-reader"
 require "json"
 require "openai"
 require "digest"
+
+ENV["APP_ENV"] = "test"
+
 require_relative "../app"
-require "./config/environment"
-
-ENV["RACK_ENV"] = "test"
-
 require "spec_helper"
 require "rack/test"
 require "rspec"

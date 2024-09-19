@@ -13,14 +13,12 @@ require "json"
 require "openai"
 require "digest"
 
-require "./config/environment"
-
 set :allow_origin, "http://127.0.0.1:3000"
 set :port, 3000
-enable :sessions
+set :database_file, "./config/database.yml"
+Dir["./app/models/*.rb"].each { |file| require file }
 
-# Variable global a los metodos utilizada en POST Register para manejar errores
-error_registration = ""
+enable :sessions
 
 before do
   @isAnUserPresent = session[:isAnUserPresent] || false
@@ -39,7 +37,7 @@ get "/login" do
 end
 
 get "/error-register" do
-  case error_registration
+  case session[:error_registration]
   when "missing_fields"
     erb :error_missing_fields
   when "user_exists"
@@ -106,24 +104,27 @@ post "/register" do
   email = params[:email]
   password = params[:password]
 
-  if username.nil? || name.nil? || email.nil? || password.nil? || username.strip.empty? || name.strip.empty? || email.strip.empty? || password.strip.empty?
-    error_registration = "missing_fields"
+  if username.strip.empty? || name.strip.empty? || email.strip.empty? || password.strip.empty?
+    session[:error_registration] = "missing_fields"
+    logger.error "Fields Username, Name, Email and Password must be filled out. Please try again."
     redirect "/error-register"
-    # Entra solamente por aca cuando se ponen espacios, porque el ".nil?" ya lo controla el form en el ERB con la clausula "required"
   else
     @user = User.find_by(username: username) || User.find_by(email: email)
     if @user
-      error_registration = "user_exists"
+      session[:error_registration] = "user_exists"
+      logger.error "An user with that username or email already exists. Please try a different one."
       redirect "/error-register"
     else
       @user = User.create(username: username, name: name, lastname: lastname, cellphone: cellphone, email: email,
                           password: password)
       if @user.persisted?
-        error_registration = ""
+        # session[:error_registration] = ""
         session[:isAnUserPresent] = true
+        session.delete(:error_registration)
         redirect "/"
       else
-        error_registration = "user_not_persisted"
+        session[:error_registration] = "user_not_persisted"
+        logger.error "There was a problem registering your account. Please try again later."
         redirect "/error-register"
       end
     end
