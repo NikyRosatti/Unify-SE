@@ -74,6 +74,7 @@ post "/login" do
 
       if @user
         session[:isAnUserPresent] = true
+        session[:user_id] = @user.id
         logger.info "Sesion iniciada"
         redirect "/"
       else
@@ -133,7 +134,14 @@ end
 
 post "/logout" do
   session[:isAnUserPresent] = false
+  session[:user_id] = nil
   redirect "/"
+end
+
+# Para ayudarnos y obtener la tabla general de progreso
+get "/progress" do
+  @users = User.all.order(correct_answers: :desc)
+  erb :progress_table
 end
 
 post "/practice" do
@@ -201,7 +209,14 @@ post "/next_question" do
     @correct_answers = session[:answered_questions].each_with_index.count do |answer, index|
       answer == @questions[index]["answer"]
     end
+
+    cant_correct_answers = @correct_answers
     @incorrect_answers = @questions.size - @correct_answers
+
+    if session[:isAnUserPresent] && session[:user_id]
+      @user = User.find(session[:user_id])
+      @user.increment!(:correct_answers, cant_correct_answers)
+    end
 
     @message = "Has completado todas las preguntas."
     erb :quiz_complete
