@@ -1,0 +1,107 @@
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to bottom right, #6a5acd, #00ced1);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    text-align: center;
+    margin: 0;
+}
+
+header {
+    margin-bottom: 30px; /* Reduce el margen inferior del header */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px; /* Espacio entre los elementos dentro del header */
+    position: relative;
+    z-index: 1; /* Asegura que el header esté en un nivel superior */
+}
+
+.logo {
+    background: url(media/logo.png) center center;
+    width: 200px; /* Ajusta el ancho según sea necesario */
+    height: 100px; /* Ajusta la altura según sea necesario */
+}
+
+h1 {
+    font-family: "Staatliches";
+    font-size: 90px; /* Aumenta el tamaño de la fuente del título */
+    color: #383858;
+    text-shadow: 2px 2px 4px black;
+    font-weight: bold;
+    margin: 10px 0; /* Reduce el margen arriba y abajo del título */
+}
+
+.game-name {
+    font-size: 28px; /* Aumenta el tamaño de la fuente del subtítulo */
+    color: white;
+    font-family: "Quicksand";
+    margin: 0; /* Elimina el margen alrededor del subtítulo */
+}
+
+.progress-table {
+    background: rgba(0, 0, 0, 0.7);
+    font-family: "Quicksand";
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 100vw; /* Usa el ancho total de la vista */
+    max-width: 1000px; /* Ajusta el ancho máximo si es necesario */
+    margin: 0 auto; /* Centra la tabla horizontalmente */
+    position: relative; /* Asegura que la tabla no esté afectada por el contenedor del header */
+    left: 50%; /* Mueve la tabla a la mitad de la página */
+    transform: translateX(-50%); /* Ajusta el desplazamiento para centrar la tabla */
+    overflow: hidden; /* Asegura que el contenido no se desborde */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0 auto; /* Asegura que la tabla esté centrada */
+}
+
+.top-position {
+    background-color: #7875e6; /* Color para la fila del primer puesto */
+    font-size: 1.4em; /* Tamaño de fuente más grande */
+    font-weight: bold;
+}
+
+th {
+    background: rgba(255, 255, 255, 0.1);
+    text-align: center;
+}
+
+td {
+    text-align: center;
+}
+
+th, td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.even-row {
+    background-color: #332e4b; /* Color para filas pares */
+}
+
+.odd-row {
+    background-color: #383858; /* Color para filas impares */
+}
+
+.gold-medal {
+    width: 30px; 
+    height: 30px;
+}
+
+.silver-medal {
+    width: 20px; 
+    height: 20px;
+}
+
+.bronze-medal {
+    width: 10px; 
+    height: 10px;
+}
