@@ -23,7 +23,7 @@
                 <% if @users.any? %>
                 <tr class="top-position">
                     <td>1</td>
-                    <td><img src="media/1erPuesto.jpeg" class="medal gold-medal"></td>
+                    <td><img src="media/diamont.png" class="medal gold-medal"></td>
                     <td><%= @users.first.username %></td>
                     <td><%= @users.first.correct_answers %></td>
                 </tr>
@@ -35,9 +35,9 @@
                         <td><%= index + 2 %></td> <!-- La numeración comienza en 2 -->
                         <td>
                             <% if index == 0 %>
-                                <img src="media/2doPuesto.jpg" class="medal silver-medal">
+                                <img src="media/star.png" class="medal silver-medal">
                             <% elsif index == 1 %>
-                                <img src="media/3erPuesto.jpg" class="medal bronze-medal">
+                                <img src="media/diploma.png" class="medal bronze-medal">
                             <% end %>
                         </td>
                         <td><%= user.username %></td>
