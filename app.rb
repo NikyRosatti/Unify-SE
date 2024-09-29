@@ -66,7 +66,7 @@ end
 # Para ayudarnos y obtener la tabla general de progreso
 get '/progress' do
   @users = User.all.order(correct_answers: :desc)
-  erb :progress_table
+  erb :leaderboard
 end
 
 post "/login" do

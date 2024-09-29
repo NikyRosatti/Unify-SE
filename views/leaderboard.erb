@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Staatliches&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+    <title>Leaderboard</title>
+    <link rel="stylesheet" href="leaderboard.css">
+</head>
+<body>
+    <div class="leaderboard">
+        <header>
+            <div class="logo"></div>
+            <h1> LEADERBOARD </h1>
+            <div class="game-name"> UNIFY </div>
+        </header>
+        <table class="progress-table">
+            <tbody id="user-list">
+                <!-- Primera fila para el primer puesto -->
+                <% if @users.any? %>
+                <tr class="top-position">
+                    <td>1</td>
+                    <td><img src="media/diamont.png" class="medal gold-medal"></td>
+                    <td><%= @users.first.username %></td>
+                    <td><%= @users.first.correct_answers %></td>
+                </tr>
+                <% end %>
+
+                <!-- Las demás filas para los otros usuarios -->
+                <% @users.drop(1).each_with_index do |user, index| %>
+                    <tr class="<%= index.even? ? 'even-row' : 'odd-row' %>">
+                        <td><%= index + 2 %></td> <!-- La numeración comienza en 2 -->
+                        <td>
+                            <% if index == 0 %>
+                                <img src="media/star.png" class="medal silver-medal">
+                            <% elsif index == 1 %>
+                                <img src="media/diploma.png" class="medal bronze-medal">
+                            <% end %>
+                        </td>
+                        <td><%= user.username %></td>
+                        <td><%= user.correct_answers %></td>
+                    </tr>
+                <% end %>
+            </tbody>
+        </table>
+    </div>
+    <script src="leaderboard.js"></script>
+</body>
+</html>
