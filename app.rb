@@ -13,14 +13,12 @@ require "json"
 require "openai"
 require "digest"
 
-require "./config/environment"
-
 set :allow_origin, "http://127.0.0.1:3000"
 set :port, 3000
-enable :sessions
+set :database_file, "./config/database.yml"
+Dir["./app/models/*.rb"].each { |file| require file }
 
-# Variable global a los metodos utilizada en POST Register para manejar errores
-error_registration = ""
+enable :sessions
 
 before do
   @isAnUserPresent = session[:isAnUserPresent] || false
@@ -39,7 +37,7 @@ get "/login" do
 end
 
 get "/error-register" do
-  case error_registration
+  case session[:error_registration]
   when "missing_fields"
     erb :error_missing_fields
   when "user_exists"
@@ -65,27 +63,42 @@ get "/no-key-provided" do
   erb :no_key_provided
 end
 
+# Para ayudarnos y obtener la tabla general de progreso
+get '/progress' do
+  @users = User.all.order(correct_answers: :desc)
+  erb :leaderboard
+end
+
 post "/login" do
   if !session[:isAnUserPresent]
-    username_or_email = params[:username_or_email]
-    password = params[:password]
+    username_or_email = params[:username_or_email] || ""
+    password = params[:password] || ""
 
-    if username_or_email && password
+    if !username_or_email.strip.empty? && !password.strip.empty?
       @user = User.find_by(username: username_or_email, password: password) || User.find_by(email: username_or_email, password: password)
+      puts "User found: #{@user.inspect}"
+
       if @user
         session[:isAnUserPresent] = true
         session[:user_id] = @user.id
+        logger.info "Sesion iniciada"
         redirect "/"
       else
+        status 503
         @error = "No se encontró el usuario o el correo, o la contraseña es incorrecta!"
+        logger.error "#{@error}"
         erb :login
       end
     else
+      status 501
       @error = "Ingrese el nombre de usuario o correo electronico y la contraseña!"
+      logger.error "#{@error}"
       erb :login
     end
   else
+    status 502
     @error = "Para entrar en una cuenta primero se debe salir de la cuenta actual!"
+    logger.error "#{@error}"
     erb :login
   end
 end
@@ -98,25 +111,28 @@ post "/register" do
   email = params[:email]
   password = params[:password]
 
-  if username.nil? || name.nil? || email.nil? || password.nil? || username.strip.empty? || name.strip.empty? || email.strip.empty? || password.strip.empty?
-    error_registration = "missing_fields"
+  if username.strip.empty? || name.strip.empty? || email.strip.empty? || password.strip.empty?
+    session[:error_registration] = "missing_fields"
+    logger.error "Fields Username, Name, Email and Password must be filled out. Please try again."
     redirect "/error-register"
-    # Entra solamente por aca cuando se ponen espacios, porque el ".nil?" ya lo controla el form en el ERB con la clausula "required"
   else
     @user = User.find_by(username: username) || User.find_by(email: email)
     if @user
-      error_registration = "user_exists"
+      session[:error_registration] = "user_exists"
+      logger.error "An user with that username or email already exists. Please try a different one."
       redirect "/error-register"
     else
       @user = User.create(username: username, name: name, lastname: lastname, cellphone: cellphone, email: email,
                           password: password)
       if @user.persisted?
-        error_registration = ""
+        # session[:error_registration] = ""
         session[:isAnUserPresent] = true
+        session.delete(:error_registration)
         session[:user_id] = @user.id
         redirect "/"
       else
-        error_registration = "user_not_persisted"
+        session[:error_registration] = "user_not_persisted"
+        logger.error "There was a problem registering your account. Please try again later."
         redirect "/error-register"
       end
     end
@@ -127,12 +143,6 @@ post "/logout" do
   session[:isAnUserPresent] = false
   session[:user_id] = nil
   redirect "/"
-end
-
-# Para ayudarnos y obtener la tabla general de progreso
-get '/progress' do
-  @users = User.all.order(correct_answers: :desc)
-  erb :leaderboard
 end
 
 post "/practice" do
@@ -156,6 +166,8 @@ post "/practice" do
   save_questions_to_db(@questions, document)
   puts "<!-- End Saving Questions -->"
 
+  status 251  # Llegar de manera adecuada y mostrar el cuestionario
+  logger.info "Correcta verificacion de metodos"
   session[:questions] = @questions # Guardamos las preguntas en la sesión
   session[:current_question_index] = 0 # Iniciamos en la primera pregunta
   session[:answered_questions] = [] # Inicializamos el array para las respuestas
@@ -224,6 +236,7 @@ def fetch_file(params)
     logger.info "Successfully received file from tempfile"
     params[:file][:tempfile]
   else
+    status 510
     logger.error "No file provided"
     @no_file_provided = "No file provided"
     erb :practice
