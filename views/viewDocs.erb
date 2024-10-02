@@ -9,7 +9,8 @@
   <div class="documents-container">
     <% @documents.each do |document| %>
       <div class="document-card" id="document-<%= document.id %>">
-        <h3 class="document-title"><%= document.filename %></h3>
+        <!-- File es un metodo para poder obtener el nombre del documento sin la extension pdf -->
+        <h3 class="document-title"><%= File.basename(document.filename, File.extname(document.filename)) %></h3>
         
         <!-- Contenido reducido para previsualización -->
         <div class="scaled-content" id="preview-<%= document.id %>">
