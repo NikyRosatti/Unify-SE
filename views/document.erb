@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="/viewDocs.css">
+</head>
+<body>
+  <div id="document-content">
+    <h1><%= @document.filename %></h1>
+    <p>Fecha de carga: <%= @document.uploaddate %></p>
+
+    <h2>Estadísticas</h2>
+    <!-- Aquí puedes agregar las estadísticas -->
+
+    <h2>Preguntas</h2>
+    <% @questions.each do |question| %>
+      <div class="question">
+        <p><%= question.content %></p>
+        <% correct_answer = question.answer.option_id %> <!-- Obtiene la opción correcta -->
+        <% question.options.each do |option| %>
+          <p style="color: <%= option.id == correct_answer ? 'green' : 'black' %>;">
+            <%= option.content %>
+          </p>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="/viewDocs.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+<body>
+  <h1>Documentos Cargados</h1>
+  <div class="documents-container">
+    <% @documents.each do |document| %>
+      <div class="document-card" id="document-<%= document.id %>">
+        <h3 class="document-title"><%= document.filename %></h3>
+        
+        <!-- Contenido reducido para previsualización -->
+        <div class="scaled-content" id="preview-<%= document.id %>">
+          <h2>Cuestionary</h2>
+          <% document.questions.each do |question| %>
+            <p class="question"><%= question.content %></p>
+            <% correct_answer = question.answer.option_id %>
+            <% question.options.each do |option| %>
+              <p class="option" style="color: <%= option.id == correct_answer ? 'green' : 'black' %>;">
+                <%= option.content %>
+              </p>
+            <% end %>
+          <% end %>
+        </div>
+
+        <div class="document-actions" id="actions-<%= document.id %>">
+          <p>Fecha de carga: <%= document.uploaddate %></p>
+          <a href="/documents/<%= document.id %>" class="btn-view">Ver Documento</a>
+          <a href="/documents/<%= document.id %>/statistics" class="btn-stats">Ver Estadísticas</a>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <script>
+    // Generar imágenes de vista previa en miniatura
+    window.onload = function() {
+      <% @documents.each do |document| %>
+        html2canvas(document.getElementById('preview-<%= document.id %>')).then(function(canvas) {
+          var card = document.getElementById('document-<%= document.id %>');
+          card.style.backgroundImage = 'url(' + canvas.toDataURL() + ')';
+          card.style.backgroundSize = 'cover';
+          card.style.backgroundPosition = 'center';
+          
+          // Ocultar el contenido de la previsualización
+          document.getElementById('preview-<%= document.id %>').style.display = 'none';
+        });
+      <% end %>
+    };
+  </script>
+</body>
+</html>
