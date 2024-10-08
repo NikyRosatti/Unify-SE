@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/viewDocument.css">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+  <title><%= File.basename(@document.filename, File.extname(@document.filename)) %></title>
+</head>
+<body>
+  <div class="document-card">
+    <!-- Título del documento -->
+    <h3 class="document-title">
+      <%= File.basename(@document.filename, File.extname(@document.filename)) %>
+    </h3>
+    
+    <!-- Contenido visualizado del formulario -->
+    <div class="scaled-content">
+      <h2>Cuestionario</h2>
+      <% @questions.each do |question| %>
+        <p class="question"><%= question.content %></p>
+        <% correct_answer = question.answer.option_id %>
+        <% question.options.each do |option| %>
+          <p class="option <%= option.id == correct_answer ? 'correct' : 'incorrect' %>">
+            <%= option.content %>
+          </p>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+</body>
+</html>

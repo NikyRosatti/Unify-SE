@@ -2,37 +2,53 @@
 <html>
 <head>
   <link rel="stylesheet" href="/viewDocs.css">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
 <body>
-  <h1>Documentos Cargados</h1>
-  <div class="documents-container">
-    <% @documents.each do |document| %>
-      <div class="document-card" id="document-<%= document.id %>">
-        <!-- File es un metodo para poder obtener el nombre del documento sin la extension pdf -->
-        <h3 class="document-title"><%= File.basename(document.filename, File.extname(document.filename)) %></h3>
-        
-        <!-- Contenido reducido para previsualización -->
-        <div class="scaled-content" id="preview-<%= document.id %>">
-          <h2>Cuestionary</h2>
-          <% document.questions.each do |question| %>
-            <p class="question"><%= question.content %></p>
-            <% correct_answer = question.answer.option_id %>
-            <% question.options.each do |option| %>
-              <p class="option" style="color: <%= option.id == correct_answer ? 'green' : 'black' %>;">
-                <%= option.content %>
-              </p>
+  <nav class="navbar">
+    <img src="media/logo.png" alt="Logo Unify" class="logo">
+    <div class="search-container">
+      <input type="text" placeholder="Buscar por nombre..." class="search-input">
+    </div>
+    <div class="nav-icons">
+        <a href="#favorites" class="icon"><i class="fas fa-heart"></i></a>
+        <a href="#settings" class="icon"><i class="fas fa-cog"></i></a>
+        <a href="#account" class="icon"><i class="fas fa-user"></i></a>
+    </div>
+  </nav>
+  <div class="hero">
+    <h1 class="hero-title">Documentos Cargados</h1>
+    <div class="documents-container">
+      <% @documents.each do |document| %>
+        <div class="document-card" id="document-<%= document.id %>">
+          <!-- File es un metodo para poder obtener el nombre del documento sin la extension pdf -->
+          <h3 class="document-title"><%= File.basename(document.filename, File.extname(document.filename)) %></h3>
+          
+          <!-- Contenido reducido para previsualización -->
+          <div class="scaled-content" id="preview-<%= document.id %>">
+            <h2>Cuestionary</h2>
+            <% document.questions.each do |question| %>
+              <p class="question"><%= question.content %></p>
+              <% correct_answer = question.answer.option_id %>
+              <% question.options.each do |option| %>
+                <p class="option" style="color: <%= option.id == correct_answer ? 'green' : 'black' %>;">
+                  <%= option.content %>
+                </p>
+              <% end %>
             <% end %>
-          <% end %>
-        </div>
+          </div>
 
-        <div class="document-actions" id="actions-<%= document.id %>">
-          <p>Fecha de carga: <%= document.uploaddate %></p>
-          <a href="/documents/<%= document.id %>" class="btn-view">Ver Documento</a>
-          <a href="/documents/<%= document.id %>/statistics" class="btn-stats">Ver Estadísticas</a>
+          <div class="document-actions" id="actions-<%= document.id %>">
+            <p>Fecha de carga: <%= document.uploaddate %></p>
+            <a href="/documents/<%= document.id %>" class="btn-view">View Document</a>
+            <a href="/documents/<%= document.id %>/practiceDoc" class="btn-view">Practice</a>
+            <a href="/documents/<%= document.id %>/statistics" class="btn-stats">View Statistics</a>
+          </div>
         </div>
-      </div>
-    <% end %>
+      <% end %>
+    </div>
   </div>
 
   <script>
