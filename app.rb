@@ -224,6 +224,21 @@ post "/next_question" do
   end
 end
 
+
+# Ruta para mostrar todos los documentos
+get '/viewDocs' do
+  @documents = Document.all
+  erb :viewDocs
+end
+
+# Ruta para mostrar un documento específico
+get '/documents/:id' do
+  @document = Document.find(params[:id])
+  @questions = @document.questions
+  erb :viewDoc
+end
+
+
 # Initializes the OpenAI client
 def client
   options = { access_token: ENV["TOKEN_OPENAI"], log_errors: true }
