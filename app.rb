@@ -224,6 +224,7 @@ post "/next_question" do
   end
 end
 
+
 # Ruta para mostrar todos los documentos
 get '/viewDocs' do
   @documents = Document.all
@@ -234,8 +235,9 @@ end
 get '/documents/:id' do
   @document = Document.find(params[:id])
   @questions = @document.questions
-  erb :document
+  erb :viewDoc
 end
+
 
 # Initializes the OpenAI client
 def client
