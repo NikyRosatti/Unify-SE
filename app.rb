@@ -49,6 +49,10 @@ get "/error-register" do
   end
 end
 
+get "/error-Document" do
+  erb :error_document
+end
+
 get "/logout" do
   session[:isAnUserPresent] = false
   redirect "/"
@@ -296,13 +300,18 @@ def save_pdf(params)
       logger.info "File already present in database"
       return [201, "El PDF a guardar ya existe en la base de datos", existent_document]
     else
-      # Guarda el archivo PDF en la base de datos
-      document = Document.create(
-        filename: filename,
-        filecontent: filecontent,
-        file_hash: file_hash,
-        uploaddate: Date.today,
-      )
+      if File.extname(filename) == ".pdf"
+        # Guarda el archivo PDF en la base de datos
+        document = Document.create(
+          filename: filename,
+          filecontent: filecontent,
+          file_hash: file_hash,
+          uploaddate: Date.today,
+        )
+      else
+        # Si no es un pdf no se guarda
+        redirect '/error-Document'
+      end
       # Si se pudo guardar correctamente
       if document.persisted?
         logger.info "File saved succefully"
