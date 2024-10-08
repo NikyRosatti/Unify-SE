@@ -49,6 +49,10 @@ get "/error-register" do
   end
 end
 
+get "/error-Document" do
+  erb :error_document
+end
+
 get "/logout" do
   session[:isAnUserPresent] = false
   redirect "/"
@@ -170,6 +174,7 @@ post "/practice" do
   logger.info "Correcta verificacion de metodos"
   session[:questions] = @questions # Guardamos las preguntas en la sesión
   session[:current_question_index] = 0 # Iniciamos en la primera pregunta
+  session[:current_question_index_id] = 1 # Iniciamos en el id de la primera pregunta (id comienza de 1)
   session[:answered_questions] = [] # Inicializamos el array para las respuestas
 
   @current_question = @questions[session[:current_question_index]] # Mostramos la primera pregunta
@@ -191,15 +196,23 @@ post "/next_question" do
   if selected_answer == correct_answer
     @message = "¡Correcto!"
     @message_class = "correct"
+
+    @question = Question.find(session[:current_question_index_id])
+    @question.increment!(:correct_answers_cant)  # Incrementamos el atributo
   else
     @message = "Incorrecto. La respuesta correcta era: #{correct_answer}"
     @message_class = "incorrect"
   end
 
+  # Incrementamos el número total de respuestas a la pregunta
+  @question = Question.find(session[:current_question_index_id])
+  @question.increment!(:number_answers_answered)
+
   # Guardamos la respuesta seleccionada en answered_questions
   session[:answered_questions] << selected_answer
 
   session[:current_question_index] += 1 # Avanza al siguiente índice
+  session[:current_question_index_id] += 1 # Avanza al siguiente índice
   @progress = (session[:current_question_index].to_f / @questions.size * 100).to_i # Calculamos el porcentaje
 
   if session[:current_question_index] < @questions.size
@@ -238,6 +251,11 @@ get '/documents/:id' do
   erb :viewDoc
 end
 
+get '/documents/:id/statistics' do
+  @document = Document.find(params[:id])
+  @questions = @document.questions
+  erb :statistic
+end
 
 # Initializes the OpenAI client
 def client
@@ -282,13 +300,18 @@ def save_pdf(params)
       logger.info "File already present in database"
       return [201, "El PDF a guardar ya existe en la base de datos", existent_document]
     else
-      # Guarda el archivo PDF en la base de datos
-      document = Document.create(
-        filename: filename,
-        filecontent: filecontent,
-        file_hash: file_hash,
-        uploaddate: Date.today,
-      )
+      if File.extname(filename) == ".pdf"
+        # Guarda el archivo PDF en la base de datos
+        document = Document.create(
+          filename: filename,
+          filecontent: filecontent,
+          file_hash: file_hash,
+          uploaddate: Date.today,
+        )
+      else
+        # Si no es un pdf no se guarda
+        redirect '/error-Document'
+      end
       # Si se pudo guardar correctamente
       if document.persisted?
         logger.info "File saved succefully"

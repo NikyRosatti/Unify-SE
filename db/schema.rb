@@ -41,6 +41,8 @@ ActiveRecord::Schema[7.2].define(version: 2024_08_27_152756) do
   create_table "questions", force: :cascade do |t|
     t.string "content"
     t.integer "document_id"
+    t.integer "number_answers_answered", default: 0
+    t.integer "correct_answers_cant", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["document_id"], name: "index_questions_on_document_id"
