@@ -1,9 +1,104 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: linear-gradient(#b8e4ff, #4ebbff, #1b70d1, #081730);
+  background-size: cover; /* Ajustar el tamaño del fondo */
+  background-attachment: fixed; /* Efecto de paralaje */
+  min-height: 100vh;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 15px 20px;
+  border-radius: 15px; /* Bordes más redondeados */
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3); /* Sombra más difusa */
+  backdrop-filter: blur(10px); /* Efecto de desenfoque */
+}
+
+.logo {
+  width: 10%;
+}
+
+.search-container {
+  flex-grow: 1;
+  margin: 0 20px;
+  padding: 5px; /* Añade algo de padding para que el degradado sea visible */
+  border-radius: 20px; /* Bordes redondeados también para el contenedor */
+  background-image: linear-gradient(#4ebbff, #b8e4ff); /* Degradado para el borde */
+  background-origin: border-box;
+  background-clip: padding-box, border-box; /* Aplica el degradado al borde */
+}
+
+.search-input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 15px; /* Bordes más redondeados */
+  border: 2px solid transparent; /* Borde transparente */
+  background-color: white; /* Fondo transparente */
+  position: relative;
+  z-index: 1; /* Elevar el input sobre el fondo */
+}
+
+.search-input:focus {
+  box-shadow: 0 0 10px rgba(78, 190, 255, 0.7); /* Efecto de foco sutil */
+  outline: none; /* Elimina el borde de enfoque predeterminado */
+}
+
+.nav-icons {
+  display: flex;
+  align-items: center;
+}
+
+.icon {
+  color: #000000;
+  font-size: 20px;
+  margin-left: 15px;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.icon:hover {
+  color: #f1c40f;
+}
+
+h1 {
+  font-family: "Montserrat";
+  font-size: 4em; /* Aumentar tamaño del título */
+  text-align: center;
+  margin: 20px 0;
+  background: linear-gradient(45deg, #ffffff, #b7b3b3b7);
+  -webkit-background-clip: text;
+  color: transparent;
+
+  /* Borde difuminado detrás del texto */
+  position: relative;
+}
+
+h1::before {
+  content: attr(data-text); /* Duplicar el texto */
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1; /* Colocar detrás del texto */
+  color: black; /* Color de fondo para el borde */
+  filter: blur(8px); /* Aplicar el difuminado */
+  opacity: 0.5; /* Ajustar opacidad para suavidad */
+}
+
 .documents-container {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); /* Tamaño mínimo de las columnas */
   gap: 30px; /* Espacio entre documentos */
   padding: 20px;
-  background-color: rgba(255, 255, 255, 0.1);
   justify-content: space-around;
 }
 
@@ -11,6 +106,7 @@
   width: 250px;
   height: 350px;
   padding: 15px;
+  border-radius: 3px;
   border: 1px solid #ccc;
   background-color: white; /* Fondo blanco para simular papel */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
@@ -29,6 +125,7 @@
   font-size: 1.2em;
   margin-top: 5px;
   margin-bottom: 10px;
+  font-weight: bold;
 }
 
 /*Proximamente...*/
@@ -43,9 +140,15 @@
   margin-top: 10px; /* Espacio encima de las acciones */
 }
 
+.document-actions a {
+  display: flex;
+  flex-direction: column;
+  max-width: 200px;
+}
+
 .btn-view, .btn-stats {
-  padding: 5px 10px;
-  background-color: #4CAF50;
+  padding: 5px 5px;
+  background-color: #3e98af;
   color: white;
   text-decoration: none;
   border-radius: 5px;
@@ -54,7 +157,7 @@
 }
 
 .btn-view:hover, .btn-stats:hover {
-  background-color: #45a049;
+  background-color: #2a9c89;
 }
 
 .scaled-content {
@@ -71,5 +174,5 @@
 
 .option {
   margin-left: 20px; /* Indentar opciones */
-  line-height: 0.6; /* Espaciado entre líneas para legibilidad */
+  line-height: 1.2; /* Espaciado entre líneas para legibilidad */
 }

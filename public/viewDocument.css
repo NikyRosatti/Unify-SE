@@ -1,0 +1,76 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .documents-container {
+    display: grid;
+    grid-template-columns: 1fr; /* Una columna para cada formulario */
+    gap: 20px;
+    width: 80%;
+    max-width: 1200px;
+  }
+  
+  .document-card {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .document-title {
+    font-size: 1.8em;
+    font-weight: bold;
+    color: #444;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 10px;
+  }
+  
+  .scaled-content {
+    font-size: 1em;
+  }
+  
+  .question {
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  
+  .option {
+    margin-left: 20px;
+    color: #666;
+    line-height: 1.5;
+  }
+  
+  .option.correct {
+    color: green;
+    font-weight: bold;
+  }
+  
+  .option.incorrect {
+    color: black;
+  }
+  
+  h2 {
+    font-size: 1.5em;
+    color: #555;
+    margin-bottom: 15px;
+  }
+  
+  p {
+    margin: 5px 0;
+  }
+  
