@@ -306,7 +306,8 @@ get "/documents/:id/statistics" do
 end
 
 get "/questionStatistics" do
-  if User.find(session[:user_id]).isAdmin?
+  @user = User.find_by(id: session[:user_id])
+  if @user.isAdmin?
     #Tipo de filtro a aplicar
     filter = params[:filter]
 
@@ -492,4 +493,10 @@ end
 def json_error(message, status_code)
   status status_code
   json error: message
+end
+
+helpers do
+  def user
+    @user ||= User.find_by(id: session[:user_id]) if session[:user_id]
+  end
 end
