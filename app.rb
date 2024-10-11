@@ -22,6 +22,8 @@ enable :sessions
 
 before do
   @isAnUserPresent = session[:isAnUserPresent] || false
+  # Guarda la URL anterior en la sesion, para que al entrar al give me admin please pueda volver de donde vino
+  session[:previous_url] = request.path_info unless request.path_info == "/give-me-admin-please"
 end
 
 get "/" do
@@ -49,6 +51,10 @@ get "/error-register" do
   end
 end
 
+get "/error-Document" do
+  erb :error_document
+end
+
 get "/logout" do
   session[:isAnUserPresent] = false
   redirect "/"
@@ -64,7 +70,7 @@ get "/no-key-provided" do
 end
 
 # Para ayudarnos y obtener la tabla general de progreso
-get '/progress' do
+get "/progress" do
   @users = User.all.order(correct_answers: :desc)
   erb :leaderboard
 end
@@ -122,8 +128,9 @@ post "/register" do
       logger.error "An user with that username or email already exists. Please try a different one."
       redirect "/error-register"
     else
+      isAdmin = 0
       @user = User.create(username: username, name: name, lastname: lastname, cellphone: cellphone, email: email,
-                          password: password)
+                          password: password, isAdmin: isAdmin)
       if @user.persisted?
         # session[:error_registration] = ""
         session[:isAnUserPresent] = true
@@ -242,15 +249,27 @@ post "/next_question" do
   end
 end
 
+get "/give-me-admin-please" do
+  redirect "/" unless session[:isAnUserPresent]
+
+  user = User.find(session[:user_id])
+  if user
+    user.update(isAdmin: 1)
+  else
+    logger.error("No se encontro el usuario: fallo la busqueda en la base de datos segun session[:user_id]")
+  end
+
+  redirect "/"
+end
 
 # Ruta para mostrar todos los documentos
-get '/viewDocs' do
+get "/viewDocs" do
   @documents = Document.all
   erb :viewDocs
 end
 
 # Ruta para mostrar un documento específico
-get '/documents/:id' do
+get "/documents/:id" do
   @document = Document.find(params[:id])
   @questions = @document.questions
   erb :viewDoc
@@ -329,13 +348,18 @@ def save_pdf(params)
       logger.info "File already present in database"
       return [201, "El PDF a guardar ya existe en la base de datos", existent_document]
     else
-      # Guarda el archivo PDF en la base de datos
-      document = Document.create(
-        filename: filename,
-        filecontent: filecontent,
-        file_hash: file_hash,
-        uploaddate: Date.today,
-      )
+      if File.extname(filename) == ".pdf"
+        # Guarda el archivo PDF en la base de datos
+        document = Document.create(
+          filename: filename,
+          filecontent: filecontent,
+          file_hash: file_hash,
+          uploaddate: Date.today,
+        )
+      else
+        # Si no es un pdf no se guarda
+        redirect "/error-Document"
+      end
       # Si se pudo guardar correctamente
       if document.persisted?
         logger.info "File saved succefully"

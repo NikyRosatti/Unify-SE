@@ -7,6 +7,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
 <body>
+  <div id='container'></div>
   <nav class="navbar">
     <img src="media/logo.png" alt="Logo Unify" class="logo">
     <div class="search-container">
@@ -19,27 +20,13 @@
     </div>
   </nav>
   <div class="hero">
-    <h1 class="hero-title">Documentos Cargados</h1>
+    <div class="hero-title"><h1>Documentos Cargados</h1></div>
     <div class="documents-container">
       <% @documents.each do |document| %>
         <div class="document-card" id="document-<%= document.id %>">
           <!-- File es un metodo para poder obtener el nombre del documento sin la extension pdf -->
           <h3 class="document-title"><%= File.basename(document.filename, File.extname(document.filename)) %></h3>
           
-          <!-- Contenido reducido para previsualización -->
-          <div class="scaled-content" id="preview-<%= document.id %>">
-            <h2>Cuestionary</h2>
-            <% document.questions.each do |question| %>
-              <p class="question"><%= question.content %></p>
-              <% correct_answer = question.answer.option_id %>
-              <% question.options.each do |option| %>
-                <p class="option" style="color: <%= option.id == correct_answer ? 'green' : 'black' %>;">
-                  <%= option.content %>
-                </p>
-              <% end %>
-            <% end %>
-          </div>
-
           <div class="document-actions" id="actions-<%= document.id %>">
             <p>Fecha de carga: <%= document.uploaddate %></p>
             <a href="/documents/<%= document.id %>" class="btn-view">View Document</a>
@@ -51,21 +38,21 @@
     </div>
   </div>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <script src="viewDocs.js"></script>
+
   <script>
-    // Generar imágenes de vista previa en miniatura
-    window.onload = function() {
-      <% @documents.each do |document| %>
-        html2canvas(document.getElementById('preview-<%= document.id %>')).then(function(canvas) {
-          var card = document.getElementById('document-<%= document.id %>');
-          card.style.backgroundImage = 'url(' + canvas.toDataURL() + ')';
-          card.style.backgroundSize = 'cover';
-          card.style.backgroundPosition = 'center';
-          
-          // Ocultar el contenido de la previsualización
-          document.getElementById('preview-<%= document.id %>').style.display = 'none';
-        });
-      <% end %>
-    };
+    function toggleCard(element) {
+      // Remueve la clase 'active' de todas las tarjetas
+      document.querySelectorAll('.document-card').forEach(card => {
+        card.classList.remove('active');
+      });
+
+      // Añade la clase 'active' solo a la tarjeta clicada
+      element.classList.add('active');
+    }
+
   </script>
 </body>
 </html>
