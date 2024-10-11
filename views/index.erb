@@ -26,6 +26,9 @@
                     <a href="/viewDocs">Documents</a>
                     <a href="/practice">Practice</a>
                     <a href="/progress">Leaderboard</a>
+                    <% if user.isAdmin == 1 %>
+                        <a href="/questionStatistics">Statistics</a>
+                    <% end %>
                     <a href="#us">Us</a>
                     <a href="/logout">Logout</a>
                 <% else %>
