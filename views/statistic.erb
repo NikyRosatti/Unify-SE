@@ -4,40 +4,30 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Estadísticas del Documento</title>
-  <link rel="stylesheet" href="statistic.css">
+  <link rel="stylesheet" href="/statistic.css">
 </head>
 <body>
   <div class="container">
     <h1>Estadísticas del Documento: <%= @document.filename %></h1>
 
-    <table>
-      <thead>
-        <tr>
-          <th>Pregunta</th>
-          <th>Total Respuestas Dadas</th>
-          <th>Total Respuestas Correctas</th>
-          <th>Porcentaje de Correctas</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @questions.each do |question| %>
-          <tr>
-            <td><%= question.content %></td>
-            <td><%= question.number_answers_answered %></td>
-            <td><%= question.correct_answers_cant %></td>
-            <td>
-              <% if question.number_answers_answered > 0 %>
-                <%= ((question.correct_answers_cant.to_f / question.number_answers_answered) * 100).round(2) %>%
-              <% else %>
-                0%
-              <% end %>
-            </td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
+    <div class="questions-container">
+      <% @questions.each do |question| %>
+        <div class="question-card">
+          <h2><%= question.content %></h2>
+          <p><strong>Total Responses:</strong> <%= question.number_answers_answered %></p>
+          <p><strong>Total Correct Responses:</strong> <%= question.correct_answers_cant %></p>
+          <p><strong>Correct Response Rate:</strong>
+            <% if question.number_answers_answered > 0 %>
+              <%= ((question.correct_answers_cant.to_f / question.number_answers_answered) * 100).round(2) %>%
+            <% else %>
+              0%
+            <% end %>
+          </p>
+        </div>
+      <% end %>
+    </div>
 
-    <a href="/" class="btn">Volver</a>
+    <a href="/viewDocs" class="btn">Volver</a>
   </div>
 </body>
 </html>

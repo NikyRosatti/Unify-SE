@@ -171,22 +171,28 @@ post "/practice" do
   puts "<!-- Starting Saving Questions -->"
   document = response_save_pdf[2] # Rescato el documento de la base de datos para pasarla al metodo
   save_questions_to_db(@questions, document)
+  @document = document
   puts "<!-- End Saving Questions -->"
 
   status 251  # Llegar de manera adecuada y mostrar el cuestionario
   logger.info "Correcta verificacion de metodos"
-  session[:questions] = @questions # Guardamos las preguntas en la sesión
+  session[:document_id] = @document.id
+  puts "Document ID: #{session[:document_id]}"
+
   session[:current_question_index] = 0 # Iniciamos en la primera pregunta
-  session[:current_question_index_id] = 1 # Iniciamos en el id de la primera pregunta (id comienza de 1)
   session[:answered_questions] = [] # Inicializamos el array para las respuestas
 
-  @current_question = @questions[session[:current_question_index]] # Mostramos la primera pregunta
+  @current_question = Question.where(document: session[:document_id]).first # Mostramos la primera pregunta
+
   erb :question
 end
 
 post "/next_question" do
-  @questions = session[:questions] # Recuperamos las preguntas de la sesión
-  current_question_index = session[:current_question_index] # Recuperamos el índice
+  document_id = session[:document_id]
+  current_question_index = session[:current_question_index]
+  
+  # Guarda las preguntas correspondientes al documento almacenado en la base de datos
+  @questions = Question.where(document_id: document_id).order(:id)
 
   if @questions.nil? || current_question_index.nil?
     @error = "No se encontraron preguntas o índice. Por favor, sube un PDF para generar el quiz."
@@ -194,37 +200,40 @@ post "/next_question" do
   end
 
   selected_answer = params[:selected_option]
-  correct_answer = @questions[current_question_index]["answer"] if @questions[current_question_index]
+  @current_question = @questions.offset(current_question_index).first # Obtiene la pregunta actual
+
+  logger.debug "Loaded question: #{@current_question.content}" if @current_question
+  correct_answer = @current_question.answer.option.content # Accedemos al contenido de la pregunta y no al objeto
+
 
   if selected_answer == correct_answer
     @message = "¡Correcto!"
     @message_class = "correct"
 
-    @question = Question.find(session[:current_question_index_id])
-    @question.increment!(:correct_answers_cant)  # Incrementamos el atributo
+    @current_question.increment!(:correct_answers_cant)  # Incrementamos el atributo
   else
     @message = "Incorrecto. La respuesta correcta era: #{correct_answer}"
     @message_class = "incorrect"
   end
 
   # Incrementamos el número total de respuestas a la pregunta
-  @question = Question.find(session[:current_question_index_id])
-  @question.increment!(:number_answers_answered)
+  @current_question.increment!(:number_answers_answered)
 
   # Guardamos la respuesta seleccionada en answered_questions
   session[:answered_questions] << selected_answer
 
   session[:current_question_index] += 1 # Avanza al siguiente índice
-  session[:current_question_index_id] += 1 # Avanza al siguiente índice
+  logger.debug "Current question index: #{session[:current_question_index]}"
+
   @progress = (session[:current_question_index].to_f / @questions.size * 100).to_i # Calculamos el porcentaje
 
   if session[:current_question_index] < @questions.size
-    @current_question = @questions[session[:current_question_index]]
+    @current_question = @questions.offset(session[:current_question_index]).first  # Obtiene la siguiente pregunta
     erb :question
   else
     # Contamos las respuestas correctas
     @correct_answers = session[:answered_questions].each_with_index.count do |answer, index|
-      answer == @questions[index]["answer"]
+      answer == @questions[index].answer.option.content
     end
 
     cant_correct_answers = @correct_answers
@@ -266,7 +275,31 @@ get "/documents/:id" do
   erb :viewDoc
 end
 
-get "/documents/:id/statistics" do
+
+get "/documents/:id/practiceDoc" do
+  document_id = params[:id] # El ID del documento que el usuario selecciona
+  @document = Document.find(document_id)
+
+  if @document.nil?
+    @error = "No hay preguntas disponibles para este documento."
+    redirect "/"
+  end
+
+  session[:document_id] = document_id
+  session[:current_question_index] = 0 # Iniciar en la primera pregunta
+  session[:answered_questions] = [] # Inicializar respuestas contestadas
+
+  @current_question = Question.where(document: session[:document_id]).first # Mostramos la primera pregunta
+
+  if @current_question.nil?
+    @error = "No se encontraron preguntas para este documento."
+    redirect "/"
+  else
+    erb :question
+  end
+end
+
+get '/documents/:id/statistics' do
   @document = Document.find(params[:id])
   @questions = @document.questions
   erb :statistic
