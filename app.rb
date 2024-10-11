@@ -165,11 +165,17 @@ post "/practice" do
   full_text = extract_text_from_pdf(file)
   return json_error("Failed to extract text from PDF", 500) if full_text.empty?
 
-  @questions = generate_questions(full_text)
-  return json_error("Failed to generate quiz", 503) unless @questions
+  document = response_save_pdf[2] # Rescato el documento de la base de datos para pasarla al metodo
+
+  # Verifica si ya hay preguntas asociadas al documento
+  if Question.where(document: document).exists?
+    redirect "/documents/#{document.id}/practiceDoc"
+  else
+    @questions = generate_questions(full_text)
+    return json_error("Failed to generate quiz", 503) unless @questions
+  end
 
   puts "<!-- Starting Saving Questions -->"
-  document = response_save_pdf[2] # Rescato el documento de la base de datos para pasarla al metodo
   save_questions_to_db(@questions, document)
   @document = document
   puts "<!-- End Saving Questions -->"
