@@ -23,7 +23,7 @@
             <nav>
                 <a href="/">Home</a>
                 <% if @isAnUserPresent %>
-                    <a href="#AcademicYear">Academic Year</a>
+                    <a href="/viewDocs">Documents</a>
                     <a href="/practice">Practice</a>
                     <a href="/progress">Leaderboard</a>
                     <a href="#us">Us</a>
@@ -79,22 +79,6 @@
                     </div>
                 </div>
             </section>
-        <% end %>
-
-        <% if @isAnUserPresent %>
-            <div class="Years-container" id="AcademicYear">
-                <h2>
-                    <span class="material-symbols-outlined">star_rate</span>
-                    ACADEMIC YEAR
-                    <span class="material-symbols-outlined">star_rate</span>
-                </h2>
-                <div class="year"><a href="/practice/primero">PRIMER AÑO</a></div>
-                <div class="year"><a href="/practice/segundo">SEGUNDO AÑO</a></div>
-                <div class="year"><a href="/practice/tercero">TERCER AÑO</a></div>
-                <div class="year">
-                    <a href="/practice/cuarto-quinto-optativas">CUARTO Y QUINTO AÑO <br> + OPTATIVAS</a>
-                </div>
-            </div>
         <% end %>
     </main>
 

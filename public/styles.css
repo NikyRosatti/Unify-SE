@@ -287,58 +287,6 @@ nav a:hover {
 	}
 }
 
-.Years-container {
-	padding-bottom: 100px;
-	letter-spacing: 1px;
-	text-align: center;
-	display: flex;
-	flex-direction: column; /* Cambiado a column para apilar verticalmente */
-	align-items: center;
-	background: linear-gradient(334deg, #fafffd, #6fd4b1, #2b5de7);
-	background-size: 180% 180%;
-	animation: gradient-animation 6s ease infinite;
-}
-
-.Years-container h2 {
-	font-family: Roboto, sans-serif;
-	letter-spacing: 10px;
-	margin-top: 80px;
-	margin-bottom: 80px; /* Espacio inferior entre título y bloques */
-	font-size: 30px; /* Tamaño de fuente del título */
-	color: #000000; /* Color título */
-}
-
-.year {
-	font-family: 'Franklin Gothic Medium', sans-serif;
-	padding: 20px;
-	width: 200px;
-	height: auto; /*de acuerdo al contenido*/
-	margin: 40px;
-	background-color: rgba(88, 160, 232, 0.3);
-	box-shadow: 0 15px 30px rgba(144, 233, 221, 0.7);
-	border-radius: 10px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	text-decoration: none;
-	color: #000;
-	transition: all 0.3s ease;
-	flex-direction: row;
-}
-
-.year:hover {
-	text-decoration: none; /* Asegurar que no haya subrayado en hover */
-	color: #ffffff;
-	background-color: rgba(0, 115, 255, 0.3);
-	transform: translateY(-10px);
-	box-shadow: 0 25px 45px rgba(139, 99, 234, 0.7);
-}
-
-.year a {
-	text-decoration: none; /* Asegurar que no haya subrayado en los enlaces */
-	color: inherit; /* Heredar el color del padre (.year) */
-}
-
 /* Ajustes de responsividad */
 @media (max-width: 768px) {
 	.year {
