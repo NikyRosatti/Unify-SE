@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="/question_statistics.css">
+    <title>Statistics</title>
+</head>
+<body>
+    <form action="/questionStatistics" method="get" style="margin-bottom: 20px;">
+        <label for="filter">Select Filter:</label>
+        <select name="filter" id="filter">
+            <option value="correct" <%= 'selected' if params[:filter] == 'correct' %>>Top 10 Questions Answered Correctly</option>
+            <option value="incorrect" <%= 'selected' if params[:filter] == 'incorrect' %>>Top 10 Questions Answered Incorrectly</option>
+        </select>
+        <button type="submit">Apply Filter</button>
+    </form>
+
+    <div class="statistics-container">
+        <h1><%= @title %></h1>
+        <div class="column correct">
+            <ul>
+                <% @top_questions.each do |question| %>
+                    <li><%= question.content %> - 
+                    <%= params[:filter] == 'correct' ? "Correct Answers: #{question.correct_answers_cant}" 
+                    : "Incorrect Answers: #{question.number_answers_answered - question.correct_answers_cant}" %></li>
+                <% end %>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
