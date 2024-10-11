@@ -299,7 +299,7 @@ get "/documents/:id/practiceDoc" do
   end
 end
 
-get '/documents/:id/statistics' do
+get "/documents/:id/statistics" do
   @document = Document.find(params[:id])
   @questions = @document.questions
   erb :statistic
