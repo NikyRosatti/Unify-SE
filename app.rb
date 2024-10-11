@@ -305,6 +305,30 @@ get "/documents/:id/statistics" do
   erb :statistic
 end
 
+get "/questionStatistics" do
+  if User.find(session[:user_id]).isAdmin?
+    #Tipo de filtro a aplicar
+    filter = params[:filter]
+
+    @top_correct_questions = Question.order(correct_answers_cant: :desc).limit(10)
+    @top_incorrect_questions = Question.select("questions.*, (number_answers_answered - correct_answers_cant) AS incorrect_answers")
+                                        .order("incorrect_answers DESC")
+                                        .limit(10)
+    
+    if filter == 'correct'
+      @top_questions = @top_correct_questions
+      @title = "Top 10 Questions Answered Correctly"
+    else
+      @top_questions = @top_incorrect_questions
+      @title = "Top 10 Questions Answered Incorrectly"
+    end
+    erb :question_statistics
+  else
+    halt 404, "Access denied due to user level."
+    # redirect "/"
+  end
+end
+
 # Initializes the OpenAI client
 def client
   options = { access_token: ENV["TOKEN_OPENAI"], log_errors: true }
