@@ -17,12 +17,14 @@
             <div class="progress-bar-inner" style="width: <%= @progress %>%"></div>
           </div>
         </div>
-        <h1><%= @current_question['question'] %></h1>
+        <h1><%= @current_question.content %></h1>
         <form action="/next_question" method="post">
+          <input type="hidden" name="document_id" value="<%= session[:document_id] %>">
+
           <div class="option-buttons">
-            <% @current_question['options'].each_with_index do |option, index| %>
-              <input type="radio" name="selected_option" value="<%= option %>" id="option<%= index %>" class="btn-radio">
-              <label for="option<%= index %>" class="btn-option"><%= option %></label>
+            <% @current_question.options.each do |option| %>
+              <input type="radio" name="selected_option" value="<%= option.content %>" id="option<%= option.id %>" class="btn-radio">
+              <label for="option<%= option.id %>" class="btn-option"><%= option.content %></label>
             <% end %>
           </div>
           <button class="submit" class="btn btn-primary">
