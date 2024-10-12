@@ -1,0 +1,143 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    text-align: center;
+}
+
+.container {
+    background-color: #fff;
+    padding: 40px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    width: 100%;
+}
+
+header h1 {
+    font-size: 32px;
+    margin-bottom: 20px;
+}
+
+main {
+    margin: 20px 0;
+}
+
+h2 {
+    font-size: 72px;
+    color: #3e98af;
+    margin-bottom: 10px;
+}
+
+p {
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+.order-now {
+    display: inline-block;
+    padding: 12px 30px;
+    background-color: #3e98af;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 18px;
+    transition: background-color 0.3s ease;
+}
+
+.order-now:hover {
+    background-color: #2a9c89;
+}
+
+.call-to-action {
+    margin: 20px 0;
+}
+
+.call-to-action p {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.contact-us {
+    display: inline-block;
+    padding: 12px 30px;
+    background-color: #3e98af;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 18px;
+    transition: background-color 0.3s ease;
+}
+
+.contact-us:hover {
+    background-color: #2a9c89;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+footer {
+    margin-top: 40px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    border-top: 1px solid #ccc;
+    padding-top: 20px;
+}
+
+footer div {
+    width: 30%;
+    padding: 10px;
+}
+
+footer h4 {
+    margin-bottom: 10px;
+    font-size: 16px;
+    color: #3e98af;
+}
+
+footer ul {
+    list-style: none;
+    padding: 0;
+}
+
+footer li {
+    font-size: 14px;
+    margin: 5px 0;
+}
+
+footer input[type="email"] {
+    width: 100%;
+    padding: 8px;
+    margin-top: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+footer button {
+    width: 100%;
+    padding: 10px;
+    background-color: #3e98af;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+footer button:hover {
+    background-color: #2a9c89;
+}
