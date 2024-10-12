@@ -23,6 +23,9 @@ body {
 }
 
 .search-container {
+  display: flex;
+  justify-content: space-between; 
+  align-items: center;
   flex-grow: 1;
   margin: 0 20px;
   padding: 5px; /* Añade algo de padding para que el degradado sea visible */
@@ -32,12 +35,17 @@ body {
   background-clip: padding-box, border-box; /* Aplica el degradado al borde */
 }
 
+form {
+  display: flex; /* Usar flexbox para los elementos del formulario */
+  flex-grow: 1; /* Permitir que el formulario crezca */
+}
+
 .search-input {
-  width: 100%;
+  flex-grow: 3; /* La barra de entrada ocupará más espacio */
   padding: 10px;
   border-radius: 15px; /* Bordes más redondeados */
   border: 2px solid transparent; /* Borde transparente */
-  background-color: white; /* Fondo transparente */
+  background-color: white; /* Fondo blanco */
   position: relative;
   z-index: 1; /* Elevar el input sobre el fondo */
 }
@@ -47,9 +55,80 @@ body {
   outline: none; /* Elimina el borde de enfoque predeterminado */
 }
 
+.sort-select {
+  padding: 12px 16px;
+  font-size: 16px;
+  color: #4A4A4A;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  transition: border-color 0.3s ease, background-color 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-left: 10px; /* Espacio entre la barra de entrada y el selector */
+}
+
+.sort-select:focus {
+  border-color: #604cf6d6;
+  background-color: #fff;
+  outline: none;
+}
+
+.search-button {
+  padding: 12px 24px;
+  font-size: 16px;
+  background-color: #604cf6d6;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-left: 10px; /* Espacio entre el selector y el botón de buscar */
+}
+
+.search-button:hover {
+  background-color: #3331d393;
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+.search-button:active {
+  background-color: #2017a19f;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.clear-button {
+  padding: 12px 24px;
+  font-size: 16px;
+  color: black; 
+  background-color: transparent;
+  font-weight: bold;
+  border: none; 
+  border-radius: 8px; 
+  cursor: pointer; 
+  margin-left: 10px; /* Espacio entre el botón Clear y el form */
+  transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.clear-button:hover {
+  text-shadow: 0 0 10px rgb(255, 255, 255), 0 0 20px rgb(255, 255, 255), 0 0 30px rgb(255, 255, 255);
+}
+
+.clear-button:active {
+  text-shadow: 0 0 5px rgb(255, 255, 255), 0 0 10px rgb(255, 255, 255);
+}
+
 .nav-icons {
   display: flex;
   align-items: center;
+}
+
+.icon-fav {
+  font-size: 30px;
+  color: #000000;
+  margin-left: 15px;
+  margin-top: 5px;
+  text-decoration: none;
+  transition: color 0.3s ease;
 }
 
 .icon {
@@ -60,8 +139,8 @@ body {
   transition: color 0.3s ease;
 }
 
-.icon:hover {
-  color: #f1c40f;
+.icon:hover, .icon-fav:hover {
+  color: #0fdef1;
 }
 
 #container {
