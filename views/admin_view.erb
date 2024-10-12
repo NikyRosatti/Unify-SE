@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestion de permisos de admin</title>
+</head>
+<body>
+    <h1>Todo bien locura?</h1>
+    <p>Estas es tu opcion para los permisos de admin, seleccionala si te animas...</p>
+    <% if @already_admin == 1 %>
+        <p>Ya tenes admin, que nivel.</p>
+        <form action="/remove-me-from-admins-please" method="POST" style="display:inline;">
+            <button type="submit" class="btn-view">No quiero mas ser admin</button>
+        </form>
+    <% else %>
+        <p>No tenes admin.</p>
+        <form action="/give-me-admin-please" method="POST" style="display:inline;">
+            <button type="submit" class="btn-view">Quiero ser admin</button>
+        </form>
+    <% end %>
+
+    <div> <a href="/">Back to Home</a> </div>
+</body>
+</html>

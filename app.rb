@@ -257,15 +257,28 @@ end
 
 get "/give-me-admin-please" do
   redirect "/" unless session[:isAnUserPresent]
+  @already_admin = (User.find(session[:user_id]).isAdmin == 1) ? 1 : 0
+  erb :admin_view
+end
 
+post "/give-me-admin-please" do
   user = User.find(session[:user_id])
   if user
     user.update(isAdmin: 1)
   else
     logger.error("No se encontro el usuario: fallo la busqueda en la base de datos segun session[:user_id]")
   end
+  redirect "/give-me-admin-please"
+end
 
-  redirect "/"
+post "/remove-me-from-admins-please" do
+  user = User.find(session[:user_id])
+  if user
+    user.update(isAdmin: 0)
+  else
+    logger.error("No se encontro el usuario: fallo la busqueda en la base de datos segun session[:user_id]")
+  end
+  redirect "/give-me-admin-please"
 end
 
 # Ruta para mostrar todos los documentos
