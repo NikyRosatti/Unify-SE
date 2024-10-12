@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_08_27_152756) do
+ActiveRecord::Schema[7.2].define(version: 2024_10_12_110735) do
   create_table "answers", force: :cascade do |t|
     t.integer "question_id"
     t.integer "option_id"
@@ -28,6 +28,15 @@ ActiveRecord::Schema[7.2].define(version: 2024_08_27_152756) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["file_hash"], name: "index_documents_on_file_hash", unique: true
+  end
+
+  create_table "favorites", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "document_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["document_id"], name: "index_favorites_on_document_id"
+    t.index ["user_id"], name: "index_favorites_on_user_id"
   end
 
   create_table "options", force: :cascade do |t|
@@ -63,6 +72,8 @@ ActiveRecord::Schema[7.2].define(version: 2024_08_27_152756) do
 
   add_foreign_key "answers", "options"
   add_foreign_key "answers", "questions"
+  add_foreign_key "favorites", "documents"
+  add_foreign_key "favorites", "users"
   add_foreign_key "options", "questions"
   add_foreign_key "questions", "documents"
 end
