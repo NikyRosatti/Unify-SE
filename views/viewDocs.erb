@@ -5,6 +5,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <meta name="csrf-token" content="<%= csrf_token %>">
 </head>
 <body>
   <div id='container'></div>
@@ -14,7 +15,7 @@
       <input type="text" placeholder="Buscar por nombre..." class="search-input">
     </div>
     <div class="nav-icons">
-        <a href="#favorites" class="icon"><i class="fas fa-heart"></i></a>
+        <a href="/favorites" class="icon">Favorites</a>
         <a href="#settings" class="icon"><i class="fas fa-cog"></i></a>
         <a href="#account" class="icon"><i class="fas fa-user"></i></a>
     </div>
@@ -29,6 +30,13 @@
           
           <div class="document-actions" id="actions-<%= document.id %>">
             <p>Fecha de carga: <%= document.uploaddate %></p>
+            <!-- Esto es para manejar el apartado de favoritos -->
+            <% if user.favorite_documents.include?(document) %>
+              <i class="fas fa-heart favorite-icon active" data-favorite="true" data-document-id="<%= document.id %>"></i>
+            <% else %>
+              <i class="far fa-heart favorite-icon" data-favorite="false" data-document-id="<%= document.id %>" ></i>
+            <% end %>
+
             <a href="/documents/<%= document.id %>" class="btn-view">View Document</a>
             <a href="/documents/<%= document.id %>/practiceDoc" class="btn-view">Practice</a>
             <a href="/documents/<%= document.id %>/statistics" class="btn-stats">View Statistics</a>
@@ -38,9 +46,12 @@
     </div>
   </div>
 
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
   <script src="viewDocs.js"></script>
+
+  <script src="favorites.js"></script>
 
   <script>
     function toggleCard(element) {
