@@ -30,8 +30,19 @@
           <div class="document-actions" id="actions-<%= document.id %>">
             <p>Fecha de carga: <%= document.uploaddate %></p>
             <a href="/documents/<%= document.id %>" class="btn-view">View Document</a>
-            <a href="/documents/<%= document.id %>/practiceDoc" class="btn-view">Practice</a>
-            <a href="/documents/<%= document.id %>/statistics" class="btn-stats">View Statistics</a>
+
+            <form action="/documents/<%= document.id %>/practiceDoc" method="POST" style="display:inline;">
+              <button type="submit" class="btn-view">Practice</button>
+            </form>
+
+            <form action="/documents/<%= document.id %>/statistics" method="POST" style="display:inline;">
+              <button type="submit" class="btn-stats">View Statistics</button>
+            </form>
+
+            <form action="/documents/<%= document.id %>/download" method="POST" style="display:inline;">
+              <button type="submit" class="btn-view">Download PDF</button>
+            </form>
+
           </div>
         </div>
       <% end %>

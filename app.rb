@@ -190,17 +190,21 @@ end
 post "/next_question" do
   document_id = session[:document_id]
   current_question_index = session[:current_question_index]
-  
-  # Guarda las preguntas correspondientes al documento almacenado en la base de datos
-  @questions = Question.where(document_id: document_id).order(:id)
 
-  if @questions.nil? || current_question_index.nil?
-    @error = "No se encontraron preguntas o índice. Por favor, sube un PDF para generar el quiz."
-    redirect "/practice"
-  end
+  # Guarda las preguntas correspondientes al documento almacenado en la base de datos
+  questions = Question.where(document_id: document_id).order(:id)
+
+  # Al ser un post, viene dado desde viewDocs, que se supone que estan todos los documentos de la base de datos
+  # luego, los documentos siempre tienen questions y el indice ya viene dado en la sesion desde el practice o el practiceDoc
+  # por lo tanto, questions.nil? y current_question_index.nil? === false
+
+  # if @questions.nil? || current_question_index.nil?
+  #   @error = "No se encontraron preguntas o índice. Por favor, sube un PDF para generar el quiz."
+  #   redirect "/practice"
+  # end
 
   selected_answer = params[:selected_option]
-  @current_question = @questions.offset(current_question_index).first # Obtiene la pregunta actual
+  @current_question = questions.offset(current_question_index).first # Obtiene la pregunta actual
 
   logger.debug "Loaded question: #{@current_question.content}" if @current_question
   correct_answer = @current_question.answer.option.content # Accedemos al contenido de la pregunta y no al objeto
@@ -225,19 +229,19 @@ post "/next_question" do
   session[:current_question_index] += 1 # Avanza al siguiente índice
   logger.debug "Current question index: #{session[:current_question_index]}"
 
-  @progress = (session[:current_question_index].to_f / @questions.size * 100).to_i # Calculamos el porcentaje
+  @progress = (session[:current_question_index].to_f / questions.size * 100).to_i # Calculamos el porcentaje
 
-  if session[:current_question_index] < @questions.size
-    @current_question = @questions.offset(session[:current_question_index]).first  # Obtiene la siguiente pregunta
+  if session[:current_question_index] < questions.size
+    @current_question = questions.offset(session[:current_question_index]).first  # Obtiene la siguiente pregunta
     erb :question
   else
     # Contamos las respuestas correctas
     @correct_answers = session[:answered_questions].each_with_index.count do |answer, index|
-      answer == @questions[index].answer.option.content
+      answer == questions[index].answer.option.content
     end
 
     cant_correct_answers = @correct_answers
-    @incorrect_answers = @questions.size - @correct_answers
+    @incorrect_answers = questions.size - @correct_answers
 
     if session[:isAnUserPresent] && session[:user_id]
       @user = User.find(session[:user_id])
@@ -275,15 +279,24 @@ get "/documents/:id" do
   erb :viewDoc
 end
 
+post "/documents/:id/download" do
+  @document = Document.find(params[:id])
+  content_type 'application/pdf'
+  attachment @document.filename      # Este método fuerza la descarga
+  @document.filecontent              # Envia el contenido binario del PDF
+end
 
-get "/documents/:id/practiceDoc" do
+post "/documents/:id/practiceDoc" do
   document_id = params[:id] # El ID del documento que el usuario selecciona
-  @document = Document.find(document_id)
 
-  if @document.nil?
-    @error = "No hay preguntas disponibles para este documento."
-    redirect "/"
-  end
+  # Si es un post y viene dado desde el viewDocs, se supone que ahi estan todos los de la base de datos
+  # Entonces buscarlo siempre lo encuentra... Por lo tanto document.nil? === false
+
+  # document = Document.find(document_id)
+  # if document.nil?
+  #   logger.error "No hay preguntas disponibles para este documento."
+  #   redirect "/"
+  # end
 
   session[:document_id] = document_id
   session[:current_question_index] = 0 # Iniciar en la primera pregunta
@@ -291,15 +304,20 @@ get "/documents/:id/practiceDoc" do
 
   @current_question = Question.where(document: session[:document_id]).first # Mostramos la primera pregunta
 
-  if @current_question.nil?
-    @error = "No se encontraron preguntas para este documento."
-    redirect "/"
-  else
-    erb :question
-  end
+  erb :question
+
+  # Los documentos siempre deberian tener questions, luego current question siempre tiene algo
+  # por lo tanto current_question.nil? === false
+
+  # if @current_question.nil?
+  #   logger.error "No se encontraron preguntas para este documento."
+  #   redirect "/"
+  # else
+  #   erb :question
+  # end
 end
 
-get "/documents/:id/statistics" do
+post "/documents/:id/statistics" do
   @document = Document.find(params[:id])
   @questions = @document.questions
   erb :statistic
