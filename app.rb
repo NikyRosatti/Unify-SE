@@ -22,8 +22,6 @@ enable :sessions
 
 before do
   @isAnUserPresent = session[:isAnUserPresent] || false
-  # Guarda la URL anterior en la sesion, para que al entrar al give me admin please pueda volver de donde vino
-  session[:previous_url] = request.path_info unless request.path_info == "/give-me-admin-please"
 end
 
 get "/" do
