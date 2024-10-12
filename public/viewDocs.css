@@ -165,6 +165,8 @@ body {
 .document-actions {
   display: flex;
   flex-direction: row; 
+  justify-content: center;
+  align-items: center;
   gap: 10px; 
 }
 
@@ -175,7 +177,18 @@ body {
 .document-actions p {
   font-size: 1em; /* Tamaño de la fuente para la fecha */
   color: #000000;
-  margin: 5px; /* Un pequeño margen debajo de la fecha */
+  margin-right: 10px;
+}
+
+.favorite-icon {
+  font-size: larger;
+  color: rgb(0, 0, 0); /* Color por defecto para íconos no seleccionados */
+  cursor: pointer;
+  margin-right: 10px; 
+}
+
+.favorite-icon.fas {
+  color: red; /* Cambia a rojo cuando está en favoritos */
 }
 
 .btn-view, .btn-stats {

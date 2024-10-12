@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Favoritos</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+<body>
+  <div class="container mt-5">
+    <h1>Mis Documentos Favoritos</h1>
+
+    <% if @favorites.any? %>
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Título</th>
+            <th>Descripción</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @favorites.each do |document| %>
+            <tr>
+              <td><%= document.filename %></td>
+              <td>
+                <form action="/documents/<%= document.id %>/unfavorite" method="post" style="display:inline;">
+                  <input type="hidden" name="_method" value="delete">
+                  <button type="submit" class="btn btn-danger" onclick="return confirm('¿Estás seguro de que deseas eliminar este documento de favoritos?')">Eliminar</button>
+                </form>
+                <a href="/documents/<%= document.id %>" class="btn btn-primary">Ver Documento</a>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% else %>
+      <p>No tienes documentos favoritos.</p>
+    <% end %>
+    
+    <a href="/viewDocs" class="btn btn-secondary mt-3">Volver a Documentos</a>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -273,8 +273,12 @@ end
 
 # Ruta para mostrar todos los documentos
 get "/viewDocs" do
-  @documents = Document.all
-  erb :viewDocs
+  if user
+    @documents = Document.all
+    erb :viewDocs
+  else
+    erb :status404
+  end
 end
 
 # Ruta para mostrar un documento específico
@@ -336,6 +340,35 @@ get "/questionStatistics" do
   else
     halt 404, "Access denied due to user level."
     # redirect "/"
+  end
+end
+
+post "/documents/:id/favorite" do
+  document = Document.find(params[:id])
+  
+  user.favorite_documents << document
+  status 200 # Éxito
+end
+
+delete '/documents/:id/unfavorite' do
+  document = Document.find(params[:id])
+
+  if user.favorite_documents.include?(document)
+    user.favorite_documents.delete(document) # Elimina el documento de los favoritos
+    status 200 # Respuesta 200 OK si se elimina correctamente
+  else
+    erb :status404
+  end
+
+  redirect "/favorites"
+end
+
+get "/favorites" do
+  if user
+    @favorites = user.favorites.map(&:document)
+    erb :favorites
+  else
+    erb :status404
   end
 end
 
@@ -507,5 +540,13 @@ end
 helpers do
   def user
     @user ||= User.find_by(id: session[:user_id]) if session[:user_id]
+  end
+
+  def authenticate_user!
+    redirect '/login' unless user
+  end
+
+  def csrf_token
+    session[:csrf] ||= SecureRandom.hex(32)
   end
 end
