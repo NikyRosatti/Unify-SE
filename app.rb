@@ -281,6 +281,31 @@ get "/viewDocs" do
   end
 end
 
+post '/viewDocs' do
+  @documents = Document.all
+
+  # Ordenar por nombre alfabéticamente
+  if params[:sort] == 'name'
+    @documents = @documents.order('filename ASC')
+
+  # Ordenar por fecha de carga (más recientes primero)
+  elsif params[:sort] == 'recent'
+    @documents = @documents.order('created_at DESC')
+
+  # Ordenar por fecha de carga (más antiguos primero)
+  elsif params[:sort] == 'oldest'
+    @documents = @documents.order('created_at ASC')
+  end
+
+  # Filtrar por nombre si se proporcionó un término de búsqueda
+  if params[:search] && !params[:search].empty?
+    @documents = @documents.where('filename LIKE ?', "%#{params[:search]}%")
+  end
+
+  # Renderizar la vista de documentos
+  erb :viewDocs
+end
+
 # Ruta para mostrar un documento específico
 get "/documents/:id" do
   @document = Document.find(params[:id])
