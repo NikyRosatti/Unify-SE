@@ -1,13 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8">
     <title>Error - Registration Failed</title>
-</head>
-<body>
+  </head>
+  <body>
     <h1>Error: Registration Failed</h1>
-    <p>There was a problem registering your account. Please try again later.</p>
+    <% case @err_register %>
+    <% when "missing_fields" %>
+      <p>Fields Username, Name, Email and Password must be filled out. Please try again.</p>
+    <% when "user_exists" %>
+      <p>An user with that username or email already exists. Please try a different one.</p>
+    <% when "user_not_persisted" %>
+      <p>There was a problem registering your account. Please try again later.</p>
+    <% else %>
+      <p>No error found.</p>
+    <% end %>
     <div> <a href="/register">Back to Register</a> </div>
     <div> <a href="/">Back to Home</a> </div>
-</body>
+  </body>
 </html>

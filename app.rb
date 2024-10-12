@@ -37,16 +37,9 @@ get "/login" do
 end
 
 get "/error-register" do
-  case session[:error_registration]
-  when "missing_fields"
-    erb :error_missing_fields
-  when "user_exists"
-    erb :error_user_exists
-  when "user_not_persisted"
-    erb :error_registration_failed
-  else
-    redirect "/register"
-  end
+  @err_register = session[:error_registration]
+  session.delete(:error_registration)
+  erb :error_registration_failed
 end
 
 get "/error-Document" do
@@ -130,7 +123,6 @@ post "/register" do
       @user = User.create(username: username, name: name, lastname: lastname, cellphone: cellphone, email: email,
                           password: password, isAdmin: isAdmin)
       if @user.persisted?
-        # session[:error_registration] = ""
         session[:isAnUserPresent] = true
         session.delete(:error_registration)
         session[:user_id] = @user.id
