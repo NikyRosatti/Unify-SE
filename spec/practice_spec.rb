@@ -32,7 +32,7 @@ describe "POST /practice" do
 
       # Simula la subida de un archivo PDF
       pdf_file = Rack::Test::UploadedFile.new(File.join(File.dirname(__FILE__), "fixtures/sample.pdf"), "application/pdf")
-      post "/practice", { file: pdf_file }, "rack.session" => { isAnUserPresent: true }
+      post "/practice", { file: pdf_file }, "rack.session" => { is_an_user_present: true }
 
       expect(last_response.status).to eq(251)
     end
@@ -40,7 +40,7 @@ describe "POST /practice" do
 
   context "cuando no se proporciona un archivo" do
     it "recibe como ultimo status 510 y que la ultima respuesta sea un mensaje de error" do
-      post "/practice", { file: nil }, "rack.session" => { isAnUserPresent: true }
+      post "/practice", { file: nil }, "rack.session" => { is_an_user_present: true }
 
       expect(last_response.status).to eq(510)
       expect(last_response.body).to include("No file provided")
@@ -55,7 +55,7 @@ describe "POST /practice" do
 
       # Simula la subida de un archivo PDF no válido
       pdf_file = Rack::Test::UploadedFile.new(File.join(File.dirname(__FILE__), "fixtures/invalid_sample.pdf"), "application/pdf")
-      post "/practice", { file: pdf_file }, "rack.session" => { isAnUserPresent: true }
+      post "/practice", { file: pdf_file }, "rack.session" => { is_an_user_present: true }
 
       expect(last_response.status).to eq(500)
       expect(last_response.body).to include("Failed to extract text from PDF")

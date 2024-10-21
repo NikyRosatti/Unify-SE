@@ -6,7 +6,7 @@
     <title>Statistics</title>
 </head>
 <body>
-    <form action="/questionStatistics" method="get" style="margin-bottom: 20px;">
+    <form action="/question_statistics" method="get" style="margin-bottom: 20px;">
         <label for="filter">Select Filter:</label>
         <select name="filter" id="filter">
             <option value="correct" <%= 'selected' if params[:filter] == 'correct' %>>Top 10 Questions Answered Correctly</option>
