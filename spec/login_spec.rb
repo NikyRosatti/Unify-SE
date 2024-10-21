@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'sinatra'
 require 'sinatra/activerecord'
 require 'sinatra/cors'
@@ -17,18 +19,18 @@ require 'spec_helper'
 require 'rack/test'
 require 'rspec'
 
-describe 'Login App' do
+describe 'Login App' do # rubocop:disable Metrics/BlockLength
   include Rack::Test::Methods
 
   def app
     Sinatra::Application
   end
 
-  describe 'POST /login' do
+  describe 'POST /login' do # rubocop:disable Metrics/BlockLength
     context 'cuando se loguea con credenciales validas' do
       it 'recibe que el usuario existe en la base de datos' do
-        User.create(username: 'testuser', name: 'testname', lastname: 'testlastname', cellphone: 'testcellphone', email: 'testemail',
-                    password: 'password')
+        User.create(username: 'testuser', name: 'testname', lastname: 'testlastname',
+                    cellphone: 'testcellphone', email: 'testemail', password: 'password')
         post '/login', { username_or_email: 'testuser', password: 'password' }
         expect(User.find_by(username: 'testuser')).not_to be_nil
       end

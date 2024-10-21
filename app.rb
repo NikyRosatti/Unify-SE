@@ -170,24 +170,7 @@ post '/next_question' do
   selected_answer = params[:selected_option]
   @current_question = questions.offset(current_question_index).first # Obtiene la pregunta actual
 
-  logger.debug "Loaded question: #{@current_question.content}" if @current_question
-  correct_answer = @current_question.answer.option.content # Accedemos al contenido de la pregunta y no al objeto
-
-  if selected_answer == correct_answer
-    @message = '¡Correcto!'
-    @message_class = 'correct'
-
-    @current_question.increment!(:correct_answers_cant) # Incrementamos el atributo
-  else
-    @message = "Incorrecto. La respuesta correcta era: #{correct_answer}"
-    @message_class = 'incorrect'
-  end
-
-  # Incrementamos el número total de respuestas a la pregunta
-  @current_question.increment!(:number_answers_answered)
-
-  # Guardamos la respuesta seleccionada en answered_questions
-  session[:answered_questions] << selected_answer
+  process_answer(selected_answer)
 
   session[:current_question_index] += 1 # Avanza al siguiente índice
   logger.debug "Current question index: #{session[:current_question_index]}"
@@ -198,17 +181,7 @@ post '/next_question' do
     @current_question = questions.offset(session[:current_question_index]).first  # Obtiene la siguiente pregunta
     erb :question
   else
-    # Contamos las respuestas correctas
-    @correct_answers = session[:answered_questions].each_with_index.count do |answer, index|
-      answer == questions[index].answer.option.content
-    end
-
-    @incorrect_answers = questions.size - @correct_answers
-
-    user&.increment!(:correct_answers, @correct_answers)
-
-    @message = 'Has completado todas las preguntas.'
-    erb :quiz_complete
+    complete_quiz(questions)
   end
 end
 
@@ -585,6 +558,41 @@ end
 def handle_error_registration
   handle_error('user_not_persisted', 'There was a problem registering your account. Please try again later.',
                '/error-register')
+end
+
+def process_answer(selected_answer) # rubocop:disable Metrics/MethodLength
+  logger.debug "Loaded question: #{@current_question.content}" if @current_question
+  correct_answer = @current_question.answer.option.content # Accedemos al contenido de la pregunta y no al objeto
+
+  if selected_answer == correct_answer
+    @message = '¡Correcto!'
+    @message_class = 'correct'
+
+    @current_question.increment!(:correct_answers_cant) # Incrementamos el atributo
+  else
+    @message = "Incorrecto. La respuesta correcta era: #{correct_answer}"
+    @message_class = 'incorrect'
+  end
+
+  # Incrementamos el número total de respuestas a la pregunta
+  @current_question.increment!(:number_answers_answered)
+
+  # Guardamos la respuesta seleccionada en answered_questions
+  session[:answered_questions] << selected_answer
+end
+
+def complete_quiz(questions)
+  # Contamos las respuestas correctas
+  @correct_answers = session[:answered_questions].each_with_index.count do |answer, index|
+    answer == questions[index].answer.option.content
+  end
+
+  @incorrect_answers = questions.size - @correct_answers
+
+  user&.increment!(:correct_answers, @correct_answers)
+
+  @message = 'Has completado todas las preguntas.'
+  erb :quiz_complete
 end
 
 helpers do

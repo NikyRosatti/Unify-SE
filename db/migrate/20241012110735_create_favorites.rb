@@ -1,4 +1,6 @@
-class CreateFavorites < ActiveRecord::Migration[6.1]
+# frozen_string_literal: true
+
+class CreateFavorites < ActiveRecord::Migration[6.1] # rubocop:disable Style/Documentation
   def change
     create_table :favorites do |t|
       t.references :user, foreign_key: true, null: false

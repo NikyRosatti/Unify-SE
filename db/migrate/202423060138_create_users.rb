@@ -1,5 +1,7 @@
-class CreateUsers < ActiveRecord::Migration[6.0]
-  def change
+# frozen_string_literal: true
+
+class CreateUsers < ActiveRecord::Migration[6.0] # rubocop:disable Style/Documentation
+  def change # rubocop:disable Metrics/MethodLength
     create_table :users do |t|
       t.string :username, unique: true
       t.string :name
