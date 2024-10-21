@@ -38,7 +38,7 @@ get '/login' do
   erb :login
 end
 
-get '/error-register' do
+get '/error_register' do
   @err_register = session[:error_registration]
   session.delete(:error_registration)
   erb :error_registration_failed
@@ -58,7 +58,7 @@ get '/practice' do
   erb :practice
 end
 
-get '/no-key-provided' do
+get '/no_key_provided' do
   erb :no_key_provided
 end
 
@@ -185,28 +185,28 @@ post '/next_question' do
   end
 end
 
-get '/give-me-admin-please' do
+get '/give_me_admin_please' do
   authenticate_user!
   @already_admin = User.find(session[:user_id]).is_admin == 1 ? 1 : 0
   erb :admin_view
 end
 
-post '/give-me-admin-please' do
+post '/give_me_admin_please' do
   if user
     user.update(is_admin: 1)
   else
     logger.error('No se encontro el usuario: fallo la busqueda en la base de datos segun session[:user_id]')
   end
-  redirect '/give-me-admin-please'
+  redirect '/give_me_admin_please'
 end
 
-post '/remove-me-from-admins-please' do
+post '/remove_me_from_admins_please' do
   if user
     user.update(is_admin: 0)
   else
     logger.error('No se encontro el usuario: fallo la busqueda en la base de datos segun session[:user_id]')
   end
-  redirect '/give-me-admin-please'
+  redirect '/give_me_admin_please'
 end
 
 # Ruta para mostrar todos los documentos
