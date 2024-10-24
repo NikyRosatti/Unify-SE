@@ -22,12 +22,12 @@
             <img src="media/logo.png" alt="Logo Unify" class="logo">
             <nav>
                 <a href="/">Home</a>
-                <% if @isAnUserPresent %>
-                    <a href="/viewDocs">Documents</a>
+                <% if @is_an_user_present %>
+                    <a href="/view_docs">Documents</a>
                     <a href="/practice">Practice</a>
                     <a href="/progress">Leaderboard</a>
-                    <% if user.isAdmin == 1 %>
-                        <a href="/questionStatistics">Statistics</a>
+                    <% if user.is_admin == 1 %>
+                        <a href="/question_statistics">Statistics</a>
                     <% end %>
                     <a href="#us">Us</a>
                     <a href="/logout">Logout</a>
@@ -52,7 +52,7 @@
             </div>
         </div>
 
-        <% if @isAnUserPresent %>
+        <% if @is_an_user_present %>
             <section id="logout">
                 <div class="container">
                     <div class="text">
