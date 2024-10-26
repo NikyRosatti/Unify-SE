@@ -43,7 +43,7 @@
                             <h1>Account Settings</h1>
                             <span>OPTIONS</span>
                             <li><a href="/settings/profile">Actualizar Perfil</a></li>
-                            <li><a href="/settings/roles">Gestionar Roles y Permisos</a></li>
+                            <li><a href="/give-me-admin-please">Gestionar Roles y Permisos</a></li>
                             <li><a href="/settings/password">Cambiar Contraseña</a></li>
                             <li><a href="/settings/notifications">Notificaciones</a></li>
                             <li><a href="/settings/privacy">Privacidad</a></li>
@@ -52,7 +52,10 @@
                         </div>
                     </div>
                     <div class="delete-account">
-                        <button id="delete-btn" user-id="<%= user.id %>">Delete account</button>
+                        <form action="/settings/<%= user.id %>" method="post" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este usuario?');">
+                            <input type="hidden" name="_method" value="delete">
+                            <button id="delete-btn">Delete account</button>
+                        </form> 
                     </div>
                 </section>
 
@@ -131,15 +134,23 @@
 
                     <div class="basic_info">
                         <h1 class="heading">Basic Information</h1>
-                        <ul>
+                        <ul class="info-list">
                             <li class="birthday">
                                 <h1 class="label">Birthday:</h1>
-                                <span class="info">Jun 29, 2004</span>
+                                <% if user.b-day %>
+                                    <span class="info"><%=user.b_day%></span>
+                                <% else %>
+                                    <span class="info">-</span>
+                                <% end %>
                             </li>
 
-                            <li class="sex">
+                            <li class="gen">
                                 <h1 class="label">Gender:</h1>
-                                <span class="info">Female</span>
+                                <% if user.gen %>
+                                    <span class="info"><%=user.gen%></span>
+                                <% else %>
+                                    <span class="info">-</span>
+                                <% end %>
                             </li>
                         </ul>
                     </div>
