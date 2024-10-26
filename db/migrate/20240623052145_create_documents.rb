@@ -1,4 +1,6 @@
-class CreateDocuments < ActiveRecord::Migration[7.1]
+# frozen_string_literal: true
+
+class CreateDocuments < ActiveRecord::Migration[7.1] # rubocop:disable Style/Documentation
   def change
     create_table :documents do |t|
       t.string :filename
