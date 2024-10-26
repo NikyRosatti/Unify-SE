@@ -1,0 +1,567 @@
+/* ===== =====  Poppins Google Font  ===== =====  */
+@import url("https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i");
+
+/* ===== =====>>  Universal Selector  <<===== =====  */
+* {
+  padding: 0;
+  margin: 0;
+  font-size: 14px;
+  font-family: sans-serif;
+  list-style: none;
+  text-decoration: none;
+  font-family: "Poppins", sans-serif;
+}
+
+/* ===== =====>>  Body Font Size  <<===== =====  */
+html {
+  font-size: 10px;
+}
+
+/* ===== =====>> Css Variables  <<===== =====  */
+:root {
+  /* =====>>  Font Color  <<===== */
+  --f1-color: #fff;
+  --f2-color: #000;
+  --f3-color: rgba(0, 0, 0, 0.8);
+  --f4-color: rgba(0, 0, 0, 0.6);
+  --f5-color: #0099cc;
+  --f6-color: #88cee6;
+
+  /* =====>>  Background Color  <<===== */
+  --bg1-color: #fff;
+  --bg2-color: #000;
+  --bg3-color: #33ccff;
+  --bg4-color: #33cc33;
+  --bg5-color: #0099cc;
+  --bg6-color: rgba(0, 0, 0, 0.4);
+  --bg7-color: rgba(0, 0, 0, 0.2);
+  --glass-bg: linear-gradient(
+    to right bottom,
+    rgba(255, 255, 255, 0.5),
+    rgba(255, 255, 255, 0.3)
+  );
+  --C-lg-bg: linear-gradient(45deg, #ff3399, #ff9933);
+
+  /* ===== =====>>  Font Size  <<===== =====  */
+  --xxxl-fs: 2.2rem;
+  --xxl-fs: 1.8rem;
+  --xl-fs: 1.6rem;
+  --l-fs: 1.4rem;
+  --m-fs: 1.2rem;
+  --s-fs: 1.1rem;
+  --xs-fs: 1rem;
+
+  /* =====>>  Margin  <<===== */
+  --m-2-5: 2.5rem;
+  --m-1-8: 1.8rem;
+  --m-1-5: 1.5rem;
+  --m-0-6: 0.6rem;
+  --m-0-5: 0.5rem;
+  --m-0-3: 0.3rem;
+
+  /* =====>>  Padding  <<===== */
+  --p-2-5: 2.5rem;
+  --p-1-5: 1.5rem;
+  --p-1-0: 1rem;
+  --p-0-8: 0.8rem;
+  --p-0-5: 0.5rem;
+  --p-0-4: 0.4rem;
+  --p-0-3: 0.3rem;
+}
+
+/* ===== =====>>  Body Css  <<===== =====  */
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+/* ===== =====>>  Body Main-Background Css  <<===== =====  */
+.main_bg {
+}
+
+.container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  transition: all 0.3s ease;
+}
+
+.sidebar {
+  background-color: #ffffff;
+  padding: 20px;
+  width: 250px;
+  flex-shrink: 0;
+  position: relative;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15); 
+  transition: transform 0.3s ease, box-shadow 0.3s ease; 
+}
+
+.sidebar.hidden {
+  transform: translateX(-100%);
+  padding: 0;
+  width: 0;
+  overflow: hidden; 
+}
+
+/* Estilo del botón de cruz dentro de la barra lateral */
+.close-btn {
+  font-size: 24px;
+  background-color: transparent;
+  border: none;
+  color: #555;
+  cursor: pointer;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+
+/* Estilo del botón de tres líneas fuera de la barra lateral */
+.sidebar-toggle {
+  font-size: 30px;
+  font-weight: bold;
+  background-color: transparent;
+  border: none;
+  color: #333; 
+  cursor: pointer;
+  position: fixed;
+  top: 20px;
+  left: 30px;
+  z-index: 2000;
+  display: none; /* Oculto por defecto, aparecerá al ocultar la barra lateral */
+}
+
+/* Mostrar el botón de tres líneas cuando la barra lateral está oculta */
+.sidebar.hidden ~ .sidebar-toggle {
+  display: block;
+}
+
+
+.sidebar h2 {
+  font-size: 1.6em; 
+  margin: 20px 10px;
+  color: #333;
+  font-weight: 600; 
+}
+
+.sidebar p {
+  font-size: 1em; 
+  color: #777;
+  margin-left: 10px;
+  margin-bottom: 20px; 
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+
+.sidebar ul li {
+  margin: 10px 0; 
+  padding: 10px 10px; 
+  border-radius: 5px; 
+  transition: background-color 0.3s ease; 
+}
+
+.sidebar ul a {
+  text-decoration: none; 
+  color: #007bff;
+  display: block; 
+}
+
+.sidebar ul li:hover {
+  background-color: #f0f0f0;
+}
+
+.sidebar button.contact {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1.1em;
+  transition: background-color 0.3s ease;
+}
+
+.sidebar button.contact:hover {
+  background-color: #0056b3;
+}
+
+
+/* ===== =====>>  Main-Container Css  <<===== =====  */
+.content-main {
+  display: flex; 
+  flex-direction: column;
+  flex: 1;
+  transition: margin-left 0.3s ease;
+  width: 100%; 
+  height: 100vh; 
+  
+  justify-content: center;
+  align-items: center;
+}
+
+.sidebar.hidden ~ .content-main {
+  margin-left: 0;
+  width: 100%; 
+}
+
+.content-box {
+  position: relative;
+  display: grid;
+  grid-template-columns: 0.5fr 2fr;
+  grid-template-row: auto 1fr 1fr;
+  grid-template-areas:
+    "header header"
+    "work_skills userDetails"
+    "work_skills timeline_about";
+  width: 85%;
+  height: 90vh;
+  border-radius: 10px;
+  background: var(--glass-bg);
+  padding: var(--p-1-5);
+  box-shadow: 0 0 5px rgba(255, 255, 255, 0.5), 0 0 25px rgba(0, 0, 0, 0.08);
+}
+
+.userDetails {
+  grid-area: userDetails;
+}
+
+.work_skills {
+  grid-area: work_skills;
+}
+
+.timeline_about {
+  grid-area: timeline_about;
+}
+
+/* ===== =====>>  Container Cards Css  <<===== =====  */
+.content-box .card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(3rem);
+  border-radius: 0.5rem;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.05);
+  padding: var(--p-1-5);
+}
+
+/* ===== =====>>  Container Header/Navbar Css  <<===== =====  */
+.content-box .title {
+  padding: 10px;
+  padding: 0 var(--p-2-5);
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.content-box .title span {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-left: var(--m-0-5);
+}
+
+/* ===== =====>>  Work Css Start  <<===== ===== */
+.work_skills {
+  position: relative;
+  padding: 0px;
+  background-color: #f9f9f9;
+  border: 1px solid black;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  margin-right: 10px;
+  margin-left: 10px;
+  display: block;
+}
+.work {
+  margin-bottom: 20px;
+}
+
+.primary {
+  margin-bottom: 30px;
+}
+
+.primary h1 {
+  font-size: 1.5em;
+  margin: 5px 0px;
+}
+
+.primary span {
+  color: #888;
+  font-size: 0.9em;
+  display: block;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+.primary li {
+  margin-bottom: 20px;
+  margin-top: 0;
+  color: #555;
+  list-style: none; 
+}
+
+.primary li a {
+  text-decoration: none; 
+  color: #007bff;
+}
+
+.primary li a:hover {
+  text-decoration: underline;
+}
+
+/* button Eliminar cuenta */
+.delete-account {
+  text-align: right;
+  margin-top: 50px;
+}
+
+#delete-btn {
+  background-color: #ff4d4d;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1em;
+}
+
+#delete-btn:hover {
+  background-color: #ff1a1a;
+}
+
+/* ===== =====>>  User Details Css Start  <<===== ===== */
+.userDetails {
+  display: flex; 
+  justify-content: space-between; 
+  align-items: flex-start; 
+  position: relative; 
+  padding: var(--p-1-5) var(--p-2-5);
+  border: 1px solid black;
+  flex-wrap: wrap; 
+}
+
+.userDetails .userInfo {
+  display: flex; 
+  flex-direction: column; 
+  justify-content: center;
+  flex-grow: 1;
+}
+
+.userDetails .userDetails .rank, .userDetails .btns {
+  margin-bottom: 20px;
+}
+
+.userDetails .userName {
+  display: flex;
+  align-items: center;
+}
+
+.userDetails .userName h1 {
+  font-size: var(--xxxl-fs);
+  margin-right: 10px;
+}
+
+.userDetails .userName .map {
+  display: flex; 
+  align-items: center; 
+}
+
+.userDetails .userName .map .ri {
+  margin-right: var(--m-0-3);
+  font-size: var(--m-fs);
+}
+
+.userDetails .userName .map span {
+  font-size: var(--s-fs);
+  color: var(--f3-color);
+  font-weight: 700;
+}
+
+.userDetails p {
+  font-size: var(--m-fs);
+  font-weight: 700;
+  color: var(--f5-color);
+  margin-bottom: var(--m-1-8);
+}
+
+.userDetails .rank {
+  position: relative;
+  margin-bottom: var(--m-1-8);
+}
+
+.userDetails .rank .heading {
+  font-size: var(--xs-fs);
+  color: var(--f4-color);
+  text-transform: uppercase;
+  margin-bottom: var(--m-0-6);
+}
+
+.userDetails .rank span {
+  font-size: var(--xxl-fs);
+  font-weight: 700;
+}
+
+.userDetails .profile {
+  margin-right: 40%; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
+}
+
+.userDetails .profile figure {
+  width: 180px; 
+  height: 180px;
+  margin: 0; 
+  padding: 0;
+  overflow: hidden; 
+  border-radius: 50%; 
+}
+
+.userDetails .profile figure img {
+  width: 100%; 
+  height: 100%;
+  object-fit: cover; 
+}
+
+.userDetails .rank .rating {
+  position: absolute;
+  top: 2.7rem;
+  left: 3.5rem;
+}
+
+.rank {
+  margin-top: 20px;
+}
+
+.userDetails .rank .rating .rate {
+  color: var(--f5-color);
+  font-size: var(--l-fs);
+}
+
+.userDetails .rank .rating .underrate {
+  color: var(--f6-color);
+}
+
+.userDetails .btns ul,
+.userDetails .btns ul li {
+  display: flex;
+  align-items: center;
+}
+
+.userDetails .btns ul li {
+  margin-right: var(--m-2-5);
+  border-radius: 0.3rem;
+}
+
+.userDetails .btns ul li .ri {
+  margin-right: var(--m-0-5);
+  font-size: var(--xl-fs);
+}
+
+.userDetails .btns ul li a {
+  font-size: var(--l-fs);
+  color: var(--f2-color);
+  font-weight: 500;
+}
+
+.userDetails .btns ul .active {
+  background: #e6f2ff;
+  padding: var(--p-0-5) var(--p-1-5);
+}
+
+.userDetails .btns ul .active a,
+.userDetails .btns ul .active .ri {
+  color: var(--f5-color);
+}
+
+/* ===== =====>>  Timeline & About Css Start  <<===== ===== */
+.timeline_about {
+  padding: var(--p-2-5);
+  border: 1px solid black;
+  margin-top: 10px;
+}
+
+.timeline_about .tabs ul {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-bottom: var(--m-2-5);
+}
+
+.timeline_about .tabs ul::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 1px;
+  background: var(--bg7-color);
+}
+
+.timeline_about .tabs ul li {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-right: var(--m-2-5);
+  padding-bottom: var(--p-0-8);
+  cursor: pointer;
+}
+
+.timeline_about .tabs ul li span {
+  font-size: var(--l-fs);
+  font-weight: 500;
+}
+
+.timeline_about .tabs ul li .ri {
+  margin-right: var(--m-0-5);
+}
+
+.timeline_about .tabs ul .active::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--bg5-color);
+}
+
+.timeline_about .contact_info .heading,
+.timeline_about .basic_info .heading {
+  font-size: var(--xs-fs);
+  color: var(--f4-color);
+  text-transform: uppercase;
+  margin-bottom: var(--m-1-5);
+}
+
+.timeline_about .contact_info ul,
+.timeline_about .basic_info ul {
+  margin-bottom: var(--m-1-5);
+}
+
+.timeline_about .contact_info ul li,
+.timeline_about .basic_info ul li {
+  display: flex;
+  margin: var(--m-0-5) 0;
+}
+
+.timeline_about .contact_info ul li h1,
+.timeline_about .basic_info ul li h1 {
+  font-weight: 500;
+  font-size: var(--m-fs);
+  min-width: 12rem;
+}
+
+.timeline_about .contact_info ul li span,
+.timeline_about .basic_info ul li span {
+  font-size: var(--m-fs);
+}
+
+.timeline_about .contact_info ul .phone span,
+.timeline_about .contact_info ul .email span,
+.timeline_about .contact_info ul .site span {
+  color: var(--f5-color);
+}
