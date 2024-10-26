@@ -397,6 +397,26 @@ get "/favorites" do
   end
 end
 
+def rank
+  @user_correct_count = user.correct_answers # Contar respuestas correctas del usuario
+
+  # Obtener la posición del usuario en base a las respuestas correctas
+  user_ranks = User
+    .select("users.*, correct_answers")
+    .order("correct_answers DESC")
+  
+  # Convertir a un hash para un acceso más fácil
+  @user_position = user_ranks.map(&:id)
+
+  # Encontrar la posición del usuario específico
+  @position = @user_position.index(user.id) + 1 
+end
+
+get "/settings" do
+  rank
+  erb :account_settings
+end
+
 # Initializes the OpenAI client
 def client
   options = { access_token: ENV["TOKEN_OPENAI"], log_errors: true }
