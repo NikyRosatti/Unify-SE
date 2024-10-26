@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNIFY - Profile</title>
+    <link rel="stylesheet" href="settings.css">
+</head>
+<!--<figure><img src="media/logo.png" alt="logo"></figure><span>UNIFY</span>-->
+<body>
+    <!-- ===== ===== Body Main-Background ===== ===== -->
+    <span class="main_bg"></span>
+
+
+    <!-- ===== ===== Main-Container ===== ===== -->
+    <div class="container">
+        <aside class="sidebar">
+            <button class="close-btn" onclick="toggleSidebar()">✖</button>
+            <h2>UNIFY</h2>
+            <p>Hello <%= user.username%>!</p>
+            <ul>
+                <a href="/"><li>Home</li></a>
+                <a href="/viewDocs"><li>Documents</li></a>
+                <a href="/practice"><li>Practice</li></a>
+                <a href="/progress"><li>Leaderboard</li></a>
+                <a href="/#us"><li>Us</li></a>
+            </ul>
+            <button class="contact">Contact +</button>
+        </aside>
+        <div class="content-main">
+            <button class="sidebar-toggle" onclick="toggleSidebar()">&#9776;</button>
+            <div class="content-box">
+                <div class="title">
+                    <span>Profile Information</span>
+                </div>
+
+                <!-- ===== ===== Work & Skills Section ===== ===== -->
+                <section class="work_skills card">
+                    <!-- ===== Work Container ===== -->
+                    <div class="work">
+                        <h1 class="heading">Your</h1>
+                        <div class="primary">
+                            <h1>Account Settings</h1>
+                            <span>OPTIONS</span>
+                            <li><a href="/settings/profile">Actualizar Perfil</a></li>
+                            <li><a href="/give-me-admin-please">Gestionar Roles y Permisos</a></li>
+                            <li><a href="/settings/password">Cambiar Contraseña</a></li>
+                            <li><a href="/settings/notifications">Notificaciones</a></li>
+                            <li><a href="/settings/privacy">Privacidad</a></li>
+                            <li><a href="/settings/language">Idioma</a></li>
+                            <li><a href="/settings/accessibility">Accesibilidad</a></li>
+                        </div>
+                    </div>
+                    <div class="delete-account">
+                        <form action="/settings/<%= user.id %>" method="post" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este usuario?');">
+                            <input type="hidden" name="_method" value="delete">
+                            <button id="delete-btn">Delete account</button>
+                        </form> 
+                    </div>
+                </section>
+
+
+                <!-- ===== ===== User Details Sections ===== ===== -->
+                <section class="userDetails card">
+                    <div class="userInfo">
+                        <div class="userName">
+                            <h1 class="name"><%= user.name %> <%=user.lastname%></h1>
+                            <div class="map">
+                                <i class="ri-map-pin-fill ri"></i>
+                                <span>Córdoba, ARG 🇦🇷</span>
+                            </div>
+                        </div>
+
+                        <% if user.isAdmin == 1 %>
+                            <p>Administrator</p>
+                        <% else %>
+                            <p>Student</p>
+                        <% end %>
+
+                        <div class="rank">
+                            <h1 class="heading">Ranking</h1>
+                            <span><%= @position %></span>
+                            <div class="rating">
+                                <i class="ri-star-fill rate"></i>
+                                <i class="ri-star-fill rate"></i>
+                                <i class="ri-star-fill rate"></i>
+                                <i class="ri-star-fill rate"></i>
+                                <i class="ri-star-fill rate underrate"></i>
+                            </div>
+                        </div>
+
+                        <div class="btns">
+                            <ul>
+                                <li class="edit active">
+                                    <i class="ri-check-fill ri"></i>
+                                    <a href="#">Edit</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="profile">
+                        <figure><img src="media/fondoQuest.jpeg" alt="profile"></figure>
+                    </div>
+                </section>
+
+
+                <!-- ===== ===== Timeline & About Sections ===== ===== -->
+                <section class="timeline_about card">
+                    <div class="tabs">
+                        <ul>
+                            <li class="about active">
+                                <i class="ri-user-3-fill ri"></i>
+                                <span>About</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="contact_Info">
+                        <h1 class="heading">Contact Information</h1>
+                        <ul>
+                            <li class="phone">
+                                <h1 class="label">Phone:</h1>
+                                <span class="info"><%= user.cellphone %></span>
+                            </li>
+
+                            <li class="email">
+                                <h1 class="label">E-mail:</h1>
+                                <span class="info"><%= user.email %></span>
+                            </li>
+
+                        </ul>
+                    </div>
+
+                    <div class="basic_info">
+                        <h1 class="heading">Basic Information</h1>
+                        <ul class="info-list">
+                            <li class="birthday">
+                                <h1 class="label">Birthday:</h1>
+                                <% if user.b-day %>
+                                    <span class="info"><%=user.b_day%></span>
+                                <% else %>
+                                    <span class="info">-</span>
+                                <% end %>
+                            </li>
+
+                            <li class="gen">
+                                <h1 class="label">Gender:</h1>
+                                <% if user.gen %>
+                                    <span class="info"><%=user.gen%></span>
+                                <% else %>
+                                    <span class="info">-</span>
+                                <% end %>
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.querySelector('.sidebar');
+            const toggleButton = document.querySelector('.sidebar-toggle');
+            
+            // Alternar visibilidad de la barra lateral
+            sidebar.classList.toggle('hidden');
+            
+            // Alternar visibilidad del botón de tres líneas
+            toggleButton.style.display = sidebar.classList.contains('hidden') ? 'block' : 'none';
+        }
+    </script>
+</body>
+</html>

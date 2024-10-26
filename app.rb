@@ -108,6 +108,15 @@ post '/register' do
   end
 end
 
+delete "/settings/:id" do
+	if user&.destroy
+		session.clear
+  	redirect "/logout"
+	else
+		redirect "/settings"
+	end
+end
+
 post '/logout' do
   session[:is_an_user_present] = false
   session[:user_id] = nil
@@ -335,6 +344,29 @@ get '/favorites' do
   else
     erb :status404
   end
+end
+
+
+def rank
+  # Obtener la posición del usuario en base a las respuestas correctas
+  user_ranks = User
+    .select("users.*, correct_answers")
+    .order("correct_answers DESC")
+  
+  # Convertir a un hash para un acceso más fácil
+  user_position = user_ranks.map(&:id)
+
+  # Encontrar la posición del usuario específico
+  @position = user_position.index(user.id) + 1  # +1 porque empieza de 0
+end
+
+get '/settings' do
+	if user
+		rank
+		erb :account_settings
+	else
+		erb :status404
+	end
 end
 
 private
