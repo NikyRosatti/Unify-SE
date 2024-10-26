@@ -136,6 +136,15 @@ post "/register" do
   end
 end
 
+delete "/settings/:id" do
+	if user&.destroy
+		session.clear
+  	redirect "/logout"
+	else
+		redirect "/settings"
+	end
+end
+
 post "/logout" do
   session[:isAnUserPresent] = false
   session[:user_id] = nil
@@ -398,23 +407,25 @@ get "/favorites" do
 end
 
 def rank
-  @user_correct_count = user.correct_answers # Contar respuestas correctas del usuario
-
   # Obtener la posición del usuario en base a las respuestas correctas
   user_ranks = User
     .select("users.*, correct_answers")
     .order("correct_answers DESC")
   
   # Convertir a un hash para un acceso más fácil
-  @user_position = user_ranks.map(&:id)
+  user_position = user_ranks.map(&:id)
 
   # Encontrar la posición del usuario específico
-  @position = @user_position.index(user.id) + 1 
+  @position = user_position.index(user.id) + 1  # +1 porque empieza de 0
 end
 
 get "/settings" do
-  rank
-  erb :account_settings
+	if user
+		rank
+		erb :account_settings
+	else
+		erb :status404
+	end
 end
 
 # Initializes the OpenAI client
