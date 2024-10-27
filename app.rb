@@ -108,13 +108,13 @@ post '/register' do
   end
 end
 
-delete "/settings/:id" do
-	if user&.destroy
-		session.clear
-  	redirect "/logout"
-	else
-		redirect "/settings"
-	end
+delete '/settings/:id' do
+  if user&.destroy
+    session.clear
+    redirect '/logout'
+  else
+    redirect '/settings'
+  end
 end
 
 post '/logout' do
@@ -336,6 +336,35 @@ delete '/documents/:id/unfavorite' do
   redirect '/favorites'
 end
 
+delete '/api/documents/:id' do
+  document = Document.find(params[:id])
+
+  # Encuentra el documento por su ID y lo elimina
+  if document
+    # Eliminar las tablas relacionadas, si existen
+
+    # Primero, elimina los favoritos del documento
+    document.favorites.destroy_all
+
+    # Iterar sobre cada pregunta del documento
+    document.questions.each do |question|
+      # Para cada opción de la pregunta, elimina su respuesta
+      question.answer.destroy # Elimina la respuestas asociada a la pregunta
+      question.options.destroy_all # Eliminar todas las opciones asociadas a la pregunta
+    end
+
+    # Por ultimo, elimina las preguntas del documento
+    document.questions.destroy_all
+
+    document.destroy
+    status 200
+    { message: 'Documento eliminado correctamente' }.to_json
+  else
+    status 404
+    { message: 'Documento no encontrado' }.to_json
+  end
+end
+
 get '/favorites' do
   authenticate_user!
   if user
@@ -346,27 +375,26 @@ get '/favorites' do
   end
 end
 
-
 def rank
   # Obtener la posición del usuario en base a las respuestas correctas
   user_ranks = User
-    .select("users.*, correct_answers")
-    .order("correct_answers DESC")
-  
+               .select('users.*, correct_answers')
+               .order('correct_answers DESC')
+
   # Convertir a un hash para un acceso más fácil
   user_position = user_ranks.map(&:id)
 
   # Encontrar la posición del usuario específico
-  @position = user_position.index(user.id) + 1  # +1 porque empieza de 0
+  @position = user_position.index(user.id) + 1 # +1 porque empieza de 0
 end
 
 get '/settings' do
-	if user
-		rank
-		erb :account_settings
-	else
-		erb :status404
-	end
+  if user
+    rank
+    erb :account_settings
+  else
+    erb :status404
+  end
 end
 
 private
