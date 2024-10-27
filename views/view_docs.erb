@@ -41,6 +41,10 @@
           
           <div class="document-actions" id="actions-<%= document.id %>">
             <p>Fecha de carga: <%= document.uploaddate %></p>
+            <!-- Documentos que puede eliminar el admin  -->
+            <% if user.is_admin == 1%>
+              <img src="media/trash.png" onclick="deleteDocument('<%= document.id %>')" id="delete-button" alt="delete" class="delete_doc">
+            <% end %>
             <!-- Esto es para manejar el apartado de favoritos -->
             <% if user.favorite_documents.include?(document) %>
               <i class="fas fa-heart favorite-icon active" data-favorite="true" data-document-id="<%= document.id %>"></i>
@@ -73,6 +77,32 @@
 
       // Añade la clase 'active' solo a la tarjeta clicada
       element.classList.add('active');
+    }
+
+    function deleteDocument(documentId) {
+      // Confirmación antes de eliminar (por las dudis)
+      if (confirm("¿Estás seguro de que deseas eliminar este documento?")) {
+        fetch(`/api/documents/${documentId}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+        .then(response => {
+          if (response.ok) {
+            alert('Documento eliminado correctamente');
+            //document.getElementById("delete-button").closest(".document-container").remove();
+            location.reload();
+          } else {
+            return response.json().then(error => {
+              alert('Error: ' + error.message);
+            });
+          }
+        })
+        .catch(error => {
+          console.error('Error al eliminar el documento:', error);
+        });
+      }
     }
 
   </script>
