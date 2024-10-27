@@ -52,3 +52,19 @@ Migrar es una forma de decir impactar los cambios realizados hacia la base de da
 ```
 bundle exec rake db:migrate
 ```
+
+# Refactorización: Uso de Rubocop
+La forma de revisar la refactorización del proyecto según la gema Rubocop es la siguiente:
+```
+bundle exec rubocop
+```
+Para automatizar pequeños detalles en la refactorización como por ejemplo intercambiar comillas simples por dobles, o espacios sobrantes, usar:
+```
+bundle exec rubocop -a
+```
+
+O también
+
+```
+bundle exec rubocop -A
+```
