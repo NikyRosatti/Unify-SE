@@ -259,6 +259,17 @@ form {
   margin-right: 10px;
 }
 
+.delete_doc {
+  width: 23px;
+  height: auto;
+  margin-right: 10px; 
+  transition: opacity 0.3s ease; /* Transición suave */
+}
+
+.delete_doc:hover {
+  content: url('media/recycle-bin.png');
+}
+
 .favorite-icon {
   font-size: larger;
   color: rgb(0, 0, 0); /* Color por defecto para íconos no seleccionados */
