@@ -43,10 +43,10 @@
                             <h1>Account Settings</h1>
                             <span>OPTIONS</span>
                             <li><a href="/settings/profile">Actualizar Perfil</a></li>
-                            <li><a href="/give-me-admin-please">Gestionar Roles y Permisos</a></li>
+                            <li><a href="/give_me_admin_please">Gestionar Roles y Permisos</a></li>
                             <li><a href="/settings/password">Cambiar Contraseña</a></li>
                             <li><a href="/settings/notifications">Notificaciones</a></li>
-                            <li><a href="/settings/privacy">Privacidad</a></li>
+                            <li><a href="/privacy">Privacidad</a></li>
                             <li><a href="/settings/language">Idioma</a></li>
                             <li><a href="/settings/accessibility">Accesibilidad</a></li>
                         </div>
@@ -64,14 +64,18 @@
                 <section class="userDetails card">
                     <div class="userInfo">
                         <div class="userName">
-                            <h1 class="name"><%= user.name %> <%=user.lastname%></h1>
+                            <h1 class="name"><%= user.name %> 
+                                <% if user.lastname != "ApellidoNoRegistrado"%>
+                                    <%=user.lastname%>
+                                <% end %>
+                            </h1>
                             <div class="map">
                                 <i class="ri-map-pin-fill ri"></i>
                                 <span>Córdoba, ARG 🇦🇷</span>
                             </div>
                         </div>
 
-                        <% if user.isAdmin == 1 %>
+                        <% if user.is_admin == 1 %>
                             <p>Administrator</p>
                         <% else %>
                             <p>Student</p>
@@ -91,16 +95,16 @@
 
                         <div class="btns">
                             <ul>
-                                <li class="edit active">
+                                <li class="active">
                                     <i class="ri-check-fill ri"></i>
-                                    <a href="#">Edit</a>
+                                    <button id="edit-btn" class="edit-btn">Edit <span>&#128247;</span></button>
                                 </li>
                             </ul>
                         </div>
                     </div>
 
                     <div class="profile">
-                        <figure><img src="media/fondoQuest.jpeg" alt="profile"></figure>
+                        <figure><img id="profile-image" src="media/fondoQuest.jpeg" alt="profile"></figure>
                     </div>
                 </section>
 
@@ -137,7 +141,7 @@
                         <ul class="info-list">
                             <li class="birthday">
                                 <h1 class="label">Birthday:</h1>
-                                <% if user.b-day %>
+                                <% if user.b_day %>
                                     <span class="info"><%=user.b_day%></span>
                                 <% else %>
                                     <span class="info">-</span>
@@ -146,8 +150,8 @@
 
                             <li class="gen">
                                 <h1 class="label">Gender:</h1>
-                                <% if user.gen %>
-                                    <span class="info"><%=user.gen%></span>
+                                <% if user.gender %>
+                                    <span class="info"><%=user.gender%></span>
                                 <% else %>
                                     <span class="info">-</span>
                                 <% end %>
@@ -169,6 +173,23 @@
             // Alternar visibilidad del botón de tres líneas
             toggleButton.style.display = sidebar.classList.contains('hidden') ? 'block' : 'none';
         }
+
+        // Array de imágenes
+        const images = [
+            'media/profile/545dffb2-86ed-4148-acf7-6f9b1bb01ca6.jpeg',
+            'media/profile/descarga.jpeg',
+            'media/profile/gatito.jpeg',
+            'media/profile/perrito.jpeg'
+        ];
+        let currentIndex = 0; // Índice de la imagen actual
+        const editButton = document.getElementById('edit-btn');
+        const profileImage = document.getElementById('profile-image');
+        // Cambiar la imagen al hacer clic en el botón
+        editButton.addEventListener('click', function(event) {
+            event.preventDefault();
+            currentIndex = (currentIndex + 1) % images.length;
+            profileImage.src = images[currentIndex];
+        });
     </script>
 </body>
 </html>

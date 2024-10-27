@@ -462,10 +462,13 @@ body {
   font-size: var(--xl-fs);
 }
 
-.userDetails .btns ul li a {
+.userDetails .btns ul li .edit-btn {
   font-size: var(--l-fs);
   color: var(--f2-color);
   font-weight: 500;
+  border: none;
+  background: transparent;
+  cursor: pointer;
 }
 
 .userDetails .btns ul .active {
@@ -473,7 +476,7 @@ body {
   padding: var(--p-0-5) var(--p-1-5);
 }
 
-.userDetails .btns ul .active a,
+.userDetails .btns ul .active .edit-btn,
 .userDetails .btns ul .active .ri {
   color: var(--f5-color);
 }
