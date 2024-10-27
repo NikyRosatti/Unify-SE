@@ -590,8 +590,7 @@ def build_user(params, b_day, gender)
     cellphone: clean_or_default(params[:cellphone], 'CelularNoRegistrado'),
     email: clean_param(params[:email]),
     password: clean_param(params[:password]),
-    b_day: b_day,
-    gender: gender,
+    b_day: b_day, gender: gender,
     is_admin: 0
   )
 end
