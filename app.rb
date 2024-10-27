@@ -108,15 +108,6 @@ post '/register' do
   end
 end
 
-delete '/settings/:id' do
-  if user&.destroy
-    session.clear
-    redirect '/logout'
-  else
-    redirect '/settings'
-  end
-end
-
 post '/logout' do
   session[:is_an_user_present] = false
   session[:user_id] = nil
@@ -336,6 +327,15 @@ delete '/documents/:id/unfavorite' do
   redirect '/favorites'
 end
 
+delete '/settings/:id' do
+  if user&.destroy
+    session.clear
+    redirect '/logout'
+  else
+    redirect '/settings'
+  end
+end
+
 delete '/api/documents/:id' do
   document = Document.find(params[:id])
 
@@ -375,19 +375,6 @@ get '/favorites' do
   end
 end
 
-def rank
-  # Obtener la posición del usuario en base a las respuestas correctas
-  user_ranks = User
-               .select('users.*, correct_answers')
-               .order('correct_answers DESC')
-
-  # Convertir a un hash para un acceso más fácil
-  user_position = user_ranks.map(&:id)
-
-  # Encontrar la posición del usuario específico
-  @position = user_position.index(user.id) + 1 # +1 porque empieza de 0
-end
-
 get '/settings' do
   if user
     rank
@@ -395,6 +382,10 @@ get '/settings' do
   else
     erb :status404
   end
+end
+
+get '/privacy' do
+  erb :privacy
 end
 
 private
@@ -579,7 +570,10 @@ def handle_error(error_key, error_message, redirect_path)
 end
 
 def register_user(params)
-  user = build_user(params)
+  b_day = params[:b_day].presence ? Date.parse(params[:b_day]) : nil
+  gender = params[:gender].presence
+
+  user = build_user(params, b_day, gender)
 
   if user.persisted?
     handle_successful_registration(user)
@@ -588,7 +582,7 @@ def register_user(params)
   end
 end
 
-def build_user(params)
+def build_user(params, b_day, gender)
   User.create(
     username: clean_param(params[:username]),
     name: clean_param(params[:name]),
@@ -596,6 +590,8 @@ def build_user(params)
     cellphone: clean_or_default(params[:cellphone], 'CelularNoRegistrado'),
     email: clean_param(params[:email]),
     password: clean_param(params[:password]),
+    b_day: b_day,
+    gender: gender,
     is_admin: 0
   )
 end
@@ -653,6 +649,19 @@ def complete_quiz(questions)
 
   @message = 'Has completado todas las preguntas.'
   erb :quiz_complete
+end
+
+def rank
+  # Obtener la posición del usuario en base a las respuestas correctas
+  user_ranks =  User
+                .select('users.*, correct_answers')
+                .order('correct_answers DESC')
+
+  # Convertir a un hash para un acceso más fácil
+  user_position = user_ranks.map(&:id)
+
+  # Encontrar la posición del usuario específico
+  @position = user_position.index(user.id) + 1 # +1 porque empieza de 0
 end
 
 helpers do

@@ -66,6 +66,8 @@ ActiveRecord::Schema[7.2].define(version: 20_241_012_110_735) do # rubocop:disab
     t.string 'cellphone'
     t.string 'email'
     t.string 'password'
+    t.date 'b_day'
+    t.string 'gender'
     t.integer 'is_admin', default: 0
     t.integer 'correct_answers', default: 0
     t.datetime 'created_at', null: false

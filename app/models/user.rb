@@ -12,4 +12,5 @@ class User < ActiveRecord::Base
   has_many :documents
   has_many :favorites
   has_many :favorite_documents, through: :favorites, source: :document
+  validates :gender, inclusion: { in: %w[male female other], message: "%{value} is not a valid gender" }, allow_nil: true
 end
