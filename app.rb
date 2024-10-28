@@ -50,6 +50,7 @@ end
 
 get '/logout' do
   session[:is_an_user_present] = false
+  session[:admin_pw_verified] = false
   redirect '/'
 end
 
@@ -187,17 +188,33 @@ end
 
 get '/give_me_admin_please' do
   authenticate_user!
-  @already_admin = User.find(session[:user_id]).is_admin == 1 ? 1 : 0
+  @already_admin = User.find(session[:user_id]).is_admin
   erb :admin_view
 end
 
+post '/verify_admin_password' do
+  authenticate_user!
+  ultra_secret_admin_password =
+    'You->ShouldCopy()ThisString$$InOrderToBeARealAdmin,,,Otherwise~YouWillGetConfused!!And&WontBeAbleToBeAnAdmin!!'
+
+  if params[:entered_pw] == ultra_secret_admin_password
+    session[:admin_pw_verified] = true
+    redirect '/give_me_admin_please'
+  else
+    session[:admin_pw_verified] = false
+    redirect '/give_me_admin_please?error=invalid_password'
+  end
+end
+
 post '/give_me_admin_please' do
-  if user
+  if user && session[:admin_pw_verified]
     user.update(is_admin: 1)
+    session[:admin_pw_verified] = false
+    redirect '/give_me_admin_please'
   else
     logger.error('No se encontro el usuario: fallo la busqueda en la base de datos segun session[:user_id]')
+    redirect '/give_me_admin_please?error=unauthorized_access'
   end
-  redirect '/give_me_admin_please'
 end
 
 post '/remove_me_from_admins_please' do
