@@ -39,7 +39,7 @@ describe 'POST /register' do # rubocop:disable Metrics/BlockLength
   end
 
   context 'cuando faltan campos en el formulario' do
-    it 'redirige a /error-register con el mensaje de campos faltantes' do
+    it 'redirige a /error_register con el mensaje de campos faltantes' do
       post '/register', {
         username: '',
         name: 'newname',
@@ -51,13 +51,13 @@ describe 'POST /register' do # rubocop:disable Metrics/BlockLength
 
       expect(last_response).to be_redirect
       follow_redirect!
-      expect(last_request.path).to eq('/error-register')
+      expect(last_request.path).to eq('/error_register')
       expect(last_response.body).to include('Fields Username, Name, Email and Password must be filled out. Please try again.') # rubocop:disable Layout/LineLength
     end
   end
 
   context 'cuando el usuario ya existe' do
-    it 'redirige a /error-register con el mensaje de usuario existente' do
+    it 'redirige a /error_register con el mensaje de usuario existente' do
       User.create(username: 'existinguser', email: 'existinguser@example.com', password: 'password')
 
       post '/register', {
@@ -71,7 +71,7 @@ describe 'POST /register' do # rubocop:disable Metrics/BlockLength
 
       expect(last_response).to be_redirect
       follow_redirect!
-      expect(last_request.path).to eq('/error-register')
+      expect(last_request.path).to eq('/error_register')
       expect(last_response.body).to include('An user with that username or email already exists. Please try a different one.') # rubocop:disable Layout/LineLength
     end
   end

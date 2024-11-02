@@ -97,12 +97,12 @@ end
 post '/register' do
   if fields_missing?(params)
     handle_error('missing_fields', 'Fields Username, Name, Email and Password must be filled out. Please try again.',
-                 '/error-register')
+                 '/error_register')
   else
     user = find_user(params[:username], params[:email])
     if user
       handle_error('user_exists', 'An user with that username or email already exists. Please try a different one.',
-                   '/error-register')
+                   '/error_register')
     else
       register_user(params)
     end
@@ -123,20 +123,20 @@ post '/practice' do
   return file unless file.is_a?(Tempfile)
 
   response_save_pdf = save_pdf(params)
-  return json_error(response_save_pdf[1], response_save_pdf[0]) unless response_save_pdf[0] == 201
+  document = response_save_pdf[2] # Rescato el documento de la base de datos para pasarla al metodo
+
+  if response_save_pdf[0] == 201  # Ya existe en la base de datos
+    body response_save_pdf[1]
+    redirect "/documents/#{document.id}/practice_doc", response_save_pdf[0]
+  end
+
+  return json_error(response_save_pdf[1], response_save_pdf[0]) unless response_save_pdf[0] == 202
 
   full_text = extract_text_from_pdf(file)
   return json_error('Failed to extract text from PDF', 500) if full_text.empty?
 
-  document = response_save_pdf[2] # Rescato el documento de la base de datos para pasarla al metodo
-
-  # Verifica si ya hay preguntas asociadas al documento
-  if Question.where(document: document).exists?
-    redirect "/documents/#{document.id}/practice_doc"
-  else
-    @questions = generate_questions(full_text)
-    return json_error('Failed to generate quiz', 503) unless @questions
-  end
+  @questions = generate_questions(full_text)
+  return json_error('Failed to generate quiz', 503) unless @questions
 
   puts '<!-- Starting Saving Questions -->'
   save_questions_to_db(@questions, document)
@@ -180,6 +180,7 @@ post '/next_question' do
 
   if session[:current_question_index] < questions.size
     @current_question = questions.offset(session[:current_question_index]).first  # Obtiene la siguiente pregunta
+    body @current_question
     erb :question
   else
     complete_quiz(questions)
@@ -231,6 +232,7 @@ get '/view_docs' do
   authenticate_user!
   if user
     @documents = Document.all
+    status 210
     erb :view_docs
   else
     erb :status404
@@ -447,7 +449,7 @@ def save_pdf(params) # rubocop:disable Metrics/MethodLength
 
   document = save_new_document(filename, filecontent, file_hash)
 
-  return [201, 'PDF guardado correctamente', document] if document.persisted?
+  return [202, 'PDF guardado correctamente', document] if document.persisted?
 
   # Error en la persistencia
   [500, 'Error al guardar el archivo PDF en la base de datos', nil]
@@ -629,7 +631,7 @@ end
 
 def handle_error_registration
   handle_error('user_not_persisted', 'There was a problem registering your account. Please try again later.',
-               '/error-register')
+               '/error_register')
 end
 
 def process_answer(selected_answer) # rubocop:disable Metrics/MethodLength
