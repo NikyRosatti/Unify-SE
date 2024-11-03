@@ -26,7 +26,7 @@
                     <a href="/view_docs">Documents</a>
                     <a href="/practice">Practice</a>
                     <a href="/progress">Leaderboard</a>
-                    <% if user.is_admin == 1 %>
+                    <% if @utils_service.user.is_admin == 1 %>
                         <a href="/question_statistics">Statistics</a>
                     <% end %>
                     <a href="#us">Us</a>
