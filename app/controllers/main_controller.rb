@@ -19,28 +19,29 @@ require 'digest'
 require_relative '../models/question'
 require_relative '../models/user'
 
-require_relative '../services/user_services'
-require_relative '../services/utils'
+require_relative '../../helpers'
 
+# Main controller
+# It handles the general purpose views from the app
 class MainController < Sinatra::Base
+  helpers DocumentService
+  helpers PracticeService
+  helpers UserService
+  helpers UtilsService
   enable :sessions
 
-  def initialize(*args)
-    super(*args)
-    @user_service = UserService.new(self)
-    @utils_service = UtilsService.new(self)
+  before do
+    session[:is_an_user_present] = session[:is_an_user_present] || false
+    @is_an_user_present = session[:is_an_user_present] || false
   end
-  # before do
-  #   @utils_service = UtilsService.new
-  # end
 
   get '/' do
     erb :index
   end
 
   get '/question_statistics' do
-    @utils_service.authenticate_user!
-    if @utils_service.user.is_admin?
+    authenticate_user!
+    if user.is_admin?
       # Tipo de filtro a aplicar
       filter = params[:filter]
 
@@ -75,8 +76,8 @@ class MainController < Sinatra::Base
   end
 
   get '/settings' do
-    if @utils_service.user
-      @user_service.rank
+    if user
+      rank
       erb :account_settings
     else
       erb :status404
@@ -88,7 +89,7 @@ class MainController < Sinatra::Base
   end
 
   delete '/settings/:id' do
-    if @utils_service.user&.destroy
+    if user&.destroy
       session.clear
       redirect '/logout'
     else
