@@ -15,28 +15,28 @@ require 'pdf-reader'
 require 'json'
 require 'openai'
 require 'digest'
+require 'rack/method_override'
 
-set :allow_origin, 'http://127.0.0.1:3000'
-set :port, 3000
-set :database_file, './config/database.yml'
+require './helpers'
 
-require_relative 'app/controllers/main_controller'
-require_relative 'app/controllers/users_controller'
-require_relative 'app/controllers/documents_controller'
-require_relative 'app/controllers/practice_controller'
+Dir['./app/models/*.rb'].sort.each { |file| require file }
 
-enable :sessions
+Dir['./app/controllers/*.rb'].sort.each { |file| require_relative file }
 
 # Class App
 # Main class of the program
-#
 class App < Sinatra::Base
+  use Rack::MethodOverride # Para que funcionen bien los metodos delete
+
+  ENV['SESSION_SECRET'] || 'default_secret'
+  enable :sessions
+
+  set :allow_origin, 'http://127.0.0.1:3000'
+  set :port, 3000
+  set :database_file, './config/database.yml'
+
   use MainController
   use UsersController
   use PracticeController
   use DocumentsController
-
-  before do
-    @is_an_user_present = session[:is_an_user_present] || false
-  end
 end
