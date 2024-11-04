@@ -21,6 +21,42 @@ require_relative 'utils'
 
 # Helper module to handle user methods
 module UserService
+  def login_while_user_present?
+    return unless session[:is_an_user_present]
+
+    set_error_status(502, 'Para entrar en una cuenta primero se debe salir de la cuenta actual!')
+    erb :login
+  end
+
+  def login_missing_fields?
+    return unless params[:username_or_email].to_s.strip.empty? || params[:password].to_s.strip.empty?
+
+    set_error_status(501, 'Ingrese el nombre de usuario o correo electronico y la contraseña!')
+    erb :login
+  end
+
+  def login_successfully?(username_or_email, password)
+    return unless find_user_by_credentials(username_or_email, password)
+
+    session[:is_an_user_present] = true
+    session[:user_id] = find_user_by_credentials(username_or_email, password).id
+    logger.info 'Sesion iniciada'
+    redirect '/'
+  end
+
+  def login_incorrect
+    set_error_status(503, 'No se encontró el usuario o el correo, o la contraseña es incorrecta!')
+    erb :login
+  end
+
+  def existent_user?(params)
+    return unless find_user(params[:username], params[:email])
+
+    session[:error_registration] = 'user_exists'
+    logger.error 'An user with that username or email already exists. Please try a different one.'
+    redirect '/error_register'
+  end
+
   def register_user(params)
     b_day = params[:b_day].presence ? Date.parse(params[:b_day]) : nil
     gender = params[:gender].presence
@@ -54,7 +90,11 @@ module UserService
 
   def fields_missing?(params)
     required_fields = %i[username name email password]
-    required_fields.any? { |field| params[field].to_s.strip.empty? }
+    return unless required_fields.any? { |field| params[field].to_s.strip.empty? }
+
+    session[:error_registration] = 'missing_fields'
+    logger.error 'Fields Username, Name, Email and Password must be filled out. Please try again.'
+    redirect '/error_register'
   end
 
   def find_user(username, email)
