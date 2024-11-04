@@ -19,25 +19,24 @@ require 'digest'
 require_relative '../models/document'
 require_relative '../models/question'
 
-require_relative '../services/document_services'
-require_relative '../services/practice_services'
-require_relative '../services/utils'
+require_relative '../../helpers'
 
-enable :sessions
-
+# Practice controller
+# It handles the practice views
 class PracticeController < Sinatra::Base
-  def initialize(*args)
-    super(*args)
-    @document_service = DocumentService.new
-    @utils_service = UtilsService.new(self)
-    @practice_service = PracticeService.new
+  helpers DocumentService
+  helpers PracticeService
+  helpers UserService
+  helpers UtilsService
+  enable :sessions
+
+  before do
+    session[:is_an_user_present] = session[:is_an_user_present] || false
+    @is_an_user_present = session[:is_an_user_present] || false
   end
-  # before do
-  #   @utils_service = UtilsService.new
-  # end
 
   get '/practice' do
-    @utils_service.authenticate_user!
+    authenticate_user!
     erb :practice
   end
 
@@ -45,10 +44,10 @@ class PracticeController < Sinatra::Base
     # logger.info 'Received request to generate quiz'
     # logger.info "Params: #{params.inspect}"
 
-    file = @document_service.fetch_file(params)
+    file = fetch_file(params)
     return file unless file.is_a?(Tempfile)
 
-    response_save_pdf = @document_service.save_pdf(params)
+    response_save_pdf = save_pdf(params)
     document = response_save_pdf[2] # Rescato el documento de la base de datos para pasarla al metodo
 
     if response_save_pdf[0] == 201  # Ya existe en la base de datos
@@ -56,16 +55,16 @@ class PracticeController < Sinatra::Base
       redirect "/documents/#{document.id}/practice_doc", response_save_pdf[0]
     end
 
-    return @utils_service.json_error(response_save_pdf[1], response_save_pdf[0]) unless response_save_pdf[0] == 202
+    return json_error(response_save_pdf[1], response_save_pdf[0]) unless response_save_pdf[0] == 202
 
-    full_text = @document_service.extract_text_from_pdf(file)
-    return @utils_service.json_error('Failed to extract text from PDF', 500) if full_text.empty?
+    full_text = extract_text_from_pdf(file)
+    return json_error('Failed to extract text from PDF', 500) if full_text.empty?
 
-    @questions = @practice_service.generate_questions(full_text)
-    return @utils_service.json_error('Failed to generate quiz', 503) unless @questions
+    @questions = generate_questions(full_text)
+    return json_error('Failed to generate quiz', 503) unless @questions
 
     puts '<!-- Starting Saving Questions -->'
-    @document_service.save_questions_to_db(@questions, document)
+    save_questions_to_db(@questions, document)
     @document = document
     puts '<!-- End Saving Questions -->'
 
@@ -97,7 +96,7 @@ class PracticeController < Sinatra::Base
     selected_answer = params[:selected_option]
     @current_question = questions.offset(current_question_index).first # Obtiene la pregunta actual
 
-    @practice_service.process_answer(selected_answer)
+    process_answer(selected_answer)
 
     session[:current_question_index] += 1 # Avanza al siguiente índice
     logger.debug "Current question index: #{session[:current_question_index]}"
@@ -109,12 +108,12 @@ class PracticeController < Sinatra::Base
       body @current_question
       erb :question
     else
-      @practice_service.complete_quiz(questions)
+      complete_quiz(questions)
     end
   end
 
   get '/documents/:id/practice_doc' do
-    @utils_service.authenticate_user!
+    authenticate_user!
     document_id = params[:id] # El ID del documento que el usuario selecciona
     @document = Document.find(document_id)
 
