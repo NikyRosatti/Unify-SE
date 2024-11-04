@@ -17,10 +17,10 @@
         <aside class="sidebar">
             <button class="close-btn" onclick="toggleSidebar()">✖</button>
             <h2>UNIFY</h2>
-            <p>Hello <%= @utils_service.user.username%>!</p>
+            <p>Hello <%= user.username%>!</p>
             <ul>
                 <a href="/"><li>Home</li></a>
-                <a href="/viewDocs"><li>Documents</li></a>
+                <a href="/view_docs"><li>Documents</li></a>
                 <a href="/practice"><li>Practice</li></a>
                 <a href="/progress"><li>Leaderboard</li></a>
                 <a href="/#us"><li>Us</li></a>
@@ -52,7 +52,7 @@
                         </div>
                     </div>
                     <div class="delete-account">
-                        <form action="/settings/<%= @utils_service.user.id %>" method="post" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este usuario?');">
+                        <form action="/settings/<%= user.id %>" method="post" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este usuario?');">
                             <input type="hidden" name="_method" value="delete">
                             <button id="delete-btn">Delete account</button>
                         </form> 
@@ -64,9 +64,9 @@
                 <section class="userDetails card">
                     <div class="userInfo">
                         <div class="userName">
-                            <h1 class="name"><%= @utils_service.user.name %> 
-                                <% if @utils_service.user.lastname != "ApellidoNoRegistrado"%>
-                                    <%=@utils_service.user.lastname%>
+                            <h1 class="name"><%= user.name %> 
+                                <% if user.lastname != "ApellidoNoRegistrado"%>
+                                    <%=user.lastname%>
                                 <% end %>
                             </h1>
                             <div class="map">
@@ -75,7 +75,7 @@
                             </div>
                         </div>
 
-                        <% if @utils_service.user.is_admin == 1 %>
+                        <% if user.is_admin == 1 %>
                             <p>Administrator</p>
                         <% else %>
                             <p>Student</p>
@@ -125,12 +125,12 @@
                         <ul>
                             <li class="phone">
                                 <h1 class="label">Phone:</h1>
-                                <span class="info"><%= @utils_service.user.cellphone %></span>
+                                <span class="info"><%= user.cellphone %></span>
                             </li>
 
                             <li class="email">
                                 <h1 class="label">E-mail:</h1>
-                                <span class="info"><%= @utils_service.user.email %></span>
+                                <span class="info"><%= user.email %></span>
                             </li>
 
                         </ul>
@@ -141,8 +141,8 @@
                         <ul class="info-list">
                             <li class="birthday">
                                 <h1 class="label">Birthday:</h1>
-                                <% if @utils_service.user.b_day %>
-                                    <span class="info"><%=@utils_service.user.b_day%></span>
+                                <% if user.b_day %>
+                                    <span class="info"><%=user.b_day%></span>
                                 <% else %>
                                     <span class="info">-</span>
                                 <% end %>
@@ -150,8 +150,8 @@
 
                             <li class="gen">
                                 <h1 class="label">Gender:</h1>
-                                <% if @utils_service.user.gender %>
-                                    <span class="info"><%=@utils_service.user.gender%></span>
+                                <% if user.gender %>
+                                    <span class="info"><%=user.gender%></span>
                                 <% else %>
                                     <span class="info">-</span>
                                 <% end %>
