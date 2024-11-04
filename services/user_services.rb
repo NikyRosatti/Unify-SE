@@ -15,26 +15,20 @@ require 'json'
 require 'openai'
 require 'digest'
 
-require_relative '../models/user'
+require_relative '../app/models/user'
 
-require_relative './utils'
+require_relative 'utils'
 
-enable :sessions
-
-class UserService
-  def initialize(app_context)
-    @app_context = app_context
-    @utils_service = UtilsService.new(self)
-  end
-
+# Helper module to handle user methods
+module UserService
   def register_user(params)
     b_day = params[:b_day].presence ? Date.parse(params[:b_day]) : nil
     gender = params[:gender].presence
 
-    @utils_service.user = build_user(params, b_day, gender)
+    user = build_user(params, b_day, gender)
 
-    if @utils_service.user.persisted?
-      handle_successful_registration(@utils_service.user)
+    if user.persisted?
+      handle_successful_registration(user)
     else
       handle_error_registration
     end
@@ -42,12 +36,12 @@ class UserService
 
   def build_user(params, b_day, gender)
     User.create(
-      username: @utils_service.clean_param(params[:username]),
-      name: @utils_service.clean_param(params[:name]),
-      lastname: @utils_service.clean_or_default(params[:lastname], 'ApellidoNoRegistrado'),
-      cellphone: @utils_service.clean_or_default(params[:cellphone], 'CelularNoRegistrado'),
-      email: @utils_service.clean_param(params[:email]),
-      password: @utils_service.clean_param(params[:password]),
+      username: clean_param(params[:username]),
+      name: clean_param(params[:name]),
+      lastname: clean_or_default(params[:lastname], 'ApellidoNoRegistrado'),
+      cellphone: clean_or_default(params[:cellphone], 'CelularNoRegistrado'),
+      email: clean_param(params[:email]),
+      password: clean_param(params[:password]),
       b_day: b_day, gender: gender,
       is_admin: 0
     )
@@ -77,7 +71,7 @@ class UserService
     user_position = user_ranks.map(&:id)
 
     # Encontrar la posición del usuario específico
-    @position = user_position.index(@utils_service.user.id) + 1 # +1 porque empieza de 0
+    @position = user_position.index(user.id) + 1 # +1 porque empieza de 0
   end
 
   def handle_successful_registration(user)
@@ -88,8 +82,8 @@ class UserService
   end
 
   def handle_error_registration
-    @utils_service.handle_error('user_not_persisted',
-                                'There was a problem registering your account. Please try again later.',
-                                '/error_register')
+    session[:error_registration] = 'user_not_persisted'
+    logger.error 'There was a problem registering your account. Please try again later.'
+    redirect '/error_register'
   end
 end

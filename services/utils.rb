@@ -5,6 +5,7 @@
 
 require 'sinatra'
 require 'sinatra/activerecord'
+require 'sinatra/base'
 require 'sinatra/cors'
 require 'sinatra/json'
 require 'byebug'
@@ -15,15 +16,10 @@ require 'json'
 require 'openai'
 require 'digest'
 
-require_relative '../models/user'
+require_relative '../app/models/user'
 
-enable :sessions
-
-class UtilsService
-  def initialize(app_context)
-    @app_context = app_context
-  end
-
+# Helper module for utils methods.
+module UtilsService
   def clean_param(param)
     param.to_s.strip
   end
@@ -32,20 +28,14 @@ class UtilsService
     param.to_s.strip.empty? ? default : param.to_s.strip
   end
 
-  def handle_error(error_key, error_message, redirect_path)
-    session[:error_registration] = error_key
-    logger.error error_message
-    redirect redirect_path
-  end
-
   # Helper method for JSON error responses
   def json_error(message, status_code)
-    @app_context.status(status_code)
+    status(status_code)
     json error: message
   end
 
   def set_error_status(status_code, error_message)
-    @app_context.status(status_code)
+    status(status_code)
     @error = error_message
     logger.error @error
   end

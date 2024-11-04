@@ -15,14 +15,13 @@ require 'json'
 require 'openai'
 require 'digest'
 
-require_relative '../models/document'
-require_relative '../models/option'
-require_relative '../models/question'
-require_relative '../models/answer'
+require_relative '../app/models/answer'
+require_relative '../app/models/document'
+require_relative '../app/models/option'
+require_relative '../app/models/question'
 
-enable :sessions
-
-class DocumentService
+# Helper module to handle documents methods
+module DocumentService
   def save_new_document(filename, filecontent, file_hash)
     Document.create(
       filename: filename,

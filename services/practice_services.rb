@@ -15,15 +15,10 @@ require 'json'
 require 'openai'
 require 'digest'
 
-require_relative './utils'
+require_relative 'utils'
 
-enable :sessions
-
-class PracticeService
-  def initialize
-    @utils_service = UtilsService.new(self)
-  end
-
+# Helper module to handle the practice
+module PracticeService
   # Initializes the OpenAI client
   def client
     options = { access_token: ENV['TOKEN_OPENAI'], log_errors: true }
@@ -105,7 +100,7 @@ class PracticeService
 
     @incorrect_answers = questions.size - @correct_answers
 
-    @utils_service.user&.increment!(:correct_answers, @correct_answers)
+    user&.increment!(:correct_answers, @correct_answers)
 
     @message = 'Has completado todas las preguntas.'
     erb :quiz_complete
