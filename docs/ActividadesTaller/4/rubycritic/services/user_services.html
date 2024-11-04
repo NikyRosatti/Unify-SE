@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Ruby Critic - Home</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- StyleSheets -->
+    <link href="../assets/vendor/stylesheets/bootstrap.min.css" media="screen, projection, print" rel="stylesheet" type="text/css">
+    <link href="../assets/vendor/stylesheets/font-awesome.min.css" media="screen, projection, print" rel="stylesheet" type="text/css">
+    <link href="../assets/vendor/stylesheets/prettify.custom_theme.css" media="screen, projection, print" rel="stylesheet" type="text/css">
+    <link href="../assets/stylesheets/application.css" media="screen, projection, print" rel="stylesheet" type="text/css">
+  </head>
+
+  <body>
+    <header class="navbar navbar-default navbar-fixed-top">
+      <a href="#menu-toggle" class="btn btn-default hidden-lg visible-sm-* hidden-md visible-xs-* pull-left" id="menu-toggle"><i class="fa fa-bars" aria-hidden="true"></i></a>
+      <a href="../overview.html"><img src="../assets/images/logo.png" alt="Ruby Critic Logo" title="Ruby Critic Logo" width="55"><span class="logo">RUBYCRITIC</span></a>
+      
+    </header>
+    <div id="wrapper">
+      <!-- Sidebar -->
+      <aside id="sidebar-wrapper">
+        <ul class="sidebar-nav">
+          <li class="sidebar-item">
+            <a href="../overview.html" class="project-nav-item overview-nav"><i class="fa fa-dashboard"></i>Overview</a>
+          </li>
+          <li class="sidebar-item">
+            <a href="../code_index.html" class="project-nav-item code-index-nav"><i class="fa fa-code"></i>Code</a>
+          </li>
+          <li class="sidebar-item">
+            <a href="../smells_index.html" class="project-nav-item smells-index-nav"><i class="fa fa-warning"></i>Smells</a>
+          </li>
+          <li class="sidebar-item">
+            <a href="../simple_cov_index.html" class="project-nav-item coverage-index-nav"><i class="fa fa-umbrella"></i>Coverage</a>
+          </li>
+        </ul>
+      </aside>
+      <!-- /#sidebar-wrapper -->
+      <div id="page-content-wrapper">
+        <div class="container-fluid">
+          <div class="row">
+  <!--Page Title -->
+  <div class="Page_Title">
+    <div class="file-time">
+      <span class="committed-at">
+        
+          Updated <time class='js-timeago' datetime='2024-11-04 02:41:50 -0300'>2024-11-04 02:41:50 -0300</time>
+        
+      </span>
+    </div>
+    <div>
+      <h3><small>services /</small> user_services.rb</h3>
+    </div>
+  </div>
+  <!--End Page Title -->
+  <div class="Content_Wrapper">
+    <!-- code detail -->
+    <div class="code-top-detail clearfix row">
+      <div class="col-md-8">
+        <div class="row">
+          <div class="col-md-1">
+            <div class="rating c big">
+              C
+            </div>
+          </div>
+          <div class="code-statistics col-md-11">
+            <div class="col-md-3">
+              <div><span class="metric">129</span><small> lines of codes</small></div>
+              <div><span class="metric">13</span><small> methods</small></div>
+            </div>
+            <div class="col-md-3">
+              <div><span class="metric">9.3</span><small> complexity/method</small></div>
+              <div><span class="metric">2</span><small> churn</small></div>
+            </div>
+            <div class="col-md-3">
+              <div><span class="metric">121.05</span><small> complexity</small></div>
+              <div><span class="metric">0</span><small> duplications</small></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="code-tabs">
+          <ul class="nav nav-pills right-to-left">
+            <li><a href="#" id="toggle-code" class="toggle-button button">code</a></li>
+            <li class="active">
+              <a href="#" id="toggle-smells" class="toggle-button button">
+                6
+                smells
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <code class="prettyprint linenums lang-ruby file-code js-file-code"># frozen_string_literal: true
+
+# Correr app: ruby app.rb
+# http://127.0.0.1:3000/
+
+require &#39;sinatra&#39;
+require &#39;sinatra/activerecord&#39;
+require &#39;sinatra/cors&#39;
+require &#39;sinatra/json&#39;
+require &#39;byebug&#39;
+require &#39;fileutils&#39;
+require &#39;dotenv/load&#39;
+require &#39;pdf-reader&#39;
+require &#39;json&#39;
+require &#39;openai&#39;
+require &#39;digest&#39;
+
+require_relative &#39;../app/models/user&#39;
+
+require_relative &#39;utils&#39;
+
+# Helper module to handle user methods
+module UserService
+  def login_while_user_present?
+    return unless session[:is_an_user_present]
+
+    set_error_status(502, &#39;Para entrar en una cuenta primero se debe salir de la cuenta actual!&#39;)
+    erb :login
+  end
+
+  def login_missing_fields?
+    return unless params[:username_or_email].to_s.strip.empty? || params[:password].to_s.strip.empty?
+
+    set_error_status(501, &#39;Ingrese el nombre de usuario o correo electronico y la contraseña!&#39;)
+    erb :login
+  end
+
+  def login_successfully(username_or_email, password)
+    return unless find_user_by_credentials(username_or_email, password)<ol class="nocode errors smells">  <li>    <div class="description">      <div class="heading">        <span>          <i class="fa fa-warning" aria-hidden="true"></i>          <a href="https://github.com/troessner/reek/blob/master/docs/Duplicate-Method-Call.md" target="_blank"><b>DuplicateMethodCall</b></a>        </span>      </div>      <span>UserService#login_successfully calls 'find_user_by_credentials(username_or_email, password)' 2 times</span>              <span>Locations:</span>                  <a href="user_services.html#L39" class="js-smell-location">0</a>                  <a href="user_services.html#L42" class="js-smell-location">1</a>                  </div>  </li></ol>
+
+    session[:is_an_user_present] = true
+    session[:user_id] = find_user_by_credentials(username_or_email, password).id<ol class="nocode errors smells">  <li>    <div class="description">      <div class="heading">        <span>          <i class="fa fa-warning" aria-hidden="true"></i>          <a href="https://github.com/troessner/reek/blob/master/docs/Duplicate-Method-Call.md" target="_blank"><b>DuplicateMethodCall</b></a>        </span>      </div>      <span>UserService#login_successfully calls 'find_user_by_credentials(username_or_email, password)' 2 times</span>              <span>Locations:</span>                  <a href="user_services.html#L39" class="js-smell-location">0</a>                  <a href="user_services.html#L42" class="js-smell-location">1</a>                  </div>  </li></ol>
+    logger.info &#39;Sesion iniciada&#39;
+    redirect &#39;/&#39;
+  end
+
+  def login_incorrect
+    set_error_status(503, &#39;No se encontró el usuario o el correo, o la contraseña es incorrecta!&#39;)
+    erb :login
+  end
+
+  def existent_user?(params)
+    return unless find_user(params[:username], params[:email])
+
+    session[:error_registration] = &#39;user_exists&#39;
+    logger.error &#39;An user with that username or email already exists. Please try a different one.&#39;
+    redirect &#39;/error_register&#39;
+  end
+
+  def register_user(params)<ol class="nocode errors smells">  <li>    <div class="description">      <div class="heading">        <span>          <i class="fa fa-warning" aria-hidden="true"></i>          <a href="https://github.com/troessner/reek/blob/master/docs/Too-Many-Statements.md" target="_blank"><b>TooManyStatements</b></a>        </span>      </div>      <span>UserService#register_user has approx 6 statements</span>          </div>  </li></ol>
+    b_day = params[:b_day].presence ? Date.parse(params[:b_day]) : nil<ol class="nocode errors smells">  <li>    <div class="description">      <div class="heading">        <span>          <i class="fa fa-warning" aria-hidden="true"></i>          <a href="https://github.com/troessner/reek/blob/master/docs/Duplicate-Method-Call.md" target="_blank"><b>DuplicateMethodCall</b></a>        </span>      </div>      <span>UserService#register_user calls 'params[:b_day]' 2 times</span>          </div>  </li></ol>
+    gender = params[:gender].presence
+
+    user = build_user(params, b_day, gender)
+
+    if user.persisted?
+      handle_successful_registration(user)
+    else
+      handle_error_registration
+    end
+  end
+
+  def build_user(params, b_day, gender)
+    User.create(
+      username: clean_param(params[:username]),
+      name: clean_param(params[:name]),
+      lastname: clean_or_default(params[:lastname], &#39;ApellidoNoRegistrado&#39;),
+      cellphone: clean_or_default(params[:cellphone], &#39;CelularNoRegistrado&#39;),
+      email: clean_param(params[:email]),
+      password: clean_param(params[:password]),
+      b_day: b_day, gender: gender,
+      is_admin: 0
+    )
+  end
+
+  def find_user_by_credentials(username_or_email, password)<ol class="nocode errors smells">  <li>    <div class="description">      <div class="heading">        <span>          <i class="fa fa-warning" aria-hidden="true"></i>          <a href="https://github.com/troessner/reek/blob/master/docs/Utility-Function.md" target="_blank"><b>UtilityFunction</b></a>        </span>      </div>      <span>UserService#find_user_by_credentials doesn't depend on instance state (maybe move it to another class?)</span>          </div>  </li></ol>
+    User.find_by(username: username_or_email, password: password) ||
+      User.find_by(email: username_or_email, password: password)
+  end
+
+  def fields_missing?(params)<ol class="nocode errors smells">  <li>    <div class="description">      <div class="heading">        <span>          <i class="fa fa-warning" aria-hidden="true"></i>          <a href="https://github.com/troessner/reek/blob/master/docs/Too-Many-Statements.md" target="_blank"><b>TooManyStatements</b></a>        </span>      </div>      <span>UserService#fields_missing? has approx 6 statements</span>          </div>  </li></ol>
+    required_fields = %i[username name email password]
+    return unless required_fields.any? { |field| params[field].to_s.strip.empty? }
+
+    session[:error_registration] = &#39;missing_fields&#39;
+    logger.error &#39;Fields Username, Name, Email and Password must be filled out. Please try again.&#39;
+    redirect &#39;/error_register&#39;
+  end
+
+  def find_user(username, email)<ol class="nocode errors smells">  <li>    <div class="description">      <div class="heading">        <span>          <i class="fa fa-warning" aria-hidden="true"></i>          <a href="https://github.com/troessner/reek/blob/master/docs/Utility-Function.md" target="_blank"><b>UtilityFunction</b></a>        </span>      </div>      <span>UserService#find_user doesn't depend on instance state (maybe move it to another class?)</span>          </div>  </li></ol>
+    User.find_by(username: username.to_s.strip) || User.find_by(email: email.to_s.strip)
+  end
+
+  def rank
+    # Obtener la posición del usuario en base a las respuestas correctas
+    user_ranks =  User
+                  .select(&#39;users.*, correct_answers&#39;)
+                  .order(&#39;correct_answers DESC&#39;)
+
+    # Convertir a un hash para un acceso más fácil
+    user_position = user_ranks.map(&amp;:id)
+
+    # Encontrar la posición del usuario específico
+    @position = user_position.index(user.id) + 1 # +1 porque empieza de 0
+  end
+
+  def handle_successful_registration(user)
+    session[:is_an_user_present] = true
+    session.delete(:error_registration)
+    session[:user_id] = user.id
+    redirect &#39;/&#39;
+  end
+
+  def handle_error_registration
+    session[:error_registration] = &#39;user_not_persisted&#39;
+    logger.error &#39;There was a problem registering your account. Please try again later.&#39;
+    redirect &#39;/error_register&#39;
+  end
+end
+</code>
+  </div>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- JavaScripts -->
+    <script src="../assets/vendor/javascripts/jquery.min.js"></script>
+    <script src="../assets/vendor/javascripts/jquery.tablesorter.min.js"></script>
+    <script src="../assets/vendor/javascripts/jquery.scrollTo.min.js"></script>
+    <script src="../assets/vendor/javascripts/jquery.timeago.js"></script>
+    <script src="../assets/vendor/javascripts/highcharts.src-4.0.1.js"></script>
+    <script src="../assets/vendor/javascripts/prettify.js"></script>
+    <script src="../assets/vendor/javascripts/bootstrap.min.js"></script>
+    <script src="../assets/javascripts/application.js"></script>
+    <script src="../assets/vendor/javascripts/jquery.filtertable.min.js"></script>
+  </body>
+</html>

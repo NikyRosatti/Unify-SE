@@ -4,12 +4,12 @@ SE Project
 # Usage
 ## Correr la App
 ```
-ruby app.rb
+rackup
 ```
 
 Abrir en un navegador el localhost:
 ```
-http://127.0.0.1:3000
+http://127.0.0.1:9292
 ```
 
 Cambiar de nombre el archivo <b> .envexample </b> por <b> .env </b>
