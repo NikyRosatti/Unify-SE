@@ -18,21 +18,26 @@ require 'digest'
 
 require_relative '../models/document'
 
-require_relative '../services/utils'
+require_relative '../../helpers'
 
+# Document controller
+# It handles the documents views
 class DocumentsController < Sinatra::Base
-  def initialize(*args)
-    super(*args)
-    @utils_service = UtilsService.new(self)
+  helpers DocumentService
+  helpers PracticeService
+  helpers UserService
+  helpers UtilsService
+  enable :sessions
+
+  before do
+    session[:is_an_user_present] = session[:is_an_user_present] || false
+    @is_an_user_present = session[:is_an_user_present] || false
   end
-  # before do
-  #   @utils_service = UtilsService.new
-  # end
 
   # Ruta para mostrar todos los documentos
   get '/view_docs' do
-    @utils_service.authenticate_user!
-    if @utils_service.user
+    authenticate_user!
+    if user
       @documents = Document.all
       status 210
       erb :view_docs
@@ -68,14 +73,14 @@ class DocumentsController < Sinatra::Base
 
   # Ruta para mostrar un documento específico
   get '/documents/:id' do
-    @utils_service.authenticate_user!
+    authenticate_user!
     @document = Document.find(params[:id])
     @questions = @document.questions
     erb :view_doc
   end
 
   get '/documents/:id/statistics' do
-    @utils_service.authenticate_user!
+    authenticate_user!
     @document = Document.find(params[:id])
     @questions = @document.questions
     erb :statistic
