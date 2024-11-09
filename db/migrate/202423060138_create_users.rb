@@ -8,7 +8,7 @@ class CreateUsers < ActiveRecord::Migration[6.0] # rubocop:disable Style/Documen
       t.string :lastname
       t.string :cellphone
       t.string :email, unique: true
-      t.string :password
+      t.string :password_digest
       t.date   :b_day
       t.string :gender
       t.integer :is_admin, default: 0

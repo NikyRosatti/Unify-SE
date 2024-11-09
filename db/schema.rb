@@ -63,7 +63,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_12_110735) do
     t.string "lastname"
     t.string "cellphone"
     t.string "email"
-    t.string "password"
+    t.string "password_digest"
     t.date "b_day"
     t.string "gender"
     t.integer "is_admin", default: 0
