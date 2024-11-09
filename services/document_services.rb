@@ -98,12 +98,20 @@ module DocumentService
     filename = params[:file][:filename].force_encoding('UTF-8')
     filecontent = file.read
 
+    if filename.length > 15
+      session[:why] = 'The filename is too long'
+      return redirect '/error_document'
+    end
+
     # Chequeo si el archivo ya existe
     file_hash = Digest::SHA256.hexdigest(filecontent)
     existent_document = Document.find_by(file_hash: file_hash)
     return [201, 'El PDF a guardar ya existe en la base de datos', existent_document] if existent_document
 
-    return redirect '/error_document' unless File.extname(filename) == '.pdf'
+    unless File.extname(filename) == '.pdf'
+      session[:why] = 'Document is not a PDF'
+      return redirect '/error_document'
+    end
 
     document = save_new_document(filename, filecontent, file_hash)
 
