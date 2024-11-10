@@ -11,7 +11,9 @@
 <body>
   <div id='container'></div>
   <nav class="navbar">
-    <img src="media/logo.png" alt="Logo Unify" class="logo">
+    <a href="/">
+      <img src="media/logo.png" alt="Logo Unify" style="width: auto; height: auto;">
+    </a>
     <div class="search-container">
       <form action="/view_docs" method="post">
         <input type="text" name="search" placeholder="Search by name..." class="search-input">
@@ -27,7 +29,7 @@
     </div>
     <div class="nav-icons">
         <a href="/favorites" class="icon-fav"><i class='bx bxs-bookmark-heart'></i></a>
-        <a href="#settings" class="icon"><i class="fas fa-cog"></i></a>
+        <a href="/settings" class="icon"><i class="fas fa-cog"></i></a>
         <a href="#account" class="icon"><i class="fas fa-user"></i></a>
     </div>
   </nav>
