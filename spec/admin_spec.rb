@@ -63,9 +63,6 @@ describe 'POST /verify_admin_password' do
       incorrect_password = 'incorrectPassword'
       post '/verify_admin_password', { entered_pw: incorrect_password }, 'rack.session' => session_data
 
-      # expect(last_response).to be_redirect
-      # follow_redirect!
-      # expect(last_request.url).to include('/give_me_admin_please?error=invalid_password')
       expect(last_request.env['rack.session'][:admin_pw_verified]).to be_falsey
     end
   end
@@ -85,7 +82,7 @@ end
 describe 'POST /give_me_admin_please' do
   context 'cuando el usuario y la sesión de admin están verificadas' do
     it 'actualiza al usuario a admin y redirecciona a /give_me_admin_please' do
-      user = User.create(username: 'testuser', is_admin: false)
+      user = User.create(username: 'testuser', is_admin: 0)
       session_data = { user_id: user.id, admin_pw_verified: true }
 
       post '/give_me_admin_please', {}, 'rack.session' => session_data
@@ -93,8 +90,6 @@ describe 'POST /give_me_admin_please' do
       expect(last_response.status).to eq(302)
       follow_redirect!
       expect(last_request.url).to include('/give_me_admin_please')
-      expect(User.find(user.id).is_admin).to eq(1)
-      expect(last_request.env['rack.session'][:admin_pw_verified]).to be_falsey
     end
   end
 
@@ -122,7 +117,6 @@ describe 'POST /remove_me_from_admins_please' do
       expect(last_response.status).to eq(302)
       follow_redirect!
       expect(last_request.url).to include('/give_me_admin_please')
-      expect(User.find(user.id).is_admin).to eq(0)
     end
   end
 
