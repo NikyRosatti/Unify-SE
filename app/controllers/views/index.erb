@@ -19,12 +19,14 @@
 <body>
     <header>
         <div class="container">
-            <img src="media/logo.png" alt="Logo Unify" class="logo">
+            <a href="/">
+                <img src="media/logo.png" alt="Logo Unify" class="logo">
+            </a>
             <nav>
-                <a href="/">Home</a>
                 <% if @is_an_user_present %>
                     <a href="/view_docs">Documents</a>
                     <a href="/practice">Practice</a>
+                    <a href="/settings">Settings</a>
                     <a href="/progress">Leaderboard</a>
                     <% if user.is_admin == 1 %>
                         <a href="/question_statistics">Statistics</a>
@@ -89,15 +91,14 @@
         <div class="redes">
             <a href="https://x.com/UnifyUNRC" target="_blank"><i class='bx bxl-twitter bx-tada'></i></a>
             <a href="https://github.com/NikyRosatti/Unify-SE" target="_blank"><i class='bx bxl-github bx-spin'></i></a>
-            <a href="" target="_blank"><i class='bx bxl-whatsapp'></i></a>
         </div>
         <section class="nosotros" id="us">
             <h1>US</h1>
-            <p>Esta pagina surgió a partir de un proyecto dado en la Universidad Nacional de Río Cuarto. Rápidamente apostamos a esta idea para facilitar el estudio y el alcance de material a muchos. Somos dos estudiantes de Ciencias de la Computación, por lo tanto, esta página presentará mejoras continuamente para mejorar su experiencia y navegabilidad. Esperamos que les guste tanto como a nosotros :)</p>
+            <p>This page originated from a project given at the National University of Río Cuarto. We quickly committed to this idea to facilitate studying and make material accessible to many. We are two Computer Science students, so this page will continually present improvements to enhance your experience and navigability. We hope you like it as much as we do :)</p>
         </section>
         <div class="credits">
-            <p>Desarrollado por <strong>Nicolle Rosatti, Joaquín Tissera</strong></p>
-            <p>&copy; 2024. Todos los derechos reservados.</p>
+            <p>Developed by <strong>Nicolle Rosatti, Joaquín Tissera</strong></p>
+            <p>&copy; 2024. All rights reserved.</p>
         </div>
     </footer>
 </body>
