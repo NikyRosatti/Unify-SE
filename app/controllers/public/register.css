@@ -173,3 +173,20 @@ body {
 .loader span:nth-child(5) {
     animation-delay: 1s;
 }
+
+.register-form select {
+    width: 100%;
+    padding: 5px;
+    border: 3px solid #5fe8ef;
+    box-shadow: 0 0 5px #2ba5d1;
+    border-radius: 5px;
+    background: transparent;
+    color: black;
+    font-size: 16px;
+}
+
+.register-form select:focus {
+    outline: none;
+    box-shadow: 0 0 10px #ffffff80;
+    background: transparent;
+}
