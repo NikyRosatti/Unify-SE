@@ -19,7 +19,7 @@ require 'spec_helper'
 require 'rack/test'
 require 'rspec'
 
-describe 'POST /register' do # rubocop:disable Metrics/BlockLength
+describe 'POST /register' do
   context 'cuando se registra un usuario con datos válidos' do
     it 'crea un nuevo usuario y redirige a la página principal' do
       post '/register', {
