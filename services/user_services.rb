@@ -41,10 +41,10 @@ module UserService
   end
 
   def register_user(params)
-    b_day = params[:b_day].presence ? Date.parse(params[:b_day]) : nil
-    gender = params[:gender].presence
+    params[:b_day].presence ? Date.parse(params[:b_day]) : nil
+    params[:gender].presence
 
-    user = build_user(params, b_day, gender)
+    user = build_user(params)
 
     if user.persisted?
       handle_successful_registration(user)
@@ -53,15 +53,16 @@ module UserService
     end
   end
 
-  def build_user(params, b_day, gender)
+  def build_user(params) # rubocop:disable Metrics/MethodLength
     User.create(
       username: clean_param(params[:username]),
       name: clean_param(params[:name]),
-      lastname: clean_or_default(params[:lastname], 'ApellidoNoRegistrado'),
-      cellphone: clean_or_default(params[:cellphone], 'CelularNoRegistrado'),
+      lastname: clean_or_default(params[:lastname], 'UnknownLastName'),
+      cellphone: clean_or_default(params[:cellphone], 'UnknownCellphone'),
+      b_day: params[:b_day],
+      gender: clean_or_default(params[:gender], 'UnknownGender'),
       email: clean_param(params[:email]),
       password: clean_param(params[:password]),
-      b_day: b_day, gender: gender,
       is_admin: 0
     )
   end

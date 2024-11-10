@@ -6,6 +6,7 @@ body {
     height: 100vh;
     margin: 0;
     text-align: center;
+    position: relative;
 }
 
 .container {
@@ -136,4 +137,12 @@ button:hover svg {
 
 button:hover span {
     transform: translateX(7px);
+}
+
+.logo.top-left {
+    position: absolute;
+    top: 20px; /* Ajusta según el espacio que necesites */
+    left: 20px;
+    width: 220px; /* Ajusta el tamaño según prefieras */
+    height: auto;
 }

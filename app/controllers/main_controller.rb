@@ -73,6 +73,7 @@ class MainController < Sinatra::Base
   end
 
   get '/settings' do
+    authenticate_user!
     if user
       rank
       erb :account_settings
@@ -82,7 +83,8 @@ class MainController < Sinatra::Base
   end
 
   get '/privacy' do
-    erb :privacy
+    # erb :privacy
+    erb :status404
   end
 
   delete '/settings/:id' do

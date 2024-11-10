@@ -73,12 +73,12 @@ module PracticeService
     correct_answer = @current_question.answer.option.content # Accedemos al contenido de la pregunta y no al objeto
 
     if selected_answer == correct_answer
-      @message = '¡Correcto!'
+      @message = 'Correct!'
       @message_class = 'correct'
 
       @current_question.increment!(:correct_answers_cant) # Incrementamos el atributo
     else
-      @message = "Incorrecto. La respuesta correcta era: #{correct_answer}"
+      @message = "Incorrect. The correct answer was: #{correct_answer}"
       @message_class = 'incorrect'
     end
 
@@ -99,7 +99,7 @@ module PracticeService
 
     user&.increment!(:correct_answers, @correct_answers)
 
-    @message = 'Has completado todas las preguntas.'
+    @message = 'You have completed all the questions.'
     erb :quiz_complete
   end
 end

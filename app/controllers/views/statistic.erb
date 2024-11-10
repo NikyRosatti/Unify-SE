@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Estadísticas del Documento</title>
+  <title>Statistics of the Document</title>
   <link rel="stylesheet" href="/statistic.css">
 </head>
 <body>
   <div class="container">
-    <h1>Estadísticas del Documento: <%= @document.filename %></h1>
+    <h1>Statistics of the Document: <%= @document.filename %></h1>
 
     <div class="questions-container">
       <% @questions.each do |question| %>
@@ -27,7 +27,7 @@
       <% end %>
     </div>
 
-    <a href="/view_docs" class="btn">Volver</a>
+    <a href="/view_docs" class="btn">Back</a>
   </div>
 </body>
 </html>

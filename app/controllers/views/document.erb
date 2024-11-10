@@ -6,12 +6,12 @@
 <body>
   <div id="document-content">
     <h1><%= @document.filename %></h1>
-    <p>Fecha de carga: <%= @document.uploaddate %></p>
+    <p>Upload Date: <%= @document.uploaddate %></p>
 
-    <h2>Estadísticas</h2>
+    <h2>Statistics</h2>
     <!-- Aquí puedes agregar las estadísticas -->
 
-    <h2>Preguntas</h2>
+    <h2>Questions</h2>
     <% @questions.each do |question| %>
       <div class="question">
         <p><%= question.content %></p>

@@ -3,20 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Favoritos</title>
+  <title>Favorites</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 </head>
 <body>
+  <a href="/">
+    <img src="media/logo.png" alt="Logo Unify" class="logo">
+  </a>
   <div class="container mt-5">
-    <h1>Mis Documentos Favoritos</h1>
+    <h1>My Favorite Documents</h1>
 
     <% if @favorites.any? %>
       <table class="table table-bordered">
         <thead>
           <tr>
-            <th>Título</th>
-            <th>Descripción</th>
-            <th>Acciones</th>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -26,19 +29,19 @@
               <td>
                 <form action="/documents/<%= document.id %>/unfavorite" method="post" style="display:inline;">
                   <input type="hidden" name="_method" value="delete">
-                  <button type="submit" class="btn btn-danger" onclick="return confirm('¿Estás seguro de que deseas eliminar este documento de favoritos?')">Eliminar</button>
+                  <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to remove this document from favorites?')">Remove</button>
                 </form>
-                <a href="/documents/<%= document.id %>" class="btn btn-primary">Ver Documento</a>
+                <a href="/documents/<%= document.id %>" class="btn btn-primary">View Documents</a>
               </td>
             </tr>
           <% end %>
         </tbody>
       </table>
     <% else %>
-      <p>No tienes documentos favoritos.</p>
+      <p>You don't have favorite documents.</p>
     <% end %>
     
-    <a href="/view_docs" class="btn btn-secondary mt-3">Volver a Documentos</a>
+    <a href="/view_docs" class="btn btn-secondary mt-3">Back to Documents</a>
   </div>
 
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>

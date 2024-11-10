@@ -106,7 +106,7 @@ module DocumentService
   end
 
   def handle_file_provided(params)
-    [400, 'No se proporcionó un archivo', nil] unless params[:file] && params[:file][:tempfile]
+    [400, 'No file provided.', nil] unless params[:file] && params[:file][:tempfile]
   end
 
   def handle_long_filename(filename)
@@ -130,14 +130,14 @@ module DocumentService
 
   def handle_existing_file(file_hash)
     existent_document = Document.find_by(file_hash: file_hash)
-    [201, 'El PDF a guardar ya existe en la base de datos', existent_document] if existent_document
+    [201, 'The PDF to be saved already exists in the database', existent_document] if existent_document
   end
 
   def handle_document_persisted(document)
     if document.persisted?
-      [202, 'PDF guardado correctamente', document]
+      [202, 'PDF saved successfully', document]
     else
-      [500, 'Error al guardar el archivo PDF en la base de datos', nil]
+      [500, 'Error saving the PDF file to the database', nil]
     end
   end
 end

@@ -205,7 +205,7 @@ module DocumentService
   end
 
   def handle_file_provided(params)<ol class="nocode errors smells">  <li>    <div class="description">      <div class="heading">        <span>          <i class="fa fa-warning" aria-hidden="true"></i>          <a href="https://github.com/troessner/reek/blob/master/docs/Utility-Function.md" target="_blank"><b>UtilityFunction</b></a>        </span>      </div>      <span>DocumentService#handle_file_provided doesn't depend on instance state (maybe move it to another class?)</span>          </div>  </li></ol>
-    [400, &#39;No se proporcionó un archivo&#39;, nil] unless params[:file] &amp;&amp; params[:file][:tempfile]<ol class="nocode errors smells">  <li>    <div class="description">      <div class="heading">        <span>          <i class="fa fa-warning" aria-hidden="true"></i>          <a href="https://github.com/troessner/reek/blob/master/docs/Duplicate-Method-Call.md" target="_blank"><b>DuplicateMethodCall</b></a>        </span>      </div>      <span>DocumentService#handle_file_provided calls 'params[:file]' 2 times</span>          </div>  </li></ol>
+    [400, &#39;No file provided.&#39;, nil] unless params[:file] &amp;&amp; params[:file][:tempfile]<ol class="nocode errors smells">  <li>    <div class="description">      <div class="heading">        <span>          <i class="fa fa-warning" aria-hidden="true"></i>          <a href="https://github.com/troessner/reek/blob/master/docs/Duplicate-Method-Call.md" target="_blank"><b>DuplicateMethodCall</b></a>        </span>      </div>      <span>DocumentService#handle_file_provided calls 'params[:file]' 2 times</span>          </div>  </li></ol>
   end
 
   def handle_long_filename(filename)
@@ -229,14 +229,14 @@ module DocumentService
 
   def handle_existing_file(file_hash)<ol class="nocode errors smells">  <li>    <div class="description">      <div class="heading">        <span>          <i class="fa fa-warning" aria-hidden="true"></i>          <a href="https://github.com/troessner/reek/blob/master/docs/Utility-Function.md" target="_blank"><b>UtilityFunction</b></a>        </span>      </div>      <span>DocumentService#handle_existing_file doesn't depend on instance state (maybe move it to another class?)</span>          </div>  </li></ol>
     existent_document = Document.find_by(file_hash: file_hash)
-    [201, &#39;El PDF a guardar ya existe en la base de datos&#39;, existent_document] if existent_document
+    [201, &#39;The PDF to be saved already exists in the database&#39;, existent_document] if existent_document
   end
 
   def handle_document_persisted(document)<ol class="nocode errors smells">  <li>    <div class="description">      <div class="heading">        <span>          <i class="fa fa-warning" aria-hidden="true"></i>          <a href="https://github.com/troessner/reek/blob/master/docs/Utility-Function.md" target="_blank"><b>UtilityFunction</b></a>        </span>      </div>      <span>DocumentService#handle_document_persisted doesn't depend on instance state (maybe move it to another class?)</span>          </div>  </li></ol>
     if document.persisted?
       [202, &#39;PDF guardado correctamente&#39;, document]
     else
-      [500, &#39;Error al guardar el archivo PDF en la base de datos&#39;, nil]
+      [500, &#39;Error saving the PDF file to the database&#39;, nil]
     end
   end
 end
