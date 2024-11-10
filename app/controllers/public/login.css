@@ -174,3 +174,12 @@ body {
 .loader span:nth-child(5) {
     animation-delay: 1s;
 }
+
+.login-form p.error-message {
+    color: white; /* Rojo claro para destacar el error */
+    font-size: 16px;
+    margin-top: 10px;
+    font-family: 'Jaro', sans-serif; /* Mismo tipo de fuente que el resto del texto */
+    font-size: medium;
+    text-align: center; /* Centrado, para que quede alineado con el resto */
+}
