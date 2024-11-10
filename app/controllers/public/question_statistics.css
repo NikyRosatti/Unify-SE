@@ -4,6 +4,7 @@ body {
     background-color: #f0f0f5;
     margin: 0;
     padding: 20px;
+    position: relative;
 }
 
 /* Estilos para el formulario */
@@ -98,4 +99,12 @@ li {
 /* Efecto al pasar el cursor sobre los elementos de la lista */
 li:hover {
     background-color: rgba(255, 255, 255, 0.2);
+}
+
+.logo.top-left {
+    position: absolute;
+    top: 20px; /* Ajusta según el espacio que necesites */
+    left: 20px;
+    width: 220px; /* Ajusta el tamaño según prefieras */
+    height: auto;
 }
