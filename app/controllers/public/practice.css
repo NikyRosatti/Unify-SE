@@ -141,8 +141,8 @@ button:hover span {
 
 .logo.top-left {
     position: absolute;
-    top: 20px; /* Ajusta según el espacio que necesites */
+    top: 20px; 
     left: 20px;
-    width: 220px; /* Ajusta el tamaño según prefieras */
+    width: 10%;
     height: auto;
 }
