@@ -83,42 +83,61 @@ module DocumentService
     end
   end
 
-  def save_pdf(params) # rubocop:disable Metrics/MethodLength
+  def save_pdf(params)
     # Este metodo devuelve un arreglo con 3 cosas:
     # save_pdf[0] == Status Code HTTP segun guardado o no
     # save_pdf[1] == Mensaje JSON segun Status Code Error
     # save_pdf[2] == El documento que se guarda en la base de datos o nil en caso contrario
 
-    return [400, 'No se proporcionó un archivo', nil] unless file_provided?(params)
+    handle_file_provided(params)
 
     file = params[:file][:tempfile]
     filename = params[:file][:filename].force_encoding('UTF-8')
-    filecontent = file.read
+    handle_long_filename(filename)
+    handle_invalid_format(filename)
 
-    if filename.length > 25
-      session[:why] = 'The filename is too long'
-      return redirect '/error_document'
-    end
+    file_hash, filecontent = read_and_hash(file)
 
-    # Chequeo si el archivo ya existe
-    file_hash = Digest::SHA256.hexdigest(filecontent)
-    existent_document = Document.find_by(file_hash: file_hash)
-    return [201, 'El PDF a guardar ya existe en la base de datos', existent_document] if existent_document
-
-    unless File.extname(filename) == '.pdf'
-      session[:why] = 'Document is not a PDF'
-      return redirect '/error_document'
-    end
+    response_existent = handle_existing_file(file_hash)
+    return response_existent if response_existent
 
     document = save_new_document(filename, filecontent, file_hash)
-
-    return [202, 'PDF guardado correctamente', document] if document.persisted?
-
-    # Error en la persistencia
-    [500, 'Error al guardar el archivo PDF en la base de datos', nil]
+    handle_document_persisted(document)
   end
 
-  def file_provided?(params)
-    params[:file] && params[:file][:tempfile]
+  def handle_file_provided(params)
+    [400, 'No se proporcionó un archivo', nil] unless params[:file] && params[:file][:tempfile]
+  end
+
+  def handle_long_filename(filename)
+    return unless filename.length > 25
+
+    session[:why] = 'The filename is too long'
+    redirect '/error_document'
+  end
+
+  def handle_invalid_format(filename)
+    return if File.extname(filename) == '.pdf'
+
+    session[:why] = 'Document is not a PDF'
+    redirect '/error_document'
+  end
+
+  def read_and_hash(file)
+    filecontent = file.read
+    [Digest::SHA256.hexdigest(filecontent), filecontent]
+  end
+
+  def handle_existing_file(file_hash)
+    existent_document = Document.find_by(file_hash: file_hash)
+    [201, 'El PDF a guardar ya existe en la base de datos', existent_document] if existent_document
+  end
+
+  def handle_document_persisted(document)
+    if document.persisted?
+      [202, 'PDF guardado correctamente', document]
+    else
+      [500, 'Error al guardar el archivo PDF en la base de datos', nil]
+    end
   end
 end
