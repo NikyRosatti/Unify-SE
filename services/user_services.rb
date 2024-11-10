@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-# Correr app: ruby app.rb
-# http://127.0.0.1:3000/
-
 require 'sinatra'
 require 'sinatra/activerecord'
 require 'sinatra/cors'
@@ -86,7 +83,7 @@ module UserService
   def find_user_by_credentials(username_or_email, password_)
     user = User.find_by(username: username_or_email) ||
            User.find_by(email: username_or_email)
-    user && user&.authenticate(password_) ? user : nil
+    user&.authenticate(password_) ? user : nil
   end
 
   def fields_missing?(params)

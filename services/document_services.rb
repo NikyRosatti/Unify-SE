@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-# Correr app: ruby app.rb
-# http://127.0.0.1:3000/
-
 require 'sinatra'
 require 'sinatra/activerecord'
 require 'sinatra/cors'
@@ -98,7 +95,7 @@ module DocumentService
     filename = params[:file][:filename].force_encoding('UTF-8')
     filecontent = file.read
 
-    if filename.length > 15
+    if filename.length > 25
       session[:why] = 'The filename is too long'
       return redirect '/error_document'
     end
