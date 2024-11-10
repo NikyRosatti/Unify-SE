@@ -42,17 +42,17 @@
                         <div class="primary">
                             <h1>Account Settings</h1>
                             <span>OPTIONS</span>
-                            <li><a href="/settings/profile">Actualizar Perfil</a></li>
-                            <li><a href="/give_me_admin_please">Gestionar Roles y Permisos</a></li>
-                            <li><a href="/settings/password">Cambiar Contraseña</a></li>
-                            <li><a href="/settings/notifications">Notificaciones</a></li>
-                            <li><a href="/privacy">Privacidad</a></li>
-                            <li><a href="/settings/language">Idioma</a></li>
-                            <li><a href="/settings/accessibility">Accesibilidad</a></li>
+                            <li><a href="/settings/profile">Update Profile</a></li>
+                            <li><a href="/give_me_admin_please">Manage Roles and Permissions</a></li>
+                            <li><a href="/settings/password">Change Password</a></li>
+                            <%# <li><a href="/settings/notifications">Notifications</a></li> %>
+                            <%# <li><a href="/privacy">Privacy</a></li> %>
+                            <%# <li><a href="/settings/language">Language</a></li> %>
+                            <%# <li><a href="/settings/accessibility">Accessibility</a></li> %>
                         </div>
                     </div>
                     <div class="delete-account">
-                        <form action="/settings/<%= user.id %>" method="post" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este usuario?');">
+                        <form action="/settings/<%= user.id %>" method="post" onsubmit="return confirm('Are you sure you want to delete this user?');">
                             <input type="hidden" name="_method" value="delete">
                             <button id="delete-btn">Delete account</button>
                         </form> 
@@ -65,7 +65,7 @@
                     <div class="userInfo">
                         <div class="userName">
                             <h1 class="name"><%= user.name %> 
-                                <% if user.lastname != "ApellidoNoRegistrado"%>
+                                <% if user.lastname != "UnknownLastName"%>
                                     <%=user.lastname%>
                                 <% end %>
                             </h1>
@@ -123,10 +123,12 @@
                     <div class="contact_Info">
                         <h1 class="heading">Contact Information</h1>
                         <ul>
-                            <li class="phone">
-                                <h1 class="label">Phone:</h1>
-                                <span class="info"><%= user.cellphone %></span>
-                            </li>
+                            <% if user.cellphone != "UnknownCellphone" %>
+                                <li class="phone">
+                                    <h1 class="label">Phone:</h1>
+                                    <span class="info"><%= user.cellphone %></span>
+                                </li>
+                            <% end %>
 
                             <li class="email">
                                 <h1 class="label">E-mail:</h1>
@@ -139,23 +141,19 @@
                     <div class="basic_info">
                         <h1 class="heading">Basic Information</h1>
                         <ul class="info-list">
-                            <li class="birthday">
-                                <h1 class="label">Birthday:</h1>
-                                <% if user.b_day %>
+                            <% if user.b_day %>
+                                <li class="birthday">
+                                    <h1 class="label">Birthday:</h1>
                                     <span class="info"><%=user.b_day%></span>
-                                <% else %>
-                                    <span class="info">-</span>
-                                <% end %>
-                            </li>
+                                </li>
+                            <% end %>
 
-                            <li class="gen">
-                                <h1 class="label">Gender:</h1>
-                                <% if user.gender %>
+                            <% if user.gender != "UnknownGender" %>
+                                <li class="gen">
+                                    <h1 class="label">Gender:</h1>
                                     <span class="info"><%=user.gender%></span>
-                                <% else %>
-                                    <span class="info">-</span>
-                                <% end %>
-                            </li>
+                                </li>
+                            <% end %>
                         </ul>
                     </div>
                 </section>
