@@ -37,7 +37,7 @@
               <input type="password" id="password" name="password" required>
             </div>
             <% if @error %>
-              <p style="color: red;"><%= @error %></p>
+              <p class="error-message"><%= @error %></p>
             <% end %>
             <button type="submit">Login</button>
           </form>

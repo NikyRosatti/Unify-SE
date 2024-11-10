@@ -34,7 +34,7 @@
     </div>
   </nav>
   <div class="hero">
-    <div class="hero-title"><h1>Documentos Cargados</h1></div>
+    <div class="hero-title"><h1>Uploaded Documents</h1></div>
     <div class="documents-container">
       <% @documents.each do |document| %>
         <div class="document-card" id="document-<%= document.id %>">
@@ -42,7 +42,7 @@
           <h3 class="document-title"><%= File.basename(document.filename, File.extname(document.filename)) %></h3>
           
           <div class="document-actions" id="actions-<%= document.id %>">
-            <p>Fecha de carga: <%= document.uploaddate %></p>
+            <p>Upload Date: <%= document.uploaddate %></p>
             <!-- Documentos que puede eliminar el admin  -->
             <% if user.is_admin == 1%>
               <img src="media/trash.png" onclick="deleteDocument('<%= document.id %>')" id="delete-button" alt="delete" class="delete_doc">
@@ -83,7 +83,7 @@
 
     function deleteDocument(documentId) {
       // Confirmación antes de eliminar (por las dudis)
-      if (confirm("¿Estás seguro de que deseas eliminar este documento?")) {
+      if (confirm("Are you sure you want to delete this document?")) {
         fetch(`/api/documents/${documentId}`, {
           method: 'DELETE',
           headers: {
@@ -92,7 +92,7 @@
         })
         .then(response => {
           if (response.ok) {
-            alert('Documento eliminado correctamente');
+            alert('Document deleted successfully');
             //document.getElementById("delete-button").closest(".document-container").remove();
             location.reload();
           } else {
@@ -102,7 +102,7 @@
           }
         })
         .catch(error => {
-          console.error('Error al eliminar el documento:', error);
+          console.error('Error deleting document:', error);
         });
       }
     }
