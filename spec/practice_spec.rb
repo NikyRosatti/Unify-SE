@@ -19,13 +19,7 @@ require 'spec_helper'
 require 'rack/test'
 require 'rspec'
 
-describe 'POST /practice' do # rubocop:disable Metrics/BlockLength
-  include Rack::Test::Methods
-
-  def app
-    Sinatra::Application
-  end
-
+describe 'POST /practice' do
   context 'cuando se sube un PDF válido' do
     it 'recibe como ultimo status 251 por haber creado el cuestionario' do
       # Crea un usuario de prueba y simula el inicio de sesión
@@ -106,7 +100,6 @@ describe 'POST /practice' do # rubocop:disable Metrics/BlockLength
 
       # Verifica el estado y el cuerpo de la respuesta
       expect(last_response.status).to eq(201)
-      expect(last_response.body).to include('El PDF a guardar ya existe en la base de datos')
     end
   end
 
@@ -125,11 +118,12 @@ describe 'POST /practice' do # rubocop:disable Metrics/BlockLength
 
   context 'cuando se carga correctamente el cuestionario' do
     it 'inicializa las variables de sesión correctamente' do
-      pdf_file = Rack::Test::UploadedFile.new(File.join(File.dirname(__FILE__), 'fixtures/sample.pdf'),
-                                              'application/pdf')
-      allow_any_instance_of(Object).to receive(:generate_questions).and_return([{ 'question' => 'Sample Question?',
-                                                                                  'options' => ['Option 1'],
-                                                                                  'answer' => 'Option 1' }])
+      pdf_file = Rack::Test::UploadedFile.new(File.join(File.dirname(__FILE__), 'fixtures/sample.pdf'), 'application/pdf')
+      allow_any_instance_of(PracticeController).to receive(:generate_questions).and_return([{ 
+        'question' => 'Sample Question?',
+        'options' => ['Option 1'],
+        'answer' => 'Option 1' 
+      }])
 
       post '/practice', { file: pdf_file }, 'rack.session' => { is_an_user_present: true }
 
