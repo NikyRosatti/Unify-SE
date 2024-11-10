@@ -211,7 +211,7 @@ describe &#39;POST /practice&#39; do
       post &#39;/practice&#39;, { file: pdf_file }, &#39;rack.session&#39; =&gt; { is_an_user_present: true }
 
       expect(last_response.status).to eq(500)
-      expect(last_response.body).to include(&#39;Error al guardar el archivo PDF en la base de datos&#39;)
+      expect(last_response.body).to include(&#39;Error saving the PDF file to the database&#39;)
     end
   end
 
@@ -314,7 +314,7 @@ describe &#39;POST /practice&#39; do
       post &#39;/next_question&#39;, { selected_option: &#39;Opcion incorrecta&#39; }, &#39;rack.session&#39; =&gt; session_data
 
       expect(last_response.status).to eq(200)
-      expect(last_response.body).to include(&quot;Incorrecto. La respuesta correcta era: #{option1.content}&quot;)
+      expect(last_response.body).to include(&quot;Incorrect. The correct answer was: #{option1.content}&quot;)
     end
   end
 
@@ -333,7 +333,7 @@ describe &#39;POST /practice&#39; do
 
       post &#39;/next_question&#39;, { selected_option: &#39;Respuesta correcta&#39; }, &#39;rack.session&#39; =&gt; session_data
 
-      expect(last_response.body).to include(&#39;Has completado todas las preguntas.&#39;)
+      expect(last_response.body).to include(&#39;You have completed all the questions.&#39;)
     end
   end
 

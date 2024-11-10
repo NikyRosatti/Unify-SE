@@ -177,7 +177,7 @@ module PracticeService
 
       @current_question.increment!(:correct_answers_cant) # Incrementamos el atributo
     else
-      @message = &quot;Incorrecto. La respuesta correcta era: #{correct_answer}&quot;
+      @message = &quot;Incorrect. The correct answer was: #{correct_answer}&quot;
       @message_class = &#39;incorrect&#39;
     end
 
@@ -198,7 +198,7 @@ module PracticeService
 
     user&amp;.increment!(:correct_answers, @correct_answers)
 
-    @message = &#39;Has completado todas las preguntas.&#39;
+    @message = &#39;You have completed all the questions.&#39;
     erb :quiz_complete
   end
 end
