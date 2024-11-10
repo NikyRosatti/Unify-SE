@@ -53,6 +53,12 @@ Migrar es una forma de decir impactar los cambios realizados hacia la base de da
 bundle exec rake db:migrate
 ```
 
+# Testing: Rspec, Simplecov
+Para correr los tests mencionados en la carpeta spec/
+```
+rspec
+```
+
 # Refactorización: Uso de Rubocop
 La forma de revisar la refactorización del proyecto según la gema Rubocop es la siguiente:
 ```
