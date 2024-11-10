@@ -95,11 +95,9 @@ describe 'POST /practice' do
         uploaddate: Date.today
       )
 
-      # Simula la subida del archivo sample.pdf
       post '/practice', { file: pdf_file }, 'rack.session' => { is_an_user_present: true }
 
-      # Verifica el estado y el cuerpo de la respuesta
-      expect(last_response.status).to eq(201)
+      expect(last_response.status).to eq(302)
     end
   end
 
@@ -112,7 +110,7 @@ describe 'POST /practice' do
       post '/practice', { file: pdf_file }, 'rack.session' => { is_an_user_present: true }
 
       expect(last_response.status).to eq(500)
-      expect(last_response.body).to include('Error al guardar el archivo PDF en la base de datos')
+      expect(last_response.body).to include('Error saving the PDF file to the database')
     end
   end
 
@@ -185,7 +183,7 @@ describe 'POST /practice' do
       post '/next_question', { selected_option: 'Opcion correcta' }, 'rack.session' => session_data
 
       expect(last_response.status).to eq(200)
-      expect(last_response.body).to include('¡Correcto!')
+      expect(last_response.body).to include('Correct!')
     end
   end
 
@@ -215,7 +213,7 @@ describe 'POST /practice' do
       post '/next_question', { selected_option: 'Opcion incorrecta' }, 'rack.session' => session_data
 
       expect(last_response.status).to eq(200)
-      expect(last_response.body).to include("Incorrecto. La respuesta correcta era: #{option1.content}")
+      expect(last_response.body).to include("Incorrect. The correct answer was: #{option1.content}")
     end
   end
 
@@ -234,7 +232,7 @@ describe 'POST /practice' do
 
       post '/next_question', { selected_option: 'Respuesta correcta' }, 'rack.session' => session_data
 
-      expect(last_response.body).to include('Has completado todas las preguntas.')
+      expect(last_response.body).to include('You have completed all the questions.')
     end
   end
 
