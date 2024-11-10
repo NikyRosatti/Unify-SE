@@ -27,7 +27,7 @@
             </ul>
             <button class="contact">Contact +</button>
         </aside>
-        <div class="content-main">
+        <div class="content-main" id="mainContent">
             <button class="sidebar-toggle" onclick="toggleSidebar()">&#9776;</button>
             <div class="content-box">
                 <div class="title">
@@ -52,10 +52,23 @@
                         </div>
                     </div>
                     <div class="delete-account">
-                        <form action="/settings/<%= user.id %>" method="post" onsubmit="return confirm('Are you sure you want to delete this user?');">
-                            <input type="hidden" name="_method" value="delete">
-                            <button id="delete-btn">Delete account</button>
-                        </form> 
+                        <button id="delete-btn" onclick="showConfirmation()">Delete account</button>
+                        <div class="cardModal" id="confirmationModal" style="display: none;">
+                            <div class="card-content">
+                                <p class="card-heading">Delete Account?</p>
+                                <p class="card-description">Are you sure you want to delete this user?</p>
+                            </div>
+                            <div class="modal-button-wrapper">
+                                <!-- Botón de cancelar -->
+                                <button class="modal-button cancel" onclick="closeConfirmation()">Cancel</button>
+                                
+                                <!-- Formulario de eliminación -->
+                                <form action="/settings/<%= user.id %>" method="post">
+                                <input type="hidden" name="_method" value="delete">
+                                <button type="submit" class="modal-button delPrimary">Delete</button>
+                                </form>
+                            </div>
+                        </div> 
                     </div>
                 </section>
 
@@ -188,6 +201,20 @@
             currentIndex = (currentIndex + 1) % images.length;
             profileImage.src = images[currentIndex];
         });
+
+        function showConfirmation() {
+            // Muestra el modal de confirmación
+            document.getElementById("confirmationModal").style.display = "flex";
+            // Aplica el efecto borroso al contenido principal
+            //document.getElementById("mainContent").classList.add("blurred");
+        }
+        
+        function closeConfirmation() {
+            // Cierra el modal de confirmación
+            document.getElementById("confirmationModal").style.display = "none";
+            // Elimina el efecto borroso al contenido principal
+            //document.getElementById("mainContent").classList.remove("blurred");
+        }
     </script>
 </body>
 </html>
