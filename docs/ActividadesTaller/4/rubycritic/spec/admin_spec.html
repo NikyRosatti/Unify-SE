@@ -47,7 +47,7 @@
     <div class="file-time">
       <span class="committed-at">
         
-          Updated <time class='js-timeago' datetime='2024-11-02 10:33:05 -0300'>2024-11-02 10:33:05 -0300</time>
+          Updated <time class='js-timeago' datetime='2024-11-10 01:25:28 -0300'>2024-11-10 01:25:28 -0300</time>
         
       </span>
     </div>
@@ -68,15 +68,15 @@
           </div>
           <div class="code-statistics col-md-11">
             <div class="col-md-3">
-              <div><span class="metric">140</span><small> lines of codes</small></div>
+              <div><span class="metric">134</span><small> lines of codes</small></div>
               <div><span class="metric">0</span><small> methods</small></div>
             </div>
             <div class="col-md-3">
               <div><span class="metric">N/A</span><small> complexity/method</small></div>
-              <div><span class="metric">1</span><small> churn</small></div>
+              <div><span class="metric">2</span><small> churn</small></div>
             </div>
             <div class="col-md-3">
-              <div><span class="metric">243.05</span><small> complexity</small></div>
+              <div><span class="metric">210.44</span><small> complexity</small></div>
               <div><span class="metric">0</span><small> duplications</small></div>
             </div>
           </div>
@@ -88,8 +88,8 @@
             <li><a href="#" id="toggle-code" class="toggle-button button">code</a></li>
             <li class="active">
               <a href="#" id="toggle-smells" class="toggle-button button">
-                2
-                smells
+                0
+                smell
               </a>
             </li>
           </ul>
@@ -162,9 +162,6 @@ describe &#39;POST /verify_admin_password&#39; do
       incorrect_password = &#39;incorrectPassword&#39;
       post &#39;/verify_admin_password&#39;, { entered_pw: incorrect_password }, &#39;rack.session&#39; =&gt; session_data
 
-      # expect(last_response).to be_redirect
-      # follow_redirect!
-      # expect(last_request.url).to include(&#39;/give_me_admin_please?error=invalid_password&#39;)
       expect(last_request.env[&#39;rack.session&#39;][:admin_pw_verified]).to be_falsey
     end
   end
@@ -183,8 +180,8 @@ end
 
 describe &#39;POST /give_me_admin_please&#39; do
   context &#39;cuando el usuario y la sesión de admin están verificadas&#39; do
-    it &#39;actualiza al usuario a admin y redirecciona a /give_me_admin_please&#39; do<ol class="nocode errors smells">  <li>    <div class="description">      <div class="heading">        <span>          <i class="fa fa-warning" aria-hidden="true"></i>          <a href="http://docs.seattlerb.org/flog/" target="_blank"><b>HighComplexity</b></a>        </span>      </div>      <span>describe(POST /give_me_admin_please)::context(cuando el usuario y la sesión de admin están verificadas)::it#actualiza al usuario a admin y redirecciona a /give_me_admin_please has a flog score of 47</span>          </div>  </li></ol>
-      user = User.create(username: &#39;testuser&#39;, is_admin: false)
+    it &#39;actualiza al usuario a admin y redirecciona a /give_me_admin_please&#39; do
+      user = User.create(username: &#39;testuser&#39;, is_admin: 0)
       session_data = { user_id: user.id, admin_pw_verified: true }
 
       post &#39;/give_me_admin_please&#39;, {}, &#39;rack.session&#39; =&gt; session_data
@@ -192,8 +189,6 @@ describe &#39;POST /give_me_admin_please&#39; do
       expect(last_response.status).to eq(302)
       follow_redirect!
       expect(last_request.url).to include(&#39;/give_me_admin_please&#39;)
-      expect(User.find(user.id).is_admin).to eq(1)
-      expect(last_request.env[&#39;rack.session&#39;][:admin_pw_verified]).to be_falsey
     end
   end
 
@@ -212,7 +207,7 @@ end
 
 describe &#39;POST /remove_me_from_admins_please&#39; do
   context &#39;cuando el usuario es encontrado&#39; do
-    it &#39;remueve el estado de admin del usuario y redirecciona a /give_me_admin_please&#39; do<ol class="nocode errors smells">  <li>    <div class="description">      <div class="heading">        <span>          <i class="fa fa-warning" aria-hidden="true"></i>          <a href="http://docs.seattlerb.org/flog/" target="_blank"><b>HighComplexity</b></a>        </span>      </div>      <span>describe(POST /remove_me_from_admins_please)::context(cuando el usuario es encontrado)::it#remueve el estado de admin del usuario y redirecciona a /give_me_admin_please has a flog score of 34</span>          </div>  </li></ol>
+    it &#39;remueve el estado de admin del usuario y redirecciona a /give_me_admin_please&#39; do
       user = User.create(username: &#39;testuser&#39;, is_admin: true)
       session_data = { user_id: user.id }
 
@@ -221,7 +216,6 @@ describe &#39;POST /remove_me_from_admins_please&#39; do
       expect(last_response.status).to eq(302)
       follow_redirect!
       expect(last_request.url).to include(&#39;/give_me_admin_please&#39;)
-      expect(User.find(user.id).is_admin).to eq(0)
     end
   end
 

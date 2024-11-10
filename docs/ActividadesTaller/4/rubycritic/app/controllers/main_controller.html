@@ -47,7 +47,7 @@
     <div class="file-time">
       <span class="committed-at">
         
-          Updated <time class='js-timeago' datetime='2024-11-04 02:43:38 -0300'>2024-11-04 02:43:38 -0300</time>
+          Updated <time class='js-timeago' datetime='2024-11-09 21:13:40 -0300'>2024-11-09 21:13:40 -0300</time>
         
       </span>
     </div>
@@ -68,12 +68,12 @@
           </div>
           <div class="code-statistics col-md-11">
             <div class="col-md-3">
-              <div><span class="metric">99</span><small> lines of codes</small></div>
+              <div><span class="metric">96</span><small> lines of codes</small></div>
               <div><span class="metric">0</span><small> methods</small></div>
             </div>
             <div class="col-md-3">
               <div><span class="metric">N/A</span><small> complexity/method</small></div>
-              <div><span class="metric">2</span><small> churn</small></div>
+              <div><span class="metric">3</span><small> churn</small></div>
             </div>
             <div class="col-md-3">
               <div><span class="metric">50.36</span><small> complexity</small></div>
@@ -98,9 +98,6 @@
     </div>
 
     <code class="prettyprint linenums lang-ruby file-code js-file-code"># frozen_string_literal: true
-
-# Correr app: ruby app.rb
-# http://127.0.0.1:3000/
 
 require &#39;sinatra&#39;
 require &#39;sinatra/activerecord&#39;
@@ -129,7 +126,7 @@ class MainController &lt; Sinatra::Base<ol class="nocode errors smells">  <li>  
   helpers UtilsService
   enable :sessions
 
-  before do<ol class="nocode errors smells">  <li>    <div class="description">      <div class="heading">        <span>          <i class="fa fa-warning" aria-hidden="true"></i>          <a href="http://docs.seattlerb.org/flay/" target="_blank"><b>DuplicateCode</b></a>        </span>      </div>      <span>Identical code found in 4 nodes</span>              <span>Locations:</span>                  <a href="documents_controller.html#L32" class="js-smell-location">0</a>                  <a href="main_controller.html#L33" class="js-smell-location">1</a>                  <a href="practice_controller.html#L33" class="js-smell-location">2</a>                  <a href="users_controller.html#L33" class="js-smell-location">3</a>                  </div>  </li></ol>
+  before do<ol class="nocode errors smells">  <li>    <div class="description">      <div class="heading">        <span>          <i class="fa fa-warning" aria-hidden="true"></i>          <a href="http://docs.seattlerb.org/flay/" target="_blank"><b>DuplicateCode</b></a>        </span>      </div>      <span>Identical code found in 4 nodes</span>              <span>Locations:</span>                  <a href="documents_controller.html#L29" class="js-smell-location">0</a>                  <a href="main_controller.html#L30" class="js-smell-location">1</a>                  <a href="practice_controller.html#L30" class="js-smell-location">2</a>                  <a href="users_controller.html#L30" class="js-smell-location">3</a>                  </div>  </li></ol>
     session[:is_an_user_present] = session[:is_an_user_present] || false
     @is_an_user_present = session[:is_an_user_present] || false
   end

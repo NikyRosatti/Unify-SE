@@ -47,7 +47,7 @@
     <div class="file-time">
       <span class="committed-at">
         
-          Updated <time class='js-timeago' datetime='2024-11-02 10:33:05 -0300'>2024-11-02 10:33:05 -0300</time>
+          Updated <time class='js-timeago' datetime='2024-11-10 01:26:55 -0300'>2024-11-10 01:26:55 -0300</time>
         
       </span>
     </div>
@@ -73,7 +73,7 @@
             </div>
             <div class="col-md-3">
               <div><span class="metric">N/A</span><small> complexity/method</small></div>
-              <div><span class="metric">4</span><small> churn</small></div>
+              <div><span class="metric">5</span><small> churn</small></div>
             </div>
             <div class="col-md-3">
               <div><span class="metric">83.9</span><small> complexity</small></div>
@@ -118,7 +118,7 @@ require &#39;spec_helper&#39;
 require &#39;rack/test&#39;
 require &#39;rspec&#39;
 
-describe &#39;POST /register&#39; do # rubocop:disable Metrics/BlockLength
+describe &#39;POST /register&#39; do
   context &#39;cuando se registra un usuario con datos válidos&#39; do
     it &#39;crea un nuevo usuario y redirige a la página principal&#39; do
       post &#39;/register&#39;, {

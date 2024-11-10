@@ -47,7 +47,7 @@
     <div class="file-time">
       <span class="committed-at">
         
-          Updated <time class='js-timeago' datetime='2024-11-03 19:23:29 -0300'>2024-11-03 19:23:29 -0300</time>
+          Updated <time class='js-timeago' datetime='2024-11-09 12:06:19 -0300'>2024-11-09 12:06:19 -0300</time>
         
       </span>
     </div>
@@ -68,12 +68,12 @@
           </div>
           <div class="code-statistics col-md-11">
             <div class="col-md-3">
-              <div><span class="metric">83</span><small> lines of codes</small></div>
+              <div><span class="metric">81</span><small> lines of codes</small></div>
               <div><span class="metric">0</span><small> methods</small></div>
             </div>
             <div class="col-md-3">
               <div><span class="metric">N/A</span><small> complexity/method</small></div>
-              <div><span class="metric">13</span><small> churn</small></div>
+              <div><span class="metric">14</span><small> churn</small></div>
             </div>
             <div class="col-md-3">
               <div><span class="metric">63.1</span><small> complexity</small></div>
@@ -97,9 +97,7 @@
       </div>
     </div>
 
-    <code class="prettyprint linenums lang-ruby file-code js-file-code"># frozen_string_literal: true
-
-# This file is auto-generated from the current state of the database. Instead
+    <code class="prettyprint linenums lang-ruby file-code js-file-code"># This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
 #
@@ -111,74 +109,74 @@
 #
 # It&#39;s strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 20_241_012_110_735) do
-  create_table &#39;answers&#39;, force: :cascade do |t|
-    t.integer &#39;question_id&#39;
-    t.integer &#39;option_id&#39;
-    t.datetime &#39;created_at&#39;, null: false
-    t.datetime &#39;updated_at&#39;, null: false
-    t.index [&#39;option_id&#39;], name: &#39;index_answers_on_option_id&#39;
-    t.index [&#39;question_id&#39;], name: &#39;index_answers_on_question_id&#39;
+ActiveRecord::Schema[7.2].define(version: 2024_10_12_110735) do
+  create_table &quot;answers&quot;, force: :cascade do |t|
+    t.integer &quot;question_id&quot;
+    t.integer &quot;option_id&quot;
+    t.datetime &quot;created_at&quot;, null: false
+    t.datetime &quot;updated_at&quot;, null: false
+    t.index [&quot;option_id&quot;], name: &quot;index_answers_on_option_id&quot;
+    t.index [&quot;question_id&quot;], name: &quot;index_answers_on_question_id&quot;
   end
 
-  create_table &#39;documents&#39;, force: :cascade do |t|
-    t.string &#39;filename&#39;
-    t.binary &#39;filecontent&#39;
-    t.string &#39;file_hash&#39;
-    t.date &#39;uploaddate&#39;
-    t.datetime &#39;created_at&#39;, null: false
-    t.datetime &#39;updated_at&#39;, null: false
-    t.index [&#39;file_hash&#39;], name: &#39;index_documents_on_file_hash&#39;, unique: true
+  create_table &quot;documents&quot;, force: :cascade do |t|
+    t.string &quot;filename&quot;
+    t.binary &quot;filecontent&quot;
+    t.string &quot;file_hash&quot;
+    t.date &quot;uploaddate&quot;
+    t.datetime &quot;created_at&quot;, null: false
+    t.datetime &quot;updated_at&quot;, null: false
+    t.index [&quot;file_hash&quot;], name: &quot;index_documents_on_file_hash&quot;, unique: true
   end
 
-  create_table &#39;favorites&#39;, force: :cascade do |t|
-    t.integer &#39;user_id&#39;, null: false
-    t.integer &#39;document_id&#39;, null: false
-    t.datetime &#39;created_at&#39;, null: false
-    t.datetime &#39;updated_at&#39;, null: false
-    t.index [&#39;document_id&#39;], name: &#39;index_favorites_on_document_id&#39;
-    t.index [&#39;user_id&#39;], name: &#39;index_favorites_on_user_id&#39;
+  create_table &quot;favorites&quot;, force: :cascade do |t|
+    t.integer &quot;user_id&quot;, null: false
+    t.integer &quot;document_id&quot;, null: false
+    t.datetime &quot;created_at&quot;, null: false
+    t.datetime &quot;updated_at&quot;, null: false
+    t.index [&quot;document_id&quot;], name: &quot;index_favorites_on_document_id&quot;
+    t.index [&quot;user_id&quot;], name: &quot;index_favorites_on_user_id&quot;
   end
 
-  create_table &#39;options&#39;, force: :cascade do |t|
-    t.string &#39;content&#39;
-    t.integer &#39;question_id&#39;
-    t.datetime &#39;created_at&#39;, null: false
-    t.datetime &#39;updated_at&#39;, null: false
-    t.index [&#39;question_id&#39;], name: &#39;index_options_on_question_id&#39;
+  create_table &quot;options&quot;, force: :cascade do |t|
+    t.string &quot;content&quot;
+    t.integer &quot;question_id&quot;
+    t.datetime &quot;created_at&quot;, null: false
+    t.datetime &quot;updated_at&quot;, null: false
+    t.index [&quot;question_id&quot;], name: &quot;index_options_on_question_id&quot;
   end
 
-  create_table &#39;questions&#39;, force: :cascade do |t|
-    t.string &#39;content&#39;
-    t.integer &#39;document_id&#39;
-    t.integer &#39;number_answers_answered&#39;, default: 0
-    t.integer &#39;correct_answers_cant&#39;, default: 0
-    t.datetime &#39;created_at&#39;, null: false
-    t.datetime &#39;updated_at&#39;, null: false
-    t.index [&#39;document_id&#39;], name: &#39;index_questions_on_document_id&#39;
+  create_table &quot;questions&quot;, force: :cascade do |t|
+    t.string &quot;content&quot;
+    t.integer &quot;document_id&quot;
+    t.integer &quot;number_answers_answered&quot;, default: 0
+    t.integer &quot;correct_answers_cant&quot;, default: 0
+    t.datetime &quot;created_at&quot;, null: false
+    t.datetime &quot;updated_at&quot;, null: false
+    t.index [&quot;document_id&quot;], name: &quot;index_questions_on_document_id&quot;
   end
 
-  create_table &#39;users&#39;, force: :cascade do |t|
-    t.string &#39;username&#39;
-    t.string &#39;name&#39;
-    t.string &#39;lastname&#39;
-    t.string &#39;cellphone&#39;
-    t.string &#39;email&#39;
-    t.string &#39;password&#39;
-    t.date &#39;b_day&#39;
-    t.string &#39;gender&#39;
-    t.integer &#39;is_admin&#39;, default: 0
-    t.integer &#39;correct_answers&#39;, default: 0
-    t.datetime &#39;created_at&#39;, null: false
-    t.datetime &#39;updated_at&#39;, null: false
+  create_table &quot;users&quot;, force: :cascade do |t|
+    t.string &quot;username&quot;
+    t.string &quot;name&quot;
+    t.string &quot;lastname&quot;
+    t.string &quot;cellphone&quot;
+    t.string &quot;email&quot;
+    t.string &quot;password_digest&quot;
+    t.date &quot;b_day&quot;
+    t.string &quot;gender&quot;
+    t.integer &quot;is_admin&quot;, default: 0
+    t.integer &quot;correct_answers&quot;, default: 0
+    t.datetime &quot;created_at&quot;, null: false
+    t.datetime &quot;updated_at&quot;, null: false
   end
 
-  add_foreign_key &#39;answers&#39;, &#39;options&#39;
-  add_foreign_key &#39;answers&#39;, &#39;questions&#39;
-  add_foreign_key &#39;favorites&#39;, &#39;documents&#39;
-  add_foreign_key &#39;favorites&#39;, &#39;users&#39;
-  add_foreign_key &#39;options&#39;, &#39;questions&#39;
-  add_foreign_key &#39;questions&#39;, &#39;documents&#39;
+  add_foreign_key &quot;answers&quot;, &quot;options&quot;
+  add_foreign_key &quot;answers&quot;, &quot;questions&quot;
+  add_foreign_key &quot;favorites&quot;, &quot;documents&quot;
+  add_foreign_key &quot;favorites&quot;, &quot;users&quot;
+  add_foreign_key &quot;options&quot;, &quot;questions&quot;
+  add_foreign_key &quot;questions&quot;, &quot;documents&quot;
 end
 </code>
   </div>

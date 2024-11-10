@@ -47,7 +47,7 @@
     <div class="file-time">
       <span class="committed-at">
         
-          Updated <time class='js-timeago' datetime='2024-11-04 02:41:50 -0300'>2024-11-04 02:41:50 -0300</time>
+          Updated <time class='js-timeago' datetime='2024-11-10 01:24:55 -0300'>2024-11-10 01:24:55 -0300</time>
         
       </span>
     </div>
@@ -62,21 +62,21 @@
       <div class="col-md-8">
         <div class="row">
           <div class="col-md-1">
-            <div class="rating c big">
-              C
+            <div class="rating b big">
+              B
             </div>
           </div>
           <div class="code-statistics col-md-11">
             <div class="col-md-3">
-              <div><span class="metric">129</span><small> lines of codes</small></div>
-              <div><span class="metric">13</span><small> methods</small></div>
+              <div><span class="metric">113</span><small> lines of codes</small></div>
+              <div><span class="metric">11</span><small> methods</small></div>
             </div>
             <div class="col-md-3">
-              <div><span class="metric">9.3</span><small> complexity/method</small></div>
-              <div><span class="metric">2</span><small> churn</small></div>
+              <div><span class="metric">9.0</span><small> complexity/method</small></div>
+              <div><span class="metric">6</span><small> churn</small></div>
             </div>
             <div class="col-md-3">
-              <div><span class="metric">121.05</span><small> complexity</small></div>
+              <div><span class="metric">98.99</span><small> complexity</small></div>
               <div><span class="metric">0</span><small> duplications</small></div>
             </div>
           </div>
@@ -88,7 +88,7 @@
             <li><a href="#" id="toggle-code" class="toggle-button button">code</a></li>
             <li class="active">
               <a href="#" id="toggle-smells" class="toggle-button button">
-                6
+                7
                 smells
               </a>
             </li>
@@ -98,9 +98,6 @@
     </div>
 
     <code class="prettyprint linenums lang-ruby file-code js-file-code"># frozen_string_literal: true
-
-# Correr app: ruby app.rb
-# http://127.0.0.1:3000/
 
 require &#39;sinatra&#39;
 require &#39;sinatra/activerecord&#39;
@@ -120,25 +117,11 @@ require_relative &#39;utils&#39;
 
 # Helper module to handle user methods
 module UserService
-  def login_while_user_present?
-    return unless session[:is_an_user_present]
-
-    set_error_status(502, &#39;Para entrar en una cuenta primero se debe salir de la cuenta actual!&#39;)
-    erb :login
-  end
-
-  def login_missing_fields?
-    return unless params[:username_or_email].to_s.strip.empty? || params[:password].to_s.strip.empty?
-
-    set_error_status(501, &#39;Ingrese el nombre de usuario o correo electronico y la contraseña!&#39;)
-    erb :login
-  end
-
-  def login_successfully(username_or_email, password)
-    return unless find_user_by_credentials(username_or_email, password)<ol class="nocode errors smells">  <li>    <div class="description">      <div class="heading">        <span>          <i class="fa fa-warning" aria-hidden="true"></i>          <a href="https://github.com/troessner/reek/blob/master/docs/Duplicate-Method-Call.md" target="_blank"><b>DuplicateMethodCall</b></a>        </span>      </div>      <span>UserService#login_successfully calls 'find_user_by_credentials(username_or_email, password)' 2 times</span>              <span>Locations:</span>                  <a href="user_services.html#L39" class="js-smell-location">0</a>                  <a href="user_services.html#L42" class="js-smell-location">1</a>                  </div>  </li></ol>
+  def login_successfully?(username_or_email, password)
+    return unless find_user_by_credentials(username_or_email, password)<ol class="nocode errors smells">  <li>    <div class="description">      <div class="heading">        <span>          <i class="fa fa-warning" aria-hidden="true"></i>          <a href="https://github.com/troessner/reek/blob/master/docs/Duplicate-Method-Call.md" target="_blank"><b>DuplicateMethodCall</b></a>        </span>      </div>      <span>UserService#login_successfully? calls 'find_user_by_credentials(username_or_email, password)' 2 times</span>              <span>Locations:</span>                  <a href="user_services.html#L22" class="js-smell-location">0</a>                  <a href="user_services.html#L25" class="js-smell-location">1</a>                  </div>  </li></ol>
 
     session[:is_an_user_present] = true
-    session[:user_id] = find_user_by_credentials(username_or_email, password).id<ol class="nocode errors smells">  <li>    <div class="description">      <div class="heading">        <span>          <i class="fa fa-warning" aria-hidden="true"></i>          <a href="https://github.com/troessner/reek/blob/master/docs/Duplicate-Method-Call.md" target="_blank"><b>DuplicateMethodCall</b></a>        </span>      </div>      <span>UserService#login_successfully calls 'find_user_by_credentials(username_or_email, password)' 2 times</span>              <span>Locations:</span>                  <a href="user_services.html#L39" class="js-smell-location">0</a>                  <a href="user_services.html#L42" class="js-smell-location">1</a>                  </div>  </li></ol>
+    session[:user_id] = find_user_by_credentials(username_or_email, password).id<ol class="nocode errors smells">  <li>    <div class="description">      <div class="heading">        <span>          <i class="fa fa-warning" aria-hidden="true"></i>          <a href="https://github.com/troessner/reek/blob/master/docs/Duplicate-Method-Call.md" target="_blank"><b>DuplicateMethodCall</b></a>        </span>      </div>      <span>UserService#login_successfully? calls 'find_user_by_credentials(username_or_email, password)' 2 times</span>              <span>Locations:</span>                  <a href="user_services.html#L22" class="js-smell-location">0</a>                  <a href="user_services.html#L25" class="js-smell-location">1</a>                  </div>  </li></ol>
     logger.info &#39;Sesion iniciada&#39;
     redirect &#39;/&#39;
   end
@@ -182,9 +165,10 @@ module UserService
     )
   end
 
-  def find_user_by_credentials(username_or_email, password)<ol class="nocode errors smells">  <li>    <div class="description">      <div class="heading">        <span>          <i class="fa fa-warning" aria-hidden="true"></i>          <a href="https://github.com/troessner/reek/blob/master/docs/Utility-Function.md" target="_blank"><b>UtilityFunction</b></a>        </span>      </div>      <span>UserService#find_user_by_credentials doesn't depend on instance state (maybe move it to another class?)</span>          </div>  </li></ol>
-    User.find_by(username: username_or_email, password: password) ||
-      User.find_by(email: username_or_email, password: password)
+  def find_user_by_credentials(username_or_email, password_)<ol class="nocode errors smells">  <li>    <div class="description">      <div class="heading">        <span>          <i class="fa fa-warning" aria-hidden="true"></i>          <a href="https://github.com/troessner/reek/blob/master/docs/Utility-Function.md" target="_blank"><b>UtilityFunction</b></a>        </span>      </div>      <span>UserService#find_user_by_credentials doesn't depend on instance state (maybe move it to another class?)</span>          </div>  </li></ol>
+    user = User.find_by(username: username_or_email) ||
+           User.find_by(email: username_or_email)
+    user&amp;.authenticate(password_) ? user : nil<ol class="nocode errors smells">  <li>    <div class="description">      <div class="heading">        <span>          <i class="fa fa-warning" aria-hidden="true"></i>          <a href="https://github.com/troessner/reek/blob/master/docs/Control-Parameter.md" target="_blank"><b>ControlParameter</b></a>        </span>      </div>      <span>UserService#find_user_by_credentials is controlled by argument 'password_'</span>          </div>  </li></ol>
   end
 
   def fields_missing?(params)<ol class="nocode errors smells">  <li>    <div class="description">      <div class="heading">        <span>          <i class="fa fa-warning" aria-hidden="true"></i>          <a href="https://github.com/troessner/reek/blob/master/docs/Too-Many-Statements.md" target="_blank"><b>TooManyStatements</b></a>        </span>      </div>      <span>UserService#fields_missing? has approx 6 statements</span>          </div>  </li></ol>

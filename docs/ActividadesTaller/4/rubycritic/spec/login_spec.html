@@ -47,7 +47,7 @@
     <div class="file-time">
       <span class="committed-at">
         
-          Updated <time class='js-timeago' datetime='2024-10-21 16:23:57 -0300'>2024-10-21 16:23:57 -0300</time>
+          Updated <time class='js-timeago' datetime='2024-11-10 01:26:01 -0300'>2024-11-10 01:26:01 -0300</time>
         
       </span>
     </div>
@@ -62,22 +62,22 @@
       <div class="col-md-8">
         <div class="row">
           <div class="col-md-1">
-            <div class="rating c big">
-              C
+            <div class="rating b big">
+              B
             </div>
           </div>
           <div class="code-statistics col-md-11">
             <div class="col-md-3">
-              <div><span class="metric">69</span><small> lines of codes</small></div>
-              <div><span class="metric">1</span><small> methods</small></div>
+              <div><span class="metric">60</span><small> lines of codes</small></div>
+              <div><span class="metric">0</span><small> methods</small></div>
             </div>
             <div class="col-md-3">
-              <div><span class="metric">77.9</span><small> complexity/method</small></div>
-              <div><span class="metric">4</span><small> churn</small></div>
+              <div><span class="metric">N/A</span><small> complexity/method</small></div>
+              <div><span class="metric">5</span><small> churn</small></div>
             </div>
             <div class="col-md-3">
-              <div><span class="metric">77.85</span><small> complexity</small></div>
-              <div><span class="metric">66</span><small> duplications</small></div>
+              <div><span class="metric">67.95</span><small> complexity</small></div>
+              <div><span class="metric">0</span><small> duplications</small></div>
             </div>
           </div>
         </div>
@@ -88,7 +88,7 @@
             <li><a href="#" id="toggle-code" class="toggle-button button">code</a></li>
             <li class="active">
               <a href="#" id="toggle-smells" class="toggle-button button">
-                1
+                0
                 smell
               </a>
             </li>
@@ -118,51 +118,42 @@ require &#39;spec_helper&#39;
 require &#39;rack/test&#39;
 require &#39;rspec&#39;
 
-describe &#39;Login App&#39; do # rubocop:disable Metrics/BlockLength
-  include Rack::Test::Methods
+describe &#39;GET /login&#39; do
+  context &#39;cuando se quiere loguear cuando ya esta logueado&#39; do
+    it &#39;muestra un mensaje de que ya esta logueado&#39; do
+      get &#39;/login&#39;, {}, &#39;rack.session&#39; =&gt; { is_an_user_present: true }
 
-  def app
-    Sinatra::Application
+      expect(last_response.status).to eq(200)
+      expect(last_response.body).to include(&#39;You are already logged-in&#39;)
+    end
+  end
+end
+
+describe &#39;POST /login&#39; do
+  context &#39;cuando se loguea con credenciales validas&#39; do
+    it &#39;recibe que el usuario existe en la base de datos&#39; do
+      User.create(username: &#39;testuser&#39;, name: &#39;testname&#39;, lastname: &#39;testlastname&#39;,
+                  cellphone: &#39;testcellphone&#39;, email: &#39;testemail&#39;, password: &#39;password&#39;)
+      post &#39;/login&#39;, { username_or_email: &#39;testuser&#39;, password: &#39;password&#39; }
+      expect(User.find_by(username: &#39;testuser&#39;)).not_to be_nil
+    end
   end
 
-  describe &#39;POST /login&#39; do # rubocop:disable Metrics/BlockLength
-    context &#39;cuando se loguea con credenciales validas&#39; do
-      it &#39;recibe que el usuario existe en la base de datos&#39; do
-        User.create(username: &#39;testuser&#39;, name: &#39;testname&#39;, lastname: &#39;testlastname&#39;,
-                    cellphone: &#39;testcellphone&#39;, email: &#39;testemail&#39;, password: &#39;password&#39;)
-        post &#39;/login&#39;, { username_or_email: &#39;testuser&#39;, password: &#39;password&#39; }
-        expect(User.find_by(username: &#39;testuser&#39;)).not_to be_nil
-      end
+  context &#39;cuando se loguea con credenciales invalidas&#39; do
+    it &#39;recibe un mensaje de error de credenciales&#39; do
+      User.create(username: &#39;testuser&#39;, password: &#39;password&#39;)
+      post &#39;/login&#39;, { username_or_email: &#39;testuser&#39;, password: &#39;wrongpassword&#39; }
+
+      expect(last_response.status).to eq(503)
+      expect(last_response.body).to include(&#39;No se encontró el usuario o el correo, o la contraseña es incorrecta!&#39;)
     end
+  end
 
-    context &#39;cuando se loguea con credenciales invalidas&#39; do<ol class="nocode errors smells">  <li>    <div class="description">      <div class="heading">        <span>          <i class="fa fa-warning" aria-hidden="true"></i>          <a href="http://docs.seattlerb.org/flay/" target="_blank"><b>DuplicateCode</b></a>        </span>      </div>      <span>Similar code found in 2 nodes</span>              <span>Locations:</span>                  <a href="login_spec.html#L39" class="js-smell-location">0</a>                  <a href="login_spec.html#L49" class="js-smell-location">1</a>                  </div>  </li></ol>
-      it &#39;recibe un mensaje de error de credenciales&#39; do
-        User.create(username: &#39;testuser&#39;, password: &#39;password&#39;)
-        post &#39;/login&#39;, { username_or_email: &#39;testuser&#39;, password: &#39;wrongpassword&#39; }
+  context &#39;cuando se loguea sin dar ninguna credencial&#39; do
+    it &#39;recibe un codigo 501 como status http&#39; do
+      post &#39;/login&#39;, { username_or_email: &#39;&#39;, password: &#39;&#39; }
 
-        expect(last_response.status).to eq(503)
-        expect(last_response.body).to include(&#39;No se encontró el usuario o el correo, o la contraseña es incorrecta!&#39;)
-      end
-    end
-
-    context &#39;cuando se loguea sin dar ninguna credencial&#39; do<ol class="nocode errors smells">  <li>    <div class="description">      <div class="heading">        <span>          <i class="fa fa-warning" aria-hidden="true"></i>          <a href="http://docs.seattlerb.org/flay/" target="_blank"><b>DuplicateCode</b></a>        </span>      </div>      <span>Similar code found in 2 nodes</span>              <span>Locations:</span>                  <a href="login_spec.html#L39" class="js-smell-location">0</a>                  <a href="login_spec.html#L49" class="js-smell-location">1</a>                  </div>  </li></ol>
-      it &#39;recibe un codigo 501 como status http&#39; do
-        User.create(username: &#39;testuser&#39;, password: &#39;password&#39;)
-        post &#39;/login&#39;, { username_or_email: &#39;&#39;, password: &#39;&#39; }
-
-        expect(last_response.status).to eq(501)
-        expect(last_response.body).to include(&#39;Ingrese el nombre de usuario o correo electronico y la contraseña!&#39;)
-      end
-    end
-
-    context &#39;cuando se quiere loguear cuando ya esta logueado&#39; do
-      it &#39;recibe un codigo 502 como status http&#39; do
-        # Configura la sesión inicial
-        post &#39;/login&#39;, { username_or_email: &#39;anyuser&#39;, password: &#39;anypassword&#39; },
-             &#39;rack.session&#39; =&gt; { is_an_user_present: true }
-
-        expect(last_response.status).to eq(502)
-      end
+      expect(last_response.status).to eq(503)
     end
   end
 end

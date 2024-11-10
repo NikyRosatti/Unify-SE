@@ -47,7 +47,7 @@
     <div class="file-time">
       <span class="committed-at">
         
-          Updated <time class='js-timeago' datetime='2024-11-04 02:41:50 -0300'>2024-11-04 02:41:50 -0300</time>
+          Updated <time class='js-timeago' datetime='2024-11-09 21:13:40 -0300'>2024-11-09 21:13:40 -0300</time>
         
       </span>
     </div>
@@ -68,12 +68,12 @@
           </div>
           <div class="code-statistics col-md-11">
             <div class="col-md-3">
-              <div><span class="metric">108</span><small> lines of codes</small></div>
+              <div><span class="metric">105</span><small> lines of codes</small></div>
               <div><span class="metric">5</span><small> methods</small></div>
             </div>
             <div class="col-md-3">
               <div><span class="metric">14.0</span><small> complexity/method</small></div>
-              <div><span class="metric">2</span><small> churn</small></div>
+              <div><span class="metric">3</span><small> churn</small></div>
             </div>
             <div class="col-md-3">
               <div><span class="metric">69.77</span><small> complexity</small></div>
@@ -98,9 +98,6 @@
     </div>
 
     <code class="prettyprint linenums lang-ruby file-code js-file-code"># frozen_string_literal: true
-
-# Correr app: ruby app.rb
-# http://127.0.0.1:3000/
 
 require &#39;sinatra&#39;
 require &#39;sinatra/activerecord&#39;
@@ -144,16 +141,16 @@ module PracticeService
           temperature: 0.5
         }
       )
-    rescue Faraday::UnauthorizedError =&gt; e<ol class="nocode errors smells">  <li>    <div class="description">      <div class="heading">        <span>          <i class="fa fa-warning" aria-hidden="true"></i>          <a href="https://github.com/troessner/reek/blob/master/docs/Uncommunicative-Variable-Name.md" target="_blank"><b>UncommunicativeVariableName</b></a>        </span>      </div>      <span>PracticeService#generate_questions has the variable name 'e'</span>              <span>Locations:</span>                  <a href="practice_services.html#L48" class="js-smell-location">0</a>                  <a href="practice_services.html#L56" class="js-smell-location">1</a>                  </div>  </li></ol>
-      logger.error &quot;Unauthorized access - API Key may be incorrect: #{e.message}&quot;<ol class="nocode errors smells">  <li>    <div class="description">      <div class="heading">        <span>          <i class="fa fa-warning" aria-hidden="true"></i>          <a href="https://github.com/troessner/reek/blob/master/docs/Duplicate-Method-Call.md" target="_blank"><b>DuplicateMethodCall</b></a>        </span>      </div>      <span>PracticeService#generate_questions calls 'e.message' 2 times</span>              <span>Locations:</span>                  <a href="practice_services.html#L49" class="js-smell-location">0</a>                  <a href="practice_services.html#L57" class="js-smell-location">1</a>                  </div>  </li></ol>
+    rescue Faraday::UnauthorizedError =&gt; e<ol class="nocode errors smells">  <li>    <div class="description">      <div class="heading">        <span>          <i class="fa fa-warning" aria-hidden="true"></i>          <a href="https://github.com/troessner/reek/blob/master/docs/Uncommunicative-Variable-Name.md" target="_blank"><b>UncommunicativeVariableName</b></a>        </span>      </div>      <span>PracticeService#generate_questions has the variable name 'e'</span>              <span>Locations:</span>                  <a href="practice_services.html#L45" class="js-smell-location">0</a>                  <a href="practice_services.html#L53" class="js-smell-location">1</a>                  </div>  </li></ol>
+      logger.error &quot;Unauthorized access - API Key may be incorrect: #{e.message}&quot;<ol class="nocode errors smells">  <li>    <div class="description">      <div class="heading">        <span>          <i class="fa fa-warning" aria-hidden="true"></i>          <a href="https://github.com/troessner/reek/blob/master/docs/Duplicate-Method-Call.md" target="_blank"><b>DuplicateMethodCall</b></a>        </span>      </div>      <span>PracticeService#generate_questions calls 'e.message' 2 times</span>              <span>Locations:</span>                  <a href="practice_services.html#L46" class="js-smell-location">0</a>                  <a href="practice_services.html#L54" class="js-smell-location">1</a>                  </div>  </li></ol>
       redirect &#39;/no-key-provided&#39;
     end
     # Ver que devolvio GPT por consola
     # puts response.inspect
 
     parse_response(response)
-  rescue JSON::ParserError =&gt; e<ol class="nocode errors smells">  <li>    <div class="description">      <div class="heading">        <span>          <i class="fa fa-warning" aria-hidden="true"></i>          <a href="https://github.com/troessner/reek/blob/master/docs/Uncommunicative-Variable-Name.md" target="_blank"><b>UncommunicativeVariableName</b></a>        </span>      </div>      <span>PracticeService#generate_questions has the variable name 'e'</span>              <span>Locations:</span>                  <a href="practice_services.html#L48" class="js-smell-location">0</a>                  <a href="practice_services.html#L56" class="js-smell-location">1</a>                  </div>  </li></ol>
-    logger.error &quot;Failed to parse JSON response: #{e.message}&quot;<ol class="nocode errors smells">  <li>    <div class="description">      <div class="heading">        <span>          <i class="fa fa-warning" aria-hidden="true"></i>          <a href="https://github.com/troessner/reek/blob/master/docs/Duplicate-Method-Call.md" target="_blank"><b>DuplicateMethodCall</b></a>        </span>      </div>      <span>PracticeService#generate_questions calls 'e.message' 2 times</span>              <span>Locations:</span>                  <a href="practice_services.html#L49" class="js-smell-location">0</a>                  <a href="practice_services.html#L57" class="js-smell-location">1</a>                  </div>  </li></ol>
+  rescue JSON::ParserError =&gt; e<ol class="nocode errors smells">  <li>    <div class="description">      <div class="heading">        <span>          <i class="fa fa-warning" aria-hidden="true"></i>          <a href="https://github.com/troessner/reek/blob/master/docs/Uncommunicative-Variable-Name.md" target="_blank"><b>UncommunicativeVariableName</b></a>        </span>      </div>      <span>PracticeService#generate_questions has the variable name 'e'</span>              <span>Locations:</span>                  <a href="practice_services.html#L45" class="js-smell-location">0</a>                  <a href="practice_services.html#L53" class="js-smell-location">1</a>                  </div>  </li></ol>
+    logger.error &quot;Failed to parse JSON response: #{e.message}&quot;<ol class="nocode errors smells">  <li>    <div class="description">      <div class="heading">        <span>          <i class="fa fa-warning" aria-hidden="true"></i>          <a href="https://github.com/troessner/reek/blob/master/docs/Duplicate-Method-Call.md" target="_blank"><b>DuplicateMethodCall</b></a>        </span>      </div>      <span>PracticeService#generate_questions calls 'e.message' 2 times</span>              <span>Locations:</span>                  <a href="practice_services.html#L46" class="js-smell-location">0</a>                  <a href="practice_services.html#L54" class="js-smell-location">1</a>                  </div>  </li></ol>
     nil
   end
 
