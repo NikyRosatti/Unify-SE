@@ -47,8 +47,6 @@ class UsersController < Sinatra::Base
   end
 
   post '/login' do
-    login_while_user_present?
-    login_missing_fields?
     login_successfully?(params[:username_or_email].to_s.strip, params[:password].to_s.strip)
     login_incorrect
   end

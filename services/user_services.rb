@@ -18,20 +18,6 @@ require_relative 'utils'
 
 # Helper module to handle user methods
 module UserService
-  def login_while_user_present?
-    return unless session[:is_an_user_present]
-
-    set_error_status(502, 'Para entrar en una cuenta primero se debe salir de la cuenta actual!')
-    erb :login
-  end
-
-  def login_missing_fields?
-    return unless params[:username_or_email].to_s.strip.empty? || params[:password].to_s.strip.empty?
-
-    set_error_status(501, 'Ingrese el nombre de usuario o correo electronico y la contraseña!')
-    erb :login
-  end
-
   def login_successfully?(username_or_email, password)
     return unless find_user_by_credentials(username_or_email, password)
 

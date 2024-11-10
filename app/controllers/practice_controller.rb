@@ -48,8 +48,8 @@ class PracticeController < Sinatra::Base
     document = response_save_pdf[2] # Rescato el documento de la base de datos para pasarla al metodo
 
     if response_save_pdf[0] == 201  # Ya existe en la base de datos
-      body response_save_pdf[1]
-      redirect "/documents/#{document.id}/practice_doc", response_save_pdf[0]
+      status 201
+      redirect "/documents/#{document.id}/practice_doc", 201
     end
 
     return json_error(response_save_pdf[1], response_save_pdf[0]) unless response_save_pdf[0] == 202
