@@ -107,6 +107,51 @@ class UsersController < Sinatra::Base
     redirect '/'
   end
 
+  get '/settings/password' do
+    authenticate_user!
+    if user
+      erb :change_password
+    else
+      erb :status404
+    end
+  end
+
+  post '/settings/password' do
+    new_password = params[:new_password]
+    if UserService.passwords_match?(new_password, params[:confirm_password])
+      unless user.update(password: new_password)
+        @error = 'Error updating password.'
+        erb :change_password
+      end
+      redirect '/settings'
+    else
+      @error = "Passwords don't match"
+      erb :change_password
+    end
+  end
+
+  get '/settings/profUpdate' do
+    authenticate_user!
+    if user
+      erb :profile_update
+    else
+      erb :status404
+    end
+  end
+
+  post '/settings/profUpdate' do
+    user.update(
+      username: params[:username],
+      name: params[:name],
+      lastname: params[:lastname],
+      cellphone: params[:cellphone],
+      b_day: params[:b_day],
+      gender: params[:gender],
+      email: params[:email]
+    )
+    redirect '/settings'
+  end
+
   get '/favorites' do
     authenticate_user!
     erb :status404 unless user && !Document.count.zero?

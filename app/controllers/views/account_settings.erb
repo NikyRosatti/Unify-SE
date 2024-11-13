@@ -27,7 +27,7 @@
             </ul>
             <button class="contact">Contact +</button>
         </aside>
-        <div class="content-main">
+        <div class="content-main" id="mainContent">
             <button class="sidebar-toggle" onclick="toggleSidebar()">&#9776;</button>
             <div class="content-box">
                 <div class="title">
@@ -42,7 +42,7 @@
                         <div class="primary">
                             <h1>Account Settings</h1>
                             <span>OPTIONS</span>
-                            <li><a href="/settings/profile">Update Profile</a></li>
+                            <li><a href="/settings/profUpdate">Update Profile</a></li>
                             <li><a href="/give_me_admin_please">Manage Roles and Permissions</a></li>
                             <li><a href="/settings/password">Change Password</a></li>
                             <%# <li><a href="/settings/notifications">Notifications</a></li> %>
@@ -52,10 +52,23 @@
                         </div>
                     </div>
                     <div class="delete-account">
-                        <form action="/settings/<%= user.id %>" method="post" onsubmit="return confirm('Are you sure you want to delete this user?');">
-                            <input type="hidden" name="_method" value="delete">
-                            <button id="delete-btn">Delete account</button>
-                        </form> 
+                        <button id="delete-btn" onclick="showConfirmation()">Delete account</button>
+                        <div class="cardModal" id="confirmationModal" style="display: none;">
+                            <div class="card-content">
+                                <p class="card-heading">Delete Account?</p>
+                                <p class="card-description">Are you sure you want to delete this user?</p>
+                            </div>
+                            <div class="modal-button-wrapper">
+                                <!-- Botón de cancelar -->
+                                <button class="modal-button cancel" onclick="closeConfirmation()">Cancel</button>
+                                
+                                <!-- Formulario de eliminación -->
+                                <form action="/settings/<%= user.id %>" method="post">
+                                <input type="hidden" name="_method" value="delete">
+                                <button type="submit" class="modal-button delPrimary">Delete</button>
+                                </form>
+                            </div>
+                        </div> 
                     </div>
                 </section>
 
@@ -104,7 +117,7 @@
                     </div>
 
                     <div class="profile">
-                        <figure><img id="profile-image" src="media/fondoQuest.jpeg" alt="profile"></figure>
+                        <figure><img id="profile-image" src="media/profile/default.jpeg" alt="profile"></figure>
                     </div>
                 </section>
 
@@ -174,10 +187,10 @@
 
         // Array de imágenes
         const images = [
-            'media/profile/545dffb2-86ed-4148-acf7-6f9b1bb01ca6.jpeg',
-            'media/profile/descarga.jpeg',
-            'media/profile/gatito.jpeg',
-            'media/profile/perrito.jpeg'
+            'media/profile/profile1.jpeg',
+            'media/profile/profile2.jpeg',
+            'media/profile/profile3.jpeg',
+            'media/profile/default.jpeg'
         ];
         let currentIndex = 0; // Índice de la imagen actual
         const editButton = document.getElementById('edit-btn');
@@ -188,6 +201,20 @@
             currentIndex = (currentIndex + 1) % images.length;
             profileImage.src = images[currentIndex];
         });
+
+        function showConfirmation() {
+            // Muestra el modal de confirmación
+            document.getElementById("confirmationModal").style.display = "flex";
+            // Aplica el efecto borroso al contenido principal
+            //document.getElementById("mainContent").classList.add("blurred");
+        }
+        
+        function closeConfirmation() {
+            // Cierra el modal de confirmación
+            document.getElementById("confirmationModal").style.display = "none";
+            // Elimina el efecto borroso al contenido principal
+            //document.getElementById("mainContent").classList.remove("blurred");
+        }
     </script>
 </body>
 </html>

@@ -202,7 +202,6 @@ body {
   transition: margin-left 0.3s ease;
   width: 100%; 
   height: 100vh; 
-  
   justify-content: center;
   align-items: center;
 }
@@ -331,6 +330,81 @@ body {
 
 #delete-btn:hover {
   background-color: #ff1a1a;
+}
+
+.cardModal {
+  width: 300px;
+  height: fit-content;
+  background: rgb(255, 255, 255);
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 30px;
+  position: relative;
+  box-shadow: 20px 20px 30px rgba(0, 0, 0, 0.068);
+}
+
+.card-content {
+  width: 100%;
+  height: fit-content;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.card-heading {
+  font-size: 20px;
+  font-weight: 700;
+  color: rgb(27, 27, 27);
+}
+
+.card-description {
+  font-weight: 300;
+  color: rgb(57, 57, 57);
+}
+
+.modal-button-wrapper {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.modal-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: auto;
+  height: 35px;
+  padding: 15px 30px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  text-align: center; 
+}
+
+.delPrimary {
+  background-color: rgb(255, 114, 109);
+  color: white;
+}
+
+.delPrimary:hover {
+  background-color: rgb(255, 73, 66);
+}
+
+.cancel {
+  background-color: #ddd;
+}
+
+.cancel:hover {
+  background-color: rgb(197, 197, 197);
 }
 
 /* ===== =====>>  User Details Css Start  <<===== ===== */

@@ -111,4 +111,8 @@ module UserService
     logger.error 'There was a problem registering your account. Please try again later.'
     redirect '/error_register'
   end
+
+  def self.passwords_match?(new_password, confirm_password)
+    new_password == confirm_password
+  end
 end

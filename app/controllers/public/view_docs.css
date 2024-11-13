@@ -19,7 +19,8 @@ body {
 }
 
 .logo {
-  width: 10%;
+  width: 70%;
+  height: auto;
 }
 
 .search-container {
