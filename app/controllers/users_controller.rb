@@ -20,7 +20,7 @@ require_relative '../../helpers'
 
 # User controller
 # It handles all the users relationated views
-class UsersController < Sinatra::Base
+class UsersController < Sinatra::Base # rubocop:disable Metrics/ClassLength
   helpers DocumentService
   helpers PracticeService
   helpers UserService
