@@ -132,7 +132,7 @@ module UserService
     redirect '/error_register'
   end
 
-  def self.passwords_match?(new_password, confirm_password)
+  def passwords_match?(new_password, confirm_password)
     new_password == confirm_password
   end
 end
