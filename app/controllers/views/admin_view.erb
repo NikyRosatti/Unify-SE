@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Admin Permission Management</title>
+    <link rel="stylesheet" href="/admin_view.css">
 </head>
 <body>
     <h1>Everything fine whirlwind of facha?</h1>
@@ -19,12 +20,12 @@
         </form>
 
         <% if session[:admin_pw_verified] %>
-            <p> Correct password. Click to obtain admin permissions. </p>
             <form action="/give_me_admin_please" method="POST" style="display:inline;">
+                <p> Correct password. Click to obtain admin permissions. </p>
                 <button type="submit"> I want to be an admin </button>
             </form>
         <% elsif params[:error] == 'invalid_password' %>
-            <p style="color:red;"> Incorrect password. Please try again. </p>
+            <p> Incorrect password. Please try again. </p>
         <% end %>
     <% end %>
 
