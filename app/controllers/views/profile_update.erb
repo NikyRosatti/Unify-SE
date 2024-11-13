@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile Update</title>
+  <link rel="stylesheet" href="/profile_update.css">
+</head>
+<body>
+  <div class="form-container">
+    <form id="profileForm" method="POST" action="/settings/profUpdate" class="profile-form">
+      <!-- Username -->
+      <div class="form-group">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" value="<%= user.username %>" readonly class="editable" />
+      </div>
+
+      <!-- Name -->
+      <div class="form-group">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" value="<%= user.name %>" readonly class="editable" />
+      </div>
+
+      <!-- Last Name -->
+      <div class="form-group">
+        <label for="lastname">Last Name:</label>
+        <input type="text" id="lastname" name="lastname" value="<%= user.lastname %>" readonly class="editable" />
+      </div>
+
+      <!-- Cellphone -->
+      <div class="form-group">
+        <label for="cellphone">Cellphone:</label>
+        <input type="text" id="cellphone" name="cellphone" value="<%= user.cellphone %>" readonly class="editable" />
+      </div>
+
+      <!-- Birthday -->
+      <div class="form-group">
+        <label for="b_day">Birthday:</label>
+        <input type="date" id="b_day" name="b_day" value="<%= user.b_day %>" readonly class="editable" />
+      </div>
+
+      <!-- Gender -->
+      <div class="form-group">
+        <label for="gender">Gender:</label>
+        <input type="text" id="gender" name="gender" value="<%= user.gender %>" readonly class="editable" />
+      </div>
+
+      <!-- Email -->
+      <div class="form-group">
+          <label for="email">Email:</label>
+          <input type="email" id="email" name="email" value="<%= user.email %>" readonly class="editable" />
+      </div>
+
+      <!-- Password -->
+      <div class="form-group">
+          <label for="password">Password:</label>
+          <input type="password" id="password" name="password" value="********" readonly class="non-editable" />
+      </div>
+
+      <button type="submit" class="submit-button">Update Profile</button>
+    </form>
+  </div>
+
+  <script>
+    document.querySelectorAll('.editable').forEach((input) => {
+      input.addEventListener('click', function () {
+        if (this.hasAttribute('readonly')) {
+          this.removeAttribute('readonly');
+          this.style.cursor = 'text';
+        }
+      });
+
+      input.addEventListener('blur', function () {
+        if (this.value.trim() === '') {
+          this.setAttribute('readonly', true);
+          this.style.cursor = 'pointer';
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>

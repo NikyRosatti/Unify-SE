@@ -130,6 +130,28 @@ class UsersController < Sinatra::Base
     end
   end
 
+  get '/settings/profUpdate' do
+    authenticate_user!
+    if user
+      erb :profile_update
+    else
+      erb :status404
+    end
+  end
+
+  post '/settings/profUpdate' do
+    user.update(
+      username: params[:username],
+      name: params[:name],
+      lastname: params[:lastname],
+      cellphone: params[:cellphone],
+      b_day: params[:b_day],
+      gender: params[:gender],
+      email: params[:email]
+    )
+    redirect '/settings'
+  end
+
   get '/favorites' do
     authenticate_user!
     erb :status404 unless user && !Document.count.zero?
