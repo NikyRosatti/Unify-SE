@@ -118,7 +118,7 @@ class UsersController < Sinatra::Base
 
   post '/settings/password' do
     new_password = params[:new_password]
-    if UserService.passwords_match?(new_password, params[:confirm_password])
+    if passwords_match?(new_password, params[:confirm_password])
       unless user.update(password: new_password)
         @error = 'Error updating password.'
         erb :change_password
