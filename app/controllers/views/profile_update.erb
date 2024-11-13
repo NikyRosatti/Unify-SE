@@ -8,6 +8,9 @@
 </head>
 <body>
   <div class="form-container">
+    <% if @error %>
+        <p class="error-message" id="error-message"><%= @error %></p>
+    <% end %>
     <form id="profileForm" method="POST" action="/settings/profUpdate" class="profile-form">
       <!-- Username -->
       <div class="form-group">
@@ -51,12 +54,6 @@
           <input type="email" id="email" name="email" value="<%= user.email %>" readonly class="editable" />
       </div>
 
-      <!-- Password -->
-      <div class="form-group">
-          <label for="password">Password:</label>
-          <input type="password" id="password" name="password" value="********" readonly class="non-editable" />
-      </div>
-
       <button type="submit" class="submit-button">Update Profile</button>
     </form>
   </div>
@@ -77,6 +74,15 @@
         }
       });
     });
+    // Verifica si el mensaje de error existe y luego lo oculta
+    window.onload = function() {
+        const errorMessage = document.getElementById('error-message');
+        if (errorMessage) {
+            setTimeout(function() {
+                errorMessage.style.display = 'none';
+            }, 3000); // 3000 ms = 3 segundos
+        }
+    }
   </script>
 
 </body>

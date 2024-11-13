@@ -67,6 +67,18 @@ module UserService
     )
   end
 
+  def profile_update(params)
+    user.update(
+      username: clean_param(params[:username]),
+      name: clean_param(params[:name]),
+      lastname: clean_param(params[:lastname]),
+      cellphone: params[:cellphone],
+      b_day: params[:b_day],
+      gender: params[:gender],
+      email: clean_param(params[:email])
+    )
+  end
+
   def find_user_by_credentials(username_or_email, password_)
     user = User.find_by(username: username_or_email) ||
            User.find_by(email: username_or_email)
@@ -84,6 +96,14 @@ module UserService
 
   def find_user(username, email)
     User.find_by(username: username.to_s.strip) || User.find_by(email: email.to_s.strip)
+  end
+
+  def find_user_username(username)
+    User.find_by(username: username.to_s.strip)
+  end
+
+  def find_user_email(email)
+    User.find_by(email: email.to_s.strip)
   end
 
   def rank

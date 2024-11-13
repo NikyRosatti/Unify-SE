@@ -140,16 +140,23 @@ class UsersController < Sinatra::Base
   end
 
   post '/settings/profUpdate' do
-    user.update(
-      username: params[:username],
-      name: params[:name],
-      lastname: params[:lastname],
-      cellphone: params[:cellphone],
-      b_day: params[:b_day],
-      gender: params[:gender],
-      email: params[:email]
-    )
-    redirect '/settings'
+    username = clean_param(params[:username])
+    email = clean_param(params[:email])
+
+    # Verificar si el nombre de usuario o el correo electrónico están cambiando y si ya existen
+    if ((user.username == username) && (user.email != email) && find_user_email(email)) ||
+       ((user.username != username) && (user.email == email) && find_user_username(username))
+      @error = 'Existing Credentials'
+      return erb :profile_update # Mostrar el formulario con el error
+    end
+
+    # Si no hay conflicto, intentar actualizar
+    if profile_update(params)
+      redirect '/settings' # Redirigir solo si la actualización fue exitosa
+    else
+      @error = 'Error updating profile'
+      erb :profile_update # Mostrar el formulario con el error si la actualización falla
+    end
   end
 
   get '/favorites' do
