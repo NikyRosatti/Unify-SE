@@ -110,7 +110,7 @@ module DocumentService
   end
 
   def handle_long_filename(filename)
-    return unless filename.length > 25
+    return unless filename.length > 45
 
     session[:why] = 'The filename is too long'
     redirect '/error_document'
